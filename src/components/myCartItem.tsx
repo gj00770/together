@@ -19,7 +19,14 @@ function MyCartItem() {
                     <ItemAmount>
                         3
                     </ItemAmount>
-
+                    <ArrowContainer>
+                        <div>
+                            &#9650;
+                        </div>
+                        <div>
+                            &#9660;
+                        </div>
+                    </ArrowContainer>
                 </AmountPriceContainer>
             </InfoContainer>
 
@@ -74,6 +81,11 @@ const ItemAmount = styled.div`
     background-color: #ffffff;
     width :30px;
     margin:10px 10px 0px 10px ;
+    text-align: left;
+    font-size: 24px;
+`
+
+const ArrowContainer = styled.div`
     text-align: left;
     font-size: 24px;
 `

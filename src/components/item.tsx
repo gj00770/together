@@ -5,8 +5,8 @@ import styled from 'styled-components';
 function Item() {
     return (
         <ItemContainer>
-            <Image>
-            </Image>
+            <Image src="mockImage/mockimage.png" />
+            {/* <img src="mockImage /mockimage.png" alt="" /> */}
             <Name>
                 에스투비코퍼레이션 저스트포유 레인보우 커버 무소음 무선 마우스
             </Name>
@@ -27,14 +27,15 @@ const ItemContainer = styled.div`
   height: 350px;
   background-color: salmon;
   border-radius: 15px;
+  
 `
 
-const Image = styled.div`
-  width: 280px;
+const Image = styled.img`
+  width: 260px;
   height: 200px;
-  background-color: white;
-  margin-left: 10px;
   margin-top:10px;
+  border-radius: 10px;
+  border: 0.5px solid #D3D3D3;
 `
 const Name = styled.div`
  margin-top: 10px;

@@ -1,5 +1,6 @@
 .App {
   text-align: center;
+  font-family:" NotoSans-Bold";
 }
 
 .App-logo {
@@ -35,4 +36,16 @@
   to {
     transform: rotate(360deg);
   }
+}
+@font-face{
+  font-family: NotoSans-Medium;
+  src: url('./styles/fonts/NotoSansKR-Medium.otf')
+}
+@font-face{
+  font-family: NotoSans-Bold;
+  src: url('./styles/fonts/NotoSansKR-Bold.otf')
+}
+@font-face{
+  font-family: NotoSans-Regular;
+  src: url('./styles/fonts/NotoSansKR-Regular.otf')
 }

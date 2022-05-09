@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-
+import LikeItemCointainer from '../components/likeItemContainer'
 import MyCartItemContainer from '../components/myCartItemContainer'
 import MyCartItem from '../components/myCartItem'
 
@@ -19,7 +19,8 @@ function MyPage() {
                     구매목록
                 </TabMenuItem>
             </TabMenu>
-            <MyCartItemContainer />
+            {/* <MyCartItemContainer /> */}
+            <LikeItemCointainer />
         </MyPageContainer>
     );
 }
@@ -29,17 +30,18 @@ const MyPageContainer = styled.div`
     background-color: honeydew;
     margin-left: auto;
     margin-right: auto;
+    padding-bottom: 40px;
 `
 const TabMenu = styled.div`
   display: flex;
-  border-top: 1px solid black;
-  border-left: 1px solid black;
-  border-right: 1px solid black;
 `
 const TabMenuItem = styled.div`
-    width: 150px;
-    height: 30px;
+    cursor: pointer;
+    width: 33%;
+    height: 40px;
     font-size: 22px;
+    line-height: 40px;
+    border: 1px solid grey;
 `
 const ItemContainer = styled.div`
 

@@ -1,23 +1,24 @@
 import React from 'react';
 import styled from 'styled-components';
-
+import LikeItem from './likeItem'
 
 
 function LikeItemContainer() {
     return (
-        <LikeItemContainerContainer>
-
-        </LikeItemContainerContainer>
+        <MyCartItemContainer>
+            <LikeItem />
+            <LikeItem />
+            <LikeItem />
+            <LikeItem />
+            <LikeItem />
+        </MyCartItemContainer>
     );
 }
-const LikeItemContainerContainer = styled.div`
-    margin-top: 200px;
+const MyCartItemContainer = styled.div`
     width: 800px;
     background-color: honeydew;
-    margin-left: auto;
-    margin-right: auto;
+
+  
 `
-
-
 
 export default LikeItemContainer;
