@@ -1,26 +1,47 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import LikeItemCointainer from '../components/likeItemContainer'
 import MyCartItemContainer from '../components/myCartItemContainer'
-import MyCartItem from '../components/myCartItem'
-
+import UserInfo from '../components/userInfo'
 
 function MyPage() {
+    const [current, setCurrent] = useState('cartItem');
+
+    const setCur = (e: any) => {
+        console.log(e.target.dataset)
+        setCurrent(e.target.dataset.name);
+    }
     return (
         <MyPageContainer>
             <TabMenu>
-                <TabMenuItem>
+
+                <TabMenuItem data-name='mypage' onClick={setCur}>
                     마이페이지
                 </TabMenuItem>
-                <TabMenuItem>
+                <TabMenuItem data-name='cartItem' onClick={setCur}>
                     장바구니
                 </TabMenuItem>
-                <TabMenuItem>
+                <TabMenuItem data-name='buyList' onClick={setCur}>
                     구매목록
                 </TabMenuItem>
             </TabMenu>
             {/* <MyCartItemContainer /> */}
-            <LikeItemCointainer />
+
+            {current === "mypage" ?
+                <UserInfo />
+                :
+                null
+            }
+            {current === "cartItem" ?
+                <MyCartItemContainer />
+                :
+                null
+            }
+            {current === "buyList" ?
+                <LikeItemCointainer />
+                :
+                null
+            }
         </MyPageContainer>
     );
 }
