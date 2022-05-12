@@ -16,10 +16,10 @@ function CaroselEle(props: any) {
 
 
 function Carosel() {
-    const [horizontalValue, setHorizontalValue] = useState(-350);
+    const [horizontalValue, setHorizontalValue] = useState(0);
     const [dummyArr, setDummyArr] = useState(dummyNumArr);
     const [counter, setCounter] = useState(dummyNumArr.length / 3);
-    const [left, setLeft] = useState(0);
+    const [left, setLeft] = useState(-500);
     // let dummyList: any = dummyArr.map((ele, key) => (<CaroselEle key={key} number={ele} horizontalValue={horizontalValue} />));
 
 
@@ -33,14 +33,14 @@ function Carosel() {
             console.log(sliceArr)
 
             setCounter(10);
-            setLeft(left + 350);
-            setHorizontalValue(horizontalValue - 70)
+            setLeft(left + 500);
+            setHorizontalValue(horizontalValue - (1 / dummyNumArr.length) * 100)
 
             setDummyArr([...sliceArr, ...arr]);
         }
         else {
             setCounter(counter + 1);
-            setHorizontalValue(horizontalValue - 70)
+            setHorizontalValue(horizontalValue - (1 / dummyNumArr.length) * 100)
         }
 
     }
@@ -52,13 +52,13 @@ function Carosel() {
             console.log(sliceArr)
 
             setCounter(4);
-            setLeft(left - 350);
-            setHorizontalValue(horizontalValue + 70)
+            setLeft(left - 500);
+            setHorizontalValue(horizontalValue + (1 / dummyNumArr.length) * 100)
 
             setDummyArr([...arr, ...sliceArr]);
         }
         else {
-            setHorizontalValue(horizontalValue + 70)
+            setHorizontalValue(horizontalValue + (1 / dummyNumArr.length) * 100)
             setCounter(counter - 1);
         }
     }
@@ -68,10 +68,9 @@ function Carosel() {
 
     return (
         <CaroselContainer>
-
             <ArrowRight onClick={ClickRightArr}>  &gt;</ArrowRight>
             <ArrowLeft onClick={ClickLeftArr}> &lt;</ArrowLeft>
-            <CaroselList style={{ transform: `translateX( ${horizontalValue}vw) `, marginLeft: `${left}vw` }}>
+            <CaroselList style={{ transform: `translateX( ${horizontalValue}%) `, marginLeft: `${left}%` }}>
 
                 {dummyArr.map((ele, key) => <CaroselEle key={key} number={ele} horizontalValue={horizontalValue} />)}
             </CaroselList>
@@ -98,12 +97,13 @@ const CaroselContainer = styled.div`
 
 const ArrowRight = styled.div`
     position: absolute;
-    right: 15vw;
    // left: 80%;
     cursor: pointer;
     height: 20px;
     top: calc(15vw + 40px);
     z-index: 5;
+    right: 15vw;
+    
 `
 const ArrowLeft = styled.div`
     position: absolute;
@@ -111,7 +111,6 @@ const ArrowLeft = styled.div`
     top: calc(15vw + 40px);
     z-index: 5;
     height: 20px;
-  //  left: 1%;
 `
 const CaroselEleS = styled.div`
     flex:none;

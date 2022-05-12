@@ -2,14 +2,15 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import DaumPostcode from 'react-daum-postcode';
 
+type UserProps = {
+    onComplete(id: any): void // 파라미터가 있고 함수의 return이 없을 경우
+}
 
-
-function DaumAdr() {
-    const onComplete = (data: any) => { console.log(data); }
+function DaumAdr({ onComplete }: UserProps) {
 
     return (
         <DaumAdrContainer>
-            <DaumPostcode />
+            <DaumPostcode onComplete={onComplete} />
         </DaumAdrContainer>
 
     );
@@ -20,8 +21,7 @@ const DaumAdrContainer = styled.div`
     background-color: white;
     text-align: left;
     font-size: 24px; */
-    position: absolute;
-    background-color: white;
+    width: 500px;
     z-index: 5;
     border: 0.5px solid #D3D3D3;
 `
