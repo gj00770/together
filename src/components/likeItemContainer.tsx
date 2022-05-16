@@ -15,8 +15,14 @@ function LikeItemContainer() {
     );
 }
 const MyCartItemContainer = styled.div`
-    width: 800px;
-    background-color: honeydew;
+    width: 800px;   
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    @media screen and (max-width: 800px) {
+        width: 100%;
+    }
 
   
 `

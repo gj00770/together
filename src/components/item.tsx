@@ -18,50 +18,56 @@ function Item() {
             </Date>
             <People>
                 26/32
-                </People>
+            </People>
         </ItemContainer>
     );
 }
 const ItemContainer = styled.div`
   width: 300px;
   height: 350px;
-  background-color: salmon;
-  border-radius: 15px;
-  
+  background-color: white;
+  border: 0.5px solid #D3D3D3;
+  box-shadow: 4px 8px 8px 4px  #D3D3D3;
+
 `
 
 const Image = styled.img`
-  width: 260px;
-  height: 200px;
+  //width: 260px;
+  width: 180px;
+  height: 180px;
   margin-top:10px;
   border-radius: 10px;
-  border: 0.5px solid #D3D3D3;
 `
 const Name = styled.div`
  margin-top: 10px;
- width: 280px;
- margin-left: 10px;
+ width: 260px;
+ margin-left: auto;
+ margin-right: auto;
  word-break:break-word;
  text-align: left;
 `
 const Price = styled.div`
- margin-top: 10px;
- width: 280px;
- margin-left: 10px;
+ margin-top: 5px;
+ width: 260px;
+ margin-left: auto;
+ margin-right: auto;
  text-align: left;
  font-size: 25px;
+ 
 `
 const Date = styled.div`
-width: 280px;
-margin-left: 10px;
+ width: 260px;
+ margin-left: auto;
+ margin-right: auto;
 font-size: 14px;
 color: blue;
 text-align: left;
 `
 
 const People = styled.div`
-width: 280px;
-margin-left: 10px;
+ width: 260px;
+ margin-left: auto;
+ margin-right: auto;
 font-size: 14px;
 color: blue;
 text-align: left;

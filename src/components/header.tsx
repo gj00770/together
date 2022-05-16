@@ -10,20 +10,18 @@ import {
 
 function Header() {
     return (
-        <Router>
-            <HeaderContainer>
-                <Link to='/mypage'>ㅁㄴㅇㄴㅁ</Link>
-                <Logo>
+        <HeaderContainer>
+            <Link to='/mypage' >ㅁㄴㅇㄴㅁ</Link>
+            <Logo>
 
-                    Together
+                <Link to='/' >Together</Link>
             </Logo>
-                <LoginSignUpContainer>
+            <LoginSignUpContainer>
+                <Link to='/product' >
                     <Login>로그인</Login>
-                    <div>/</div>
-                    <SignUp>회원가입</SignUp>
-                </LoginSignUpContainer>
-            </HeaderContainer>
-        </Router>
+                </Link>
+            </LoginSignUpContainer>
+        </HeaderContainer>
     );
 }
 const HeaderContainer = styled.div`

@@ -15,9 +15,11 @@ import {
 function App() {
   return (
     <div className="App">
-      <Header />
+
       <Router>
+        <Header />
         <Routes>
+
           <Route path="/" element={<Main />} />
           <Route path="/mypage" element={<Mypage />} />
           <Route path="/product" element={<Product />} />

@@ -26,8 +26,9 @@ function UserInfo() {
                 <UserNameButton>
                     닉네임설정
                 </UserNameButton>
+                <div>수정</div>
             </InfoContainer>
-
+            <hr />
 
             {openModal ?
                 <div style={{ position: 'absolute' }}>
@@ -40,7 +41,6 @@ function UserInfo() {
 
                 <TitleName>받는사람정보</TitleName>
             </InfoContainer>
-
 
             <InfoContainer>
                 <Name>이름</Name>

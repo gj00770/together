@@ -16,31 +16,27 @@ function CaroselEle(props: any) {
 
 
 function Carosel() {
-    const [horizontalValue, setHorizontalValue] = useState(0);
+    const [position, setPosition] = useState(0);
     const [dummyArr, setDummyArr] = useState(dummyNumArr);
     const [counter, setCounter] = useState(dummyNumArr.length / 3);
     const [left, setLeft] = useState(-500);
     // let dummyList: any = dummyArr.map((ele, key) => (<CaroselEle key={key} number={ele} horizontalValue={horizontalValue} />));
 
-
-
-
     const ClickRightArr = () => {
 
         console.log(counter)
         if (dummyNumArr.length - 1 === counter) {
-            let sliceArr = dummyArr.slice(5, 15);
-            console.log(sliceArr)
+            //  console.log(sliceArr)
 
             setCounter(10);
             setLeft(left + 500);
-            setHorizontalValue(horizontalValue - (1 / dummyNumArr.length) * 100)
 
-            setDummyArr([...sliceArr, ...arr]);
+            setPosition(position - (1 / dummyNumArr.length) * 100)
+
         }
         else {
             setCounter(counter + 1);
-            setHorizontalValue(horizontalValue - (1 / dummyNumArr.length) * 100)
+            setPosition(position - (1 / dummyNumArr.length) * 100)
         }
 
     }
@@ -48,17 +44,14 @@ function Carosel() {
     const ClickLeftArr = () => {
 
         if (counter === 0) {
-            let sliceArr = dummyArr.slice(5, 15);
-            console.log(sliceArr)
 
             setCounter(4);
             setLeft(left - 500);
-            setHorizontalValue(horizontalValue + (1 / dummyNumArr.length) * 100)
+            setPosition(position + (1 / dummyNumArr.length) * 100)
 
-            setDummyArr([...arr, ...sliceArr]);
         }
         else {
-            setHorizontalValue(horizontalValue + (1 / dummyNumArr.length) * 100)
+            setPosition(position + (1 / dummyNumArr.length) * 100)
             setCounter(counter - 1);
         }
     }
@@ -70,9 +63,8 @@ function Carosel() {
         <CaroselContainer>
             <ArrowRight onClick={ClickRightArr}>  &gt;</ArrowRight>
             <ArrowLeft onClick={ClickLeftArr}> &lt;</ArrowLeft>
-            <CaroselList style={{ transform: `translateX( ${horizontalValue}%) `, marginLeft: `${left}%` }}>
-
-                {dummyArr.map((ele, key) => <CaroselEle key={key} number={ele} horizontalValue={horizontalValue} />)}
+            <CaroselList style={{ transform: `translateX( ${position}%) `, marginLeft: `${left}%`, marginRight: '0%' }}>
+                {dummyArr.map((ele, key) => <CaroselEle key={key} number={ele} />)}
             </CaroselList>
         </CaroselContainer>
     );
@@ -93,6 +85,7 @@ const CaroselContainer = styled.div`
     height: 30vw;
     float: left;
     display: flex;
+    position: relative;
 `
 
 const ArrowRight = styled.div`
@@ -100,15 +93,15 @@ const ArrowRight = styled.div`
    // left: 80%;
     cursor: pointer;
     height: 20px;
-    top: calc(15vw + 40px);
+    top: calc(15vw + 10px);
     z-index: 5;
-    right: 15vw;
+    right: 0;
     
 `
 const ArrowLeft = styled.div`
     position: absolute;
     cursor: pointer;
-    top: calc(15vw + 40px);
+    top: calc(15vw + 10px);
     z-index: 5;
     height: 20px;
 `

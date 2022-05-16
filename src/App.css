@@ -1,6 +1,7 @@
 .App {
   text-align: center;
-  font-family:" NotoSans-Bold";
+  font-family:"NotoSans-Medium";
+  background-color: #f9f9f9;
 }
 
 .App-logo {
