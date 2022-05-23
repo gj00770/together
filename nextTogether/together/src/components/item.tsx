@@ -41,6 +41,9 @@ const ItemContainer = styled.div`
   height: 350px;
   background-color: white;
   cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   //box-shadow: 4px 8px 8px 4px  #D3D3D3;
 
 `

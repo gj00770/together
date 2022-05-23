@@ -1,10 +1,11 @@
-import React from 'react';
+import React, { useState } from 'react';
 import './App.css';
 import Header from './components/header'
 import Carosel from './components/carosel'
 import Main from './pages/main'
 import Mypage from './pages/mypage'
 import Product from './pages/product'
+import Login from './modal/login'
 import {
   BrowserRouter as Router,
   Routes,
@@ -13,11 +14,22 @@ import {
 } from "react-router-dom";
 
 function App() {
+
+  const [islogin, setIsLogin] = useState(false);
+  const login = () => {
+    setIsLogin(!islogin)
+    console.log(login)
+  }
   return (
     <div className="App">
+      {islogin ?
+        <Login login={login} />
+        :
+        null
+      }
 
       <Router>
-        <Header />
+        <Header login={login} />
         <Routes>
 
           <Route path="/" element={<Main />} />

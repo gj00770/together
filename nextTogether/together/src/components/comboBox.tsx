@@ -1,13 +1,13 @@
 import React from 'react';
 import styled from 'styled-components';
-import { ReactComponent as SearchIcon } from '../icons/searchIcon.svg';
-
+//import SearchIcon from '../icons/searchIcon.svg';
+//import SearchIcon from '../svgs/searchIcon.svg';
 
 function ComboBox() {
     return (
         <ComboBoxContainer>
             <Search>
-                <SearchIcon width={"20px"} height={'20px'} />
+                {/* <SearchIcon width={"20px"} height={'20px'} /> */}
             </Search>
             <InputBox>
             </InputBox>

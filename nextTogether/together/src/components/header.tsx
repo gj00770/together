@@ -1,29 +1,23 @@
 import React from 'react';
 import styled from 'styled-components';
-import {
-    BrowserRouter as Router,
-    Routes,
-    Route,
-    Link,
-} from "react-router-dom";
-
+import Link from 'next/link';
 
 function Header({ login }: any) {
     console.log(login)
     return (
-        <HeaderContainer>
+        <HeaderContainer >
             <div onClick={login}>진짜로그인 </div>
-            <Link to='/mypage' >ㅁㄴㅇㄴㅁ</Link>
+            <Link href='/mypage' >ㅁㄴㅇㄴㅁ</Link>
             <Logo>
 
-                <Link to='/' >Together</Link>
+                <Link href='/' >Together</Link>
             </Logo>
             <LoginSignUpContainer>
-                <Link to='/product' >
+                <Link href='/product' >
                     <Login>로그인</Login>
                 </Link>
             </LoginSignUpContainer>
-        </HeaderContainer>
+        </HeaderContainer >
     );
 }
 const HeaderContainer = styled.div`
