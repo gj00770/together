@@ -1,0 +1,31 @@
+//타입스크리브를 자바스크립트로 바꿔주는역활
+//개발자가 최신문법을 쓰더라도 과거 js버전으로 transfiling
+
+//es5 로바꿔준다고치면 async
+//async
+//polyfill 
+// babdl 이 async await 0-> promise .then
+// class to prototupe 
+// 
+
+
+
+
+
+
+//pre-set
+//presset
+
+{
+    "presets": [
+        "next/babel"
+    ],
+    "plugins": [
+        [
+            "styled-components",
+            {
+                "ssr": true
+            }
+        ]
+    ]
+}
