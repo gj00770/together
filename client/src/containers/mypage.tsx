@@ -56,13 +56,13 @@ const CONTENT_BY_TAB = {
   [TabId.BUY_LIST]: <LikeItemCointainer />,
 };
 const MyPageContainer = styled.div`
+  //background-color: white;
   margin-top: 80px;
   width: 800px;
   margin-left: auto;
   margin-right: auto;
   padding-bottom: 40px;
   //  background-color: #6FADCF;
-  background-color: #f9f9f9;
   @media screen and (max-width: 800px) {
     width: 100%;
   }
@@ -70,20 +70,18 @@ const MyPageContainer = styled.div`
 const TabMenu = styled.div`
   display: flex;
   justify-content: space-around;
+  text-align: center;
 `;
 const TabMenuItem = styled.div<{ active: boolean }>`
   margin-top: 32px;
   cursor: pointer;
-  width: 30%;
+  width: 33.3333%;
   height: 40px;
   font-size: 22px;
   line-height: 40px;
   border: 0.3px solid #d3d3d3;
-  background-color: white;
-  box-shadow: ${(props) =>
-    props.active
-      ? "inset 3px 2px 1px 1px rgba(0, 0, 0, 0.3)"
-      : "3px 3px 2px 1px rgba(0, 0, 0, 0.3)"};
+  border-bottom: none;
+  background-color: ${(props) => (props.active ? "#fafafa" : "#dbd9d9")};
   @media screen and (max-width: 800px) {
     font-size: 18px;
   }

@@ -14,7 +14,7 @@ function Product() {
   return (
     <ProductContainer>
       <ImageItemSummaryContainer>
-        <Image src="mockImage/mockimage.png" />
+        <Image src="mockImage/productThumbnail/1.jpeg" />
         <ItemSummary />
       </ImageItemSummaryContainer>
       <SummaryTab>
@@ -69,23 +69,35 @@ const SummaryTab = styled.div`
 `;
 
 const Tab = styled.div<{ active: boolean }>`
-  width: 32%;
+  width: 33.333%;
+  height: 40px;
   border: 0.5px solid #d3d3d3;
   cursor: pointer;
-  box-shadow: ${(props) =>
-    props.active
-      ? "inset 3px 3px 2px 1px rgba(0, 0, 0, 0.3)"
-      : "3px 3px 2px 1px rgba(0, 0, 0, 0.3)"};
+  text-align: center;
+  background-color: ${(props) => (props.active ? "white" : "#fafafa;")};
+  border-bottom: none;
 `;
 
 const ProductContainer = styled.div`
+  width: 800px;
+  margin-right: auto;
+  margin-left: auto;
   padding-top: 20px;
   background-color: white;
+  @media screen and (max-width: 700px) {
+    width: 100%;
+  }
 `;
 const ImageItemSummaryContainer = styled.div`
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
   margin-bottom: 30px;
+
+  @media screen and (min-width: 700px) {
+    width: 781px;
+    margin-left: auto;
+    margin-right: auto;
+  }
   @media screen and (max-width: 700px) {
     grid-template-columns: 1fr;
     flex-direction: column;
@@ -96,7 +108,7 @@ const Image = styled.img`
   width: 300px;
   height: 400px;
   margin-top: 10px;
-  border-radius: 10px;
+  //border-radius: 10px;
   background-color: red;
   @media screen and (max-width: 700px) {
     border: none;
