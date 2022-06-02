@@ -57,7 +57,8 @@ const CONTENT_BY_TAB = {
 };
 const MyPageContainer = styled.div`
   //background-color: white;
-  margin-top: 80px;
+  //margin-top: 80px;
+  padding-top: 90px;
   width: 800px;
   margin-left: auto;
   margin-right: auto;

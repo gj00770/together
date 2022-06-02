@@ -23,6 +23,8 @@ function Header({ login }: any) {
   );
 }
 const HeaderContainer = styled.div`
+  position: fixed;
+  z-index: 99;
   width: 100vw;
   background-color: #4aa8d8;
   height: 40px;

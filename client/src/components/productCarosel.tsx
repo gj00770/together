@@ -10,7 +10,7 @@ import Item from "./sliderItem";
 function ProductCarosel() {
   const [position, setPosition] = useState(0);
   const [dummyArr, setDummyArr] = useState(dummyNumArr);
-  const [counter, setCounter] = useState(dummyNumArr.length / 3);
+  const [counter, setCounter] = useState(0);
   // let dummyList: any = dummyArr.map((ele, key) => (<ProductCaroselEle key={key} number={ele} horizontalValue={horizontalValue} />));
 
   const ClickRightArr = () => {
@@ -28,7 +28,7 @@ function ProductCarosel() {
   // }, [dummyArr])
 
   return (
-    <div style={{ marginBottom: "30px" }}>
+    <div style={{ marginBottom: "30px", paddingTop: "30px" }}>
       <NameContainer>
         <Name>오늘의 최고의 상품 </Name>
         <ViewMore>더보기</ViewMore>
@@ -43,8 +43,8 @@ function ProductCarosel() {
               marginRight: "0%",
             }}
           >
-            {dummyArr.map((ele) => (
-              <Item img={ele} />
+            {dummyArr.map((ele, key) => (
+              <Item img={ele} key={key} />
             ))}
           </ProductCaroselList>
         </ProductCaroselContainer>

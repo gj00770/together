@@ -38,6 +38,7 @@ function SliderItem(img: any) {
       <Price>32600원</Price>
       {mouseOver ? (
         <MouseOverContainer style={{}}>
+          <div></div>
           <div>
             <Date>2022/12/31</Date>
             <People>26/32명</People>
@@ -63,7 +64,6 @@ const SliderItemContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-
   z-index: 7;
   @media screen and (max-width: 600px) {
     width: 46%;
@@ -79,6 +79,7 @@ const MouseOverContainer = styled.div`
   flex-direction: column;
   justify-content: space-between;
   z-index: 6;
+  text-align: center;
   @media screen and (max-width: 600px) {
     width: 46%;
   }
@@ -140,7 +141,7 @@ const Date = styled.div`
   margin-left: auto;
   margin-right: auto;
   font-size: 2rem;
-  text-align: left;
+  text-align: center;
   color: white;
 `;
 
@@ -149,7 +150,7 @@ const People = styled.div`
   margin-left: auto;
   margin-right: auto;
   font-size: 2rem;
-  text-align: left;
+  text-align: center;
   color: white;
 `;
 export default SliderItem;
