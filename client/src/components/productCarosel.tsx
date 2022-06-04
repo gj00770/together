@@ -1,53 +1,47 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 
 import styled from "styled-components";
+import Carosel, { CaroselRef } from "./NWEWEWN";
 const dummyNumArr = [
   1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20,
 ];
-const arr = [1, 2, 3, 4, 5];
+
 import Item from "./sliderItem";
 
 function ProductCarosel() {
-  const [position, setPosition] = useState(0);
-  const [dummyArr, setDummyArr] = useState(dummyNumArr);
-  const [counter, setCounter] = useState(0);
-  // let dummyList: any = dummyArr.map((ele, key) => (<ProductCaroselEle key={key} number={ele} horizontalValue={horizontalValue} />));
-
-  const ClickRightArr = () => {
-    console.log(counter);
-    //  console.log(sliceArr)
-
-    setPosition(position - 100);
-  };
-
-  const ClickLeftArr = () => {
-    setPosition(position + 100);
-  };
-
-  // useEffect(() => {
-  // }, [dummyArr])
+  const caroselRef = useRef<CaroselRef>(null);
+  //console.log(caroselRef);
 
   return (
-    <div style={{ marginBottom: "30px", paddingTop: "30px" }}>
+    <div style={{ marginBottom: "30px" }}>
       <NameContainer>
         <Name>오늘의 최고의 상품 </Name>
         <ViewMore>더보기</ViewMore>
       </NameContainer>
       <ArrowProductContainer>
-        <ArrowRight onClick={ClickRightArr}> &gt;</ArrowRight>
-        <ArrowLeft onClick={ClickLeftArr}> &lt;</ArrowLeft>
-        <ProductCaroselContainer>
+        <ArrowRight onClick={() => caroselRef.current?.next()}>
+          {" "}
+          &gt;
+        </ArrowRight>
+        <ArrowLeft onClick={() => caroselRef.current?.prev()}> &lt;</ArrowLeft>
+        {/* <ProductCaroselContainer ref={containerRef}>
           <ProductCaroselList
             style={{
-              transform: `translateX( ${position}%) `,
+              transform: `translateX( ${-counter * 100}%) `,
               marginRight: "0%",
             }}
+            ref={contentRef}
           >
             {dummyArr.map((ele, key) => (
               <Item img={ele} key={key} />
             ))}
           </ProductCaroselList>
-        </ProductCaroselContainer>
+        </ProductCaroselContainer> */}
+        <Carosel ref={caroselRef}>
+          {dummyNumArr.map((ele, key) => (
+            <Item img={ele} key={key} />
+          ))}
+        </Carosel>
       </ArrowProductContainer>
     </div>
   );

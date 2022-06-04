@@ -82,7 +82,7 @@ const ProductContainer = styled.div`
   width: 800px;
   margin-right: auto;
   margin-left: auto;
-  padding-top: 20px;
+  padding-top: 40px;
   background-color: white;
   @media screen and (max-width: 700px) {
     width: 100%;

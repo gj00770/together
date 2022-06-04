@@ -5,8 +5,8 @@ const dummyArr = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 function ItemContainer() {
   return (
     <ItemContainerContainer>
-      {dummyArr.map((ele) => (
-        <Item img={ele} />
+      {dummyArr.map((ele, key) => (
+        <Item img={ele} key={key} />
       ))}
       {/* <Item />
       <Item />

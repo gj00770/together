@@ -2,7 +2,8 @@ import React, { useState } from "react";
 import styled from "styled-components";
 function ItemSummary() {
   const [itemQauntity, setItemQuantity] = useState(1);
-
+  const [backgroundcart, setBackgroundcart] = useState("white");
+  const [backgroundpurchase, setBackgroundpurchase] = useState("white");
   const upClick = () => {
     setItemQuantity(itemQauntity + 1);
   };
@@ -34,8 +35,20 @@ function ItemSummary() {
             </Arrow>
           </ArrowContainer>
         </BuyQuantityContainer>
-        <CartBtn>장바구니</CartBtn>
-        <PurchaseBtn>구매</PurchaseBtn>
+        <CartBtn
+          style={{ backgroundColor: backgroundcart }}
+          onMouseEnter={() => setBackgroundcart("#4aa8d8")}
+          onMouseLeave={() => setBackgroundcart("white")}
+        >
+          장바구니
+        </CartBtn>
+        <PurchaseBtn
+          style={{ backgroundColor: backgroundpurchase }}
+          onMouseEnter={() => setBackgroundpurchase("#4aa8d8")}
+          onMouseLeave={() => setBackgroundpurchase("white")}
+        >
+          구매
+        </PurchaseBtn>
       </FlexContainer>
     </ItemSummaryContainer>
   );

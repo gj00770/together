@@ -17,7 +17,7 @@ const Home: NextPage = () => {
   );
 };
 const MainContainer = styled.div`
-  margin-top: 50px;
+  padding-top: 50px;
   display: flex;
   flex-direction: column;
   align-items: center;
