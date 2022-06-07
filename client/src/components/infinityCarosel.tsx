@@ -14,11 +14,6 @@ function CaroselEle(props: any) {
   );
 }
 function InfinityCarosel() {
-  ``;
-  const [position, setPosition] = useState(0);
-  const [dummyArr, setDummyArr] = useState(dummyNumArr);
-  const [counter, setCounter] = useState(dummyNumArr.length / 3);
-  const [left, setLeft] = useState(-500);
   // let dummyList: any = dummyArr.map((ele, key) => (<CaroselEle key={key} number={ele} horizontalValue={horizontalValue} />));
   const caroselRef = useRef<CaroselRef>(null);
 

@@ -91,9 +91,6 @@ export const Carosel = React.forwardRef<CaroselRef, Props>(function Carosel(
       } else {
         setCounter(counter - 1);
       }
-      //   console.log(counter);
-      //   console.log(InfinityLength);
-      //   console.log(left);
     }
   };
 
