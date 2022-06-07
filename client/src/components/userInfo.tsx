@@ -5,7 +5,9 @@ import styled from "styled-components";
 
 function UserInfo() {
   const [openModal, setOpenModal] = useState(false);
-  const [curAddr, setCurAddr] = useState("");
+  const [curAddr, setCurAddr] = useState("서울시 구로구 경인로 343");
+  const [userImage, setUserImage] = useState("mockImage/icon.jpeg");
+  const [imgBase64, setImgBase64] = useState("");
   const onComplete = (data: any) => {
     console.log(data);
     setCurAddr(data.address);
@@ -13,17 +15,50 @@ function UserInfo() {
   const openPostal = () => {
     setOpenModal(!openModal);
   };
+
+  const changeProfileImage = (e: any) => {
+    console.log(e.target.files[0].name);
+    setUserImage(URL.createObjectURL(e.target.files[0]));
+    //  setUserImage(e.target.files[0].name);
+    // const reader = new FileReader();
+    // reader.onloadend = () => {
+    //   const base64 = reader.result;
+    //   if (base64) {
+    //     setImgBase64(base64.toString()); // 파일 base64 상태 업데이트
+    //   }
+    // };
+    // if (e.target.files[0]) {
+    //   reader.readAsDataURL(e.target.files[0]); // 1. 파일을 읽어 버퍼에 저장합니다.
+    //   setUserImage(e.target.files[0]); // 파일 상태 업데이트
+    // }
+  };
   return (
     <UserInfoContainer>
-      <InfoContainer>
-        <IconImage src="mockImage/icon.jpeg" />
-        <Name>닉네임</Name>
-        <UserName></UserName>
+      <hr />
+      <UserNickNameIcon>
+        <div>
+          <Category>사진</Category>
+          <input
+            type="file"
+            id="imageFile"
+            onChange={changeProfileImage}
+            style={{ display: "none" }}
+          />
+          <label htmlFor="imageFile">
+            <IconImage src={userImage} />
+          </label>
+        </div>
         <UserNameButton>닉네임설정</UserNameButton>
-        <div>수정</div>
+      </UserNickNameIcon>
+      <hr />
+      <InfoContainer>
+        <div style={{ display: "flex" }}>
+          <Name>닉네임</Name>
+          <UserName>아무개아무개아무개</UserName>
+        </div>
+        <UserNameButton>닉네임설정</UserNameButton>
       </InfoContainer>
       <hr />
-
       {/* {openModal ?
                 <div style={{ position: 'absolute' }}>
                     <DaumAdr onComplete={onComplete} />
@@ -36,23 +71,31 @@ function UserInfo() {
       </InfoContainer>
 
       <InfoContainer>
-        <Name>이름</Name>
-        <PostalCode></PostalCode>
+        <div style={{ display: "flex" }}>
+          <Name>이름</Name>
+          <PostalCode>정구민</PostalCode>
+        </div>
       </InfoContainer>
 
       <InfoContainer>
-        <Name>주소</Name>
-        <PostalCode>{curAddr}</PostalCode>
+        <div style={{ display: "flex" }}>
+          <Name>주소</Name>
+          <PostalCode>{curAddr}</PostalCode>
+        </div>
         <PostalCodeButton onClick={openPostal}>주소설정</PostalCodeButton>
       </InfoContainer>
 
       <InfoContainer>
-        <Name>상세주소</Name>
-        <PostalCode></PostalCode>
+        <div style={{ display: "flex" }}>
+          <Name>상세주소</Name>
+          <PostalCode>삼환로즈빌 106동 801호</PostalCode>
+        </div>
       </InfoContainer>
       <InfoContainer>
-        <Name>추가요청사항</Name>
-        <PostalCode></PostalCode>
+        <div style={{ display: "flex" }}>
+          <Name>추가요청사항</Name>
+          <PostalCode>경비실에 맡겨주세요</PostalCode>
+        </div>
       </InfoContainer>
     </UserInfoContainer>
   );
@@ -60,11 +103,26 @@ function UserInfo() {
 const IconImage = styled.img`
   border-radius: 100%;
   height: 70px;
-  margin-left: 15px;
+  margin-left: 100px;
   cursor: pointer;
 `;
 const UserInfoContainer = styled.div`
   margin-top: 20px;
+  width: 800px;
+  @media screen and (max-width: 800px) {
+    width: 100%;
+  }
+`;
+const UserNickNameIcon = styled.div`
+  /* margin : 20px 20px 20px auto;
+    width: 120px;
+    background-color: white;
+    text-align: left;
+    font-size: 24px; */
+  display: flex;
+  margin-bottom: 20px;
+  // width: 800px;
+  justify-content: space-between;
 `;
 const InfoContainer = styled.div`
   /* margin : 20px 20px 20px auto;
@@ -74,7 +132,10 @@ const InfoContainer = styled.div`
     font-size: 24px; */
   display: flex;
   margin-bottom: 20px;
+  // width: 800px;
+  justify-content: space-between;
 `;
+const Category = styled.div``;
 const Name = styled.div`
   /* margin : 20px 20px 20px auto;
     width: 120px;
@@ -91,7 +152,6 @@ const TitleName = styled.div`
 const UserName = styled.div`
   width: 200px;
   height: 30px;
-  background-color: white;
 `;
 const UserNameButton = styled.button`
   width: 100px;
@@ -101,7 +161,6 @@ const UserNameButton = styled.button`
 const PostalCode = styled.div`
   width: 500px;
   height: 30px;
-  background-color: white;
   text-align: left;
 `;
 const PostalCodeButton = styled.button`
