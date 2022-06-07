@@ -1,135 +1,138 @@
-import React, { useState, useEffect } from "react";
-
+import React, {
+  ForwardedRef,
+  ReactNode,
+  useImperativeHandle,
+  useRef,
+  useState,
+} from "react";
 import styled from "styled-components";
-const dummyNumArr = [1, 2, 3, 4, 5, 1, 2, 3, 4, 5, 1, 2, 3, 4, 5];
-const arr = [1, 2, 3, 4, 5];
-const dummyNumArrColor = ["pink", "green", "pink", "green", "yellow"];
-function CaroselEle(props: any) {
-  return (
-    <CaroselEleS
-      style={{ backgroundColor: ` ${dummyNumArrColor[props.number - 1]}` }}
-      //src="mockImage/sliderEle/`${props.number}`.webp"
-      src={`mockImage/sliderEle/${props.number}.webp`}
-    >
-      {/* <Image src="mockImage/sliderIMG.webp" /> */}
-    </CaroselEleS>
-  );
+
+interface Props {
+  children: ReactNode;
+  isInfinity: boolean;
+  infinitySliderLength: number;
+  gap: number;
 }
 
-function Carosel() {
-  ``;
+export interface CaroselRef {
+  next(): void;
+  prev(): void;
+}
+
+export const Carosel = React.forwardRef<CaroselRef, Props>(function Carosel(
+  props: Props,
+  ref: ForwardedRef<CaroselRef>
+) {
+  const [counter, setCounter] = useState(props.infinitySliderLength || 0);
+  const contentRef = useRef<HTMLDivElement>(null); // ***** 전체 길이
+  const containerRef = useRef<HTMLDivElement>(null);
+  const [left, setLeft] = useState(0);
+  const [InfinityLength, setInfinityLength] = useState(4);
   const [position, setPosition] = useState(0);
-  const [dummyArr, setDummyArr] = useState(dummyNumArr);
-  const [counter, setCounter] = useState(dummyNumArr.length / 3);
-  const [left, setLeft] = useState(-500);
-  // let dummyList: any = dummyArr.map((ele, key) => (<CaroselEle key={key} number={ele} horizontalValue={horizontalValue} />));
+  console.log(props.gap);
+  useImperativeHandle(ref, () => {
+    return {
+      next: next,
+      prev: prev,
+    };
+  });
 
-  const ClickRightArr = () => {
-    console.log(counter);
-    if (dummyNumArr.length - 1 === counter) {
-      //  console.log(sliceArr)
+  function getMaxSlideCount() {
+    if (contentRef.current == null || containerRef.current == null) {
+      throw new Error("slider elements does not rendered");
+    }
+    const whole = contentRef.current.scrollWidth;
+    const part = containerRef.current.getBoundingClientRect().width;
+    const max = Math.floor(whole / part);
+    return max;
+  }
 
-      setCounter(10);
-      setLeft(left + 500);
-
-      setPosition(position - (1 / dummyNumArr.length) * 100);
+  const next = () => {
+    const max = getMaxSlideCount();
+    if (props.isInfinity === false) {
+      console.log(counter);
+      if (counter == max) {
+        setCounter(0);
+        setPosition(0);
+      } else {
+        setCounter(counter + 1);
+        setPosition(position + 100);
+      }
     } else {
-      setCounter(counter + 1);
-      setPosition(position - (1 / dummyNumArr.length) * 100);
+      if (counter === 14) {
+        console.log("hi");
+        setLeft(left + 500);
+        setCounter(10);
+        setPosition(position + 100);
+      } else {
+        setCounter(counter + 1);
+        setPosition(position + 100);
+      }
     }
   };
 
-  const ClickLeftArr = () => {
-    if (counter === 0) {
-      setCounter(4);
-      setLeft(left - 500);
-      setPosition(position + (1 / dummyNumArr.length) * 100);
+  const prev = () => {
+    const max = getMaxSlideCount();
+
+    if (props.isInfinity === false) {
+      if (counter == 0) {
+        setCounter(max);
+        setPosition(max * 100);
+      } else {
+        setCounter(counter - 1);
+        setPosition(position - 100);
+      }
     } else {
-      setPosition(position + (1 / dummyNumArr.length) * 100);
-      setCounter(counter - 1);
+      if (counter === 0) {
+        console.log("hi");
+        setLeft(left - 500);
+        setCounter(counter - 1);
+        setInfinityLength(InfinityLength - 5);
+      } else {
+        setCounter(counter - 1);
+      }
+      //   console.log(counter);
+      //   console.log(InfinityLength);
+      //   console.log(left);
     }
   };
-
-  // useEffect(() => {
-  // }, [dummyArr])
 
   return (
-    <CaroselContainer>
-      <ArrowRight onClick={ClickRightArr}> &gt;</ArrowRight>
-      <ArrowLeft onClick={ClickLeftArr}> &lt;</ArrowLeft>
-      <CaroselList
+    <CaroselContainer ref={containerRef} style={{}}>
+      <InnerContainer
+        colGap={props.gap}
         style={{
-          transform: `translateX( ${position}%) `,
-          marginLeft: `${left}%`,
+          marginLeft: props.isInfinity ? `${left}%` : `null`,
+          transform: `translateX( ${-position}%) `,
           marginRight: "0%",
         }}
+        ref={contentRef}
       >
-        {dummyArr.map((ele, key) => (
-          <CaroselEle key={key} number={ele} />
-        ))}
-      </CaroselList>
+        {props.children}
+      </InnerContainer>
     </CaroselContainer>
   );
-}
+});
 
 export default Carosel;
-
+interface ContainerProps {
+  colGap: number;
+}
 const CaroselContainer = styled.div`
   //display: flex;
-  max-width: 1900px;
-  max-height: 390px;
-  margin: 20px;
   overflow-x: hidden;
-  width: 100vw;
-  height: 30vw;
   float: left;
   display: flex;
   position: relative;
 `;
 
-const ArrowRight = styled.div`
-  position: absolute;
-  // left: 80%;
-  cursor: pointer;
-  height: 40px;
-  width: 40px;
-  top: 50%;
-  z-index: 5;
-  right: 0;
-  opacity: 0.5;
-  background-color: black;
-  border-radius: 20px;
-  margin-right: 10%;
-  text-align: center;
-  color: white;
-  line-height: 35px;
-`;
-const ArrowLeft = styled.div`
-  position: absolute;
-  cursor: pointer;
-  top: 50%;
-  height: 40px;
-  width: 40px;
-  border-radius: 20px;
-  z-index: 5;
-  opacity: 0.5;
-  background-color: black;
-  margin-left: 10%;
-  text-align: center;
-  color: white;
-  line-height: 35px;
-`;
-const CaroselEleS = styled.img`
-  flex: none;
-  box-sizing: content-box;
-  width: 100vw;
-  height: 30vw;
-  max-width: 1900px;
-  max-height: 390px;
-`;
-
-const CaroselList = styled.div`
+const InnerContainer = styled.div<ContainerProps>`
+  width: 100%;
   transition: transform 0.5s ease;
   display: flex;
-  //transition-property:translateX();
+  column-gap: ${(props) => props.colGap}%;
+
+  @media screen and (max-width: 600px) {
+    column-gap: ${(props) => props.colGap * 2}%;
+  }
 `;

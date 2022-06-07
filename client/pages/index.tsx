@@ -4,7 +4,7 @@ import Image from "next/image";
 import styles from "../styles/Home.module.css";
 import React, { useState } from "react";
 import styled from "styled-components";
-import Carosel from "../src/components/carosel";
+import InfinityCarosel from "../src/components/infinityCarosel";
 //import ComboBox from '../src/components/combobox'
 import ComboBox from "../src/components/comboBox";
 import ItemContainer from "../src/components/itemContainer";
@@ -12,7 +12,7 @@ import ProductCarosel from "../src/components/productCarosel";
 const Home: NextPage = () => {
   return (
     <MainContainer>
-      <Carosel />
+      <InfinityCarosel />
       <ComboBox />
       <ProductCarosel />
       <ProductCarosel />

@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 
 import styled from "styled-components";
-import Carosel, { CaroselRef } from "./NWEWEWN";
+import Carosel, { CaroselRef } from "./carosel";
 const dummyNumArr = [
   1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20,
 ];
@@ -24,20 +24,13 @@ function ProductCarosel() {
           &gt;
         </ArrowRight>
         <ArrowLeft onClick={() => caroselRef.current?.prev()}> &lt;</ArrowLeft>
-        {/* <ProductCaroselContainer ref={containerRef}>
-          <ProductCaroselList
-            style={{
-              transform: `translateX( ${-counter * 100}%) `,
-              marginRight: "0%",
-            }}
-            ref={contentRef}
-          >
-            {dummyArr.map((ele, key) => (
-              <Item img={ele} key={key} />
-            ))}
-          </ProductCaroselList>
-        </ProductCaroselContainer> */}
-        <Carosel ref={caroselRef}>
+
+        <Carosel
+          ref={caroselRef}
+          isInfinity={false}
+          infinitySliderLength={0}
+          gap={2}
+        >
           {dummyNumArr.map((ele, key) => (
             <Item img={ele} key={key} />
           ))}
@@ -55,16 +48,17 @@ export default ProductCarosel;
 //1040 80
 const ArrowProductContainer = styled.div`
   width: 95vw;
-
-  max-width: 1140px;
+  column-gap: 2%;
+  max-width: 1120px;
   position: relative;
   max-height: 434px;
   display: flex;
   justify-content: center;
-
+  // column-gap: 2%;
   //border: 1px solid black;
   @media screen and (min-width: 600px) {
     height: 39.166667vw;
+    //  column-gap: 4%;
     // height: 400px;
     // border: 1px solid black;
   }
