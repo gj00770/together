@@ -1,39 +1,52 @@
 import React, { useState, useEffect, useRef } from "react";
-
+import { QueryClient, QueryClientProvider, useQuery } from "react-query";
 import styled from "styled-components";
+import { useProduct } from "../hook/useProduct";
 import Carosel, { CaroselRef } from "./carosel";
 // const dummyNumArr = [
 //   1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20,
 // ];
 
 import Item from "./sliderItem";
-
-function useProductList() {
+interface Product {
+  id: number;
+  productName: string;
+  itemImg: string;
+  itemInfo: string;
+  price: number;
+  end_date: number;
+}
+interface Carosel {
+  category: string;
+}
+function useProductList(category: Carosel) {
   const caroselRef = useRef<CaroselRef>(null);
-  const [dummyNumArr, setDummyArr] = useState([]);
+  // const product = useProduct("가전");
+  //console.log(product);
+  const fetchData = async () => {
+    const result = await (
+      await fetch(`http://localhost:5000/product/${category}`)
+    ).json();
+    return result;
+    console.log(result);
+  };
+  const { isLoading, isError, data, error } = useQuery(
+    `${category}`,
+    fetchData
+  );
+  //console.log("123123", data);
+  //setDummyArr(data);
 
-  useEffect(() => {
-    // fetch("http://localhost:5000/product")
-    const fetchData = async () => {
-      const result = await (
-        await fetch("http://localhost:5000/product")
-      ).json();
-      setDummyArr(result);
-      console.log(result);
-    };
-    fetchData();
-  }, []);
-
-  return { ref: caroselRef, value: dummyNumArr };
+  return { ref: caroselRef, value: data, loading: isLoading };
 }
 
-function ProductCarosel() {
-  const { ref, value } = useProductList();
+function ProductCarosel<Carosel>(props: any) {
+  const { ref, value, loading } = useProductList(props.category);
 
   return (
     <div style={{ marginBottom: "30px" }}>
       <NameContainer>
-        <Name>오늘의 최고의 상품 </Name>
+        <Name>{props.category} </Name>
         <ViewMore>더보기</ViewMore>
       </NameContainer>
       <ArrowProductContainer>
@@ -41,9 +54,8 @@ function ProductCarosel() {
         <ArrowLeft onClick={() => ref.current?.prev()}> &lt;</ArrowLeft>
 
         <Carosel ref={ref} infinity={false} gap={2}>
-          {value.map((ele, key) => (
-            <Item img={ele} key={key} />
-          ))}
+          {!loading &&
+            value.map((ele: Product) => <Item img={ele} key={ele.id} />)}
         </Carosel>
       </ArrowProductContainer>
     </div>
@@ -58,16 +70,17 @@ export default ProductCarosel;
 //1040 80
 const ArrowProductContainer = styled.div`
   width: 95vw;
+  // 23.75vw
   column-gap: 2%;
   max-width: 1120px;
   position: relative;
-  max-height: 434px;
+  //max-height: 434px;
   display: flex;
   justify-content: center;
   // column-gap: 2%;
   //border: 1px solid black;
   @media screen and (min-width: 600px) {
-    height: 39.166667vw;
+    //height: 39.166667vw;
     //  column-gap: 4%;
     // height: 400px;
     // border: 1px solid black;
@@ -85,31 +98,14 @@ const NameContainer = styled.div`
   justify-content: space-between;
 `;
 const Name = styled.div`
-  font-size: 2rem;
+  font-size: 52px;
+  font-family: InkLipquid;
 `;
 const ViewMore = styled.div`
-  font-size: 16px;
+  font-family: InkLipquid;
+  margin-top: auto;
+  font-size: 24px;
   margin-right: 20px;
-`;
-const ProductCaroselContainer = styled.div`
-  //display: flex;
-  max-width: 1120px;
-  max-height: 434px;
-  overflow-x: hidden;
-  width: 95vw;
-  float: left;
-  display: flex;
-  position: relative;
-  //  border: 1px solid red;
-  @media screen and (max-width: 600px) {
-    // width: 100%;
-    height: 70.166667vw;
-  }
-  @media screen and (min-width: 600px) {
-    height: 39.166667vw;
-    // height: 400px;
-    //  border: 1px solid black;
-  }
 `;
 
 const ArrowRight = styled.div`
@@ -126,11 +122,13 @@ const ArrowRight = styled.div`
   color: black;
   line-height: 35px;
   box-shadow: 3px 3px 5px;
+  font-family: NotoSansBold;
+  line-height: 55px;
 `;
 const ArrowLeft = styled.div`
   position: absolute;
   cursor: pointer;
-  left: 0;
+  left: -0.95vw;
   top: calc(50% - 60px);
   height: 60px;
   width: 60px;
@@ -139,8 +137,9 @@ const ArrowLeft = styled.div`
   background-color: white;
   text-align: center;
   color: black;
-  line-height: 35px;
+  line-height: 55px;
   box-shadow: 3px 3px 5px;
+  font-family: NotoSansBold;
 `;
 
 const ProductCaroselList = styled.div`

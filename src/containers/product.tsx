@@ -5,10 +5,15 @@ import ItemSummary from "../components/itemSummary";
 import ReplyContainer from "../components/replyContainer";
 import SellerInfo from "../components/sellerInfo";
 import Summary from "../components/Summary";
+import Router from "next/router";
 // import ReplyContainer from '../components/replyContainer'
 // import SellerInfo from '../components/sellerInfo'
 
 function Product() {
+  //const id = Router.query.id;
+  // Router.query["id-1234"] === '1234';
+  // const id = new URLSearchParams(location.search).get('id');
+  //const product = useProduct(id);
   const [curTab, setCurTab] = useState(TabId.ITEM_INFO);
 
   return (

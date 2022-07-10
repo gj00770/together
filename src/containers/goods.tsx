@@ -9,17 +9,17 @@ import Carosel from "../components/carosel";
 import ComboBox from "../components/comboBox";
 import ItemContainer from "../components/itemContainer";
 import ProductCarosel from "../components/productCarosel";
-const Home: NextPage = () => {
+function Goods() {
   return (
     <MainContainer>
       <ItemContainer />
     </MainContainer>
   );
-};
+}
 const MainContainer = styled.div`
   padding-top: 50px;
   display: flex;
   flex-direction: column;
   align-items: center;
 `;
-export default Home;
+export default Goods;

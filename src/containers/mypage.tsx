@@ -6,19 +6,12 @@ import styled from "styled-components";
 import UserInfo from "../components/userInfo";
 import MyCartItemContainer from "../components/myCartItemContainer";
 import LikeItemCointainer from "../components/likeItemContainer";
+import axios from "axios";
+import { useQuery } from "react-query";
 
 function MyPage() {
   const [curTab, setCurTab] = useState(TabId.MYPAGE);
   const [current, setCurrent] = useState("cartItem");
-  const [boxShadowMypage, setBoxShadowMypage] = useState(
-    "3px 3px 2px 1px rgba(0, 0, 0, 0.3)"
-  );
-  const [boxShadowCartItem, setBoxShadowCartItem] = useState(
-    "3px 3px 2px 1px rgba(0, 0, 0, 0.3)"
-  );
-  const [boxShadowBuyList, setBoxShadowBuyList] = useState(
-    "3px 3px 2px 1px rgba(0, 0, 0, 0.3)"
-  );
 
   const onMouseOverTab = (e: any) => {};
   return (
@@ -57,6 +50,7 @@ const CONTENT_BY_TAB = {
 };
 const MyPageContainer = styled.div`
   //background-color: white;
+
   //margin-top: 80px;
   padding-top: 90px;
   width: 800px;
@@ -74,11 +68,12 @@ const TabMenu = styled.div`
   text-align: center;
 `;
 const TabMenuItem = styled.div<{ active: boolean }>`
+  font-family: "InkLipquid";
   margin-top: 32px;
   cursor: pointer;
   width: 33.3333%;
   height: 40px;
-  font-size: 22px;
+  font-size: 30px;
   line-height: 40px;
   border: 0.3px solid #d3d3d3;
   border-bottom: none;

@@ -1,7 +1,47 @@
-import React from "react";
+import axios from "axios";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
+import {
+  QueryClient,
+  QueryClientProvider,
+  useQuery,
+  useQueryClient,
+} from "react-query";
+import useSetClientState from "../hook/useSetClientState";
+import { createWebStoragePersistor } from "react-query/createWebStoragePersistor-experimental";
+//if (typeof window !== "undefined") {
+//here `window` is available
+if (typeof window !== "undefined") {
+  // Client-side-only code
+  const { naver } = window as any;
+}
 
 function Login({ login }: any) {
+  //}
+  const initializeNaverLogin = () => {
+    const naverLogin = new naver.LoginWithNaverId({
+      clientId: process.env.NEXT_PUBLIC_NAVER_ID,
+      callbackUrl: process.env.NEXT_PUBLIC_REDIRECT_URL,
+      isPopup: false, // popup 형식으로 띄울것인지 설정
+      loginButton: { color: "green", type: 1, height: "36" }, //버튼의 스타일, 타입, 크기를 지정
+    });
+    naverLogin.init();
+  };
+  const [current, setCurrent] = useState("");
+  console.log("2323", useSetClientState);
+  const setClientState = useSetClientState("username");
+
+  const handleClick = () => {
+    setCurrent("카카오");
+    setClientState("zkzkdh");
+  };
+  //const KAKAO_AUTH_URL = `https://kauth.kakao.com/oauth/authorize?client_id=${process.env.NEXT_PUBLIC_KAKAO_ID}&redirect_uri=${location.href}&response_type=code`;
+  const KAKAO_AUTH_URL = `https://kauth.kakao.com/oauth/authorize?client_id=${process.env.NEXT_PUBLIC_KAKAO_ID}&redirect_uri=${process.env.NEXT_PUBLIC_REDIRECT_URL}&response_type=code`;
+
+  useEffect(() => {
+    initializeNaverLogin();
+  }, []);
+
   return (
     <LoginModalRoot>
       <LoginContainer>
@@ -11,22 +51,29 @@ function Login({ login }: any) {
         </NameCloseConrainer>
         <Summary>공동구매 앱 together에 오신걸 환영합니다!</Summary>
         <Summary>로그인하여서 together를 사용해보세요!</Summary>
-        <AuthContianer>
+        {/* <AuthContianer onClick={() => setClientState("네이버")}>
           <Logo src="mockImage/google.png" />
           <AuthName>구글로로그인</AuthName>
-        </AuthContianer>
+        </AuthContianer> */}
         <AuthContianer>
-          <Logo src="mockImage/kakao.png" />
-          <AuthName>카카오로로그인</AuthName>
+          <a href={KAKAO_AUTH_URL} onClick={() => setClientState("카카오")}>
+            <Logo src="mockImage/kakao.png" />
+
+            <AuthName>카카오로로그인</AuthName>
+          </a>
         </AuthContianer>
+
         <AuthContianer>
-          <Logo src="mockImage/naver.png" />
+          <LogoNaver>
+            <div id="naverIdLogin" />
+          </LogoNaver>
           <AuthName>네이버로로그인</AuthName>
         </AuthContianer>
       </LoginContainer>
     </LoginModalRoot>
   );
 }
+
 const LoginModalRoot = styled.div`
   z-index: 9;
   background-color: rgba(0, 0, 0, 0.5);
@@ -34,6 +81,7 @@ const LoginModalRoot = styled.div`
   height: 100vh;
   position: fixed;
 `;
+
 const LoginContainer = styled.div`
   position: absolute;
   display: flex;
@@ -92,7 +140,12 @@ const AuthContianer = styled.div`
 const Logo = styled.img`
   width: 40px;
   height: 40px;
-  border-radius: 30px;
+  position: absolute;
+  left: 10px;
+`;
+const LogoNaver = styled.div`
+  width: 40px;
+  height: 40px;
   position: absolute;
   left: 10px;
 `;

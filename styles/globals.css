@@ -3,12 +3,28 @@ body {
   padding: 0;
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
-    Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
-    background-color: #f9f9f9;
-    width: 100vw;
-    height: 100vh;
+    Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif,
+    NotoSans;
+  /* // font-family: InkLipquid, sans-serif; */
+  background-color: #f9f9f9;
+  width: 100vw;
+  height: 100vh;
 }
-
+@font-face {
+  font-family: "InkLipquid";
+  font-weight: 200;
+  src: url("/fonts/InkLipquidFonts.ttf") format("truetype");
+}
+@font-face {
+  font-family: "NotoSans";
+  font-weight: 200;
+  src: url("/fonts/NotoSansKR-Medium.otf") format("truetype");
+}
+@font-face {
+  font-family: "NotoSansBold";
+  font-weight: 200;
+  src: url("/fonts/NotoSansKR-Bold.otf") format("truetype");
+}
 a {
   color: inherit;
   text-decoration: none;

@@ -32,7 +32,7 @@ export const Carosel = React.forwardRef<CaroselRef, Props>(function Carosel(
       )
     : props.children;
   const [count, setCount] = useState(
-    props.infinity ? props.children.length + 1 : 0
+    props.infinity ? props.children.length : 0
   );
   //const [count, setCount] = useState(0);
   const [negative, setNegative] = useState(false);
@@ -50,7 +50,6 @@ export const Carosel = React.forwardRef<CaroselRef, Props>(function Carosel(
 
   const [left, setLeft] = useState(-500);
   const [position, setPosition] = useState(props.infinity ? 500 : 0);
-  const x = [{ marginLeft: `${left}%` }];
   useImperativeHandle(ref, () => {
     return {
       next: next,
@@ -67,6 +66,8 @@ export const Carosel = React.forwardRef<CaroselRef, Props>(function Carosel(
     const max = Math.floor(whole / part);
     return max;
   }
+
+  const startAnimation = () => {};
 
   const next = () => {
     console.log(count);
@@ -89,13 +90,18 @@ export const Carosel = React.forwardRef<CaroselRef, Props>(function Carosel(
       }
     } else {
       // console.log(count);
-      if (count === children.length) {
+      if (count === children.length - 1) {
         // 마지막요소 10 11 12 13 14 마지막요소
         console.log("hi");
         setCount(5); // counter 복기하고
         api.start({
           transform: `translateX(${4 * -100}%)`,
           config: { duration: 0 },
+          onRest: () =>
+            api.start({
+              transform: `translateX(${5 * -100}%)`,
+              config: { duration: 300 },
+            }),
         });
         // api.start({
         //   transform: `translateX(${5 * -100}%)`,
@@ -105,7 +111,7 @@ export const Carosel = React.forwardRef<CaroselRef, Props>(function Carosel(
         console.log(count);
         setCount(count + 1);
         api.start({
-          transform: `translateX(${count * -100}%)`,
+          transform: `translateX(${(count + 1) * -100}%)`,
           config: { duration: 300 },
         });
       }
@@ -118,23 +124,42 @@ export const Carosel = React.forwardRef<CaroselRef, Props>(function Carosel(
     if (props.infinity === false) {
       if (count == 0) {
         setCount(max);
-        setPosition(max * 100);
+        api.start({
+          transform: `translateX(${max * -100}%)`,
+          config: { duration: 300 },
+        });
       } else {
         setCount(count - 1);
-        setPosition(position - 100);
+        api.start({
+          transform: `translateX(${(count - 1) * -100}%)`,
+          config: { duration: 300 },
+        });
       }
     } else {
       console.log(left);
       console.log(children.length / 3);
       if (count === 0) {
-        console.log("hi");
-        setLeft(left - 500);
-        setCount(children.length / 3);
-        setPosition(position - 100);
         //  setInfinityLength(InfinityLength - 5);
+        console.log("hi");
+        setCount(4); // counter 복기하고
+        api.start({
+          transform: `translateX(${5 * -100}%)`,
+          config: { duration: 0 },
+          onRest: () =>
+            api.start({
+              transform: `translateX(${4 * -100}%)`,
+              config: { duration: 300 },
+            }),
+        });
       } else {
-        setCount(count - 1);
-        setPosition(position - 100);
+        const next = count - 1;
+        setCount(next);
+        console.log(count);
+        console.log("hi");
+        api.start({
+          transform: `translateX(${next * -100}%)`,
+          config: { duration: 300 },
+        });
       }
     }
   };
@@ -164,6 +189,7 @@ interface ContainerProps {
 const CaroselContainer = styled.div`
   //display: flex;
   overflow-x: hidden;
+  overflow-y: none;
   float: left;
   display: flex;
   position: relative;

@@ -6,10 +6,10 @@ function SliderItem(img: any) {
   const [opacity, setOpacity] = useState("0.5px solid #D3D3D3");
   const [backgroundColor, setBackgroundColor] = useState("none");
   const [mouseOver, setMoseOver] = useState(false);
-  console.log(img);
-  console.log(img.img.itemImg);
+  // console.log(img);
+  //console.log(img.img.itemImg);
   const onMouseEvent = () => {
-    console.log("his");
+    //  console.log("his");
     // setBorder("2px 2px 2px 2px #D3D3D3");
     //   setOpacity("0.5");
     // setBackgroundColor("rgba(0, 0, 0, 0.5)");
@@ -35,8 +35,8 @@ function SliderItem(img: any) {
     >
       <Image src={`${img.img.itemImg}`} />
 
-      <Name>and22jsr</Name>
-      <Price>32600원</Price>
+      <Name>{img.img.productName}</Name>
+      <Price>{img.img.price}</Price>
       {mouseOver ? (
         <MouseOverContainer style={{}}>
           <div></div>
@@ -59,7 +59,6 @@ function SliderItem(img: any) {
 const SliderItemContainer = styled.div`
   width: 23%;
   //height: 100%;
-
   //background-color: rgba(0, 0, 0, 0.5);
   cursor: pointer;
   display: flex;
@@ -73,7 +72,7 @@ const SliderItemContainer = styled.div`
 const MouseOverContainer = styled.div`
   //width: 260px;
   width: 23%;
-  height: 100%;
+  height: 23vw;
   background-color: rgba(0, 0, 0, 0.5);
   position: absolute;
   display: flex;
@@ -81,8 +80,11 @@ const MouseOverContainer = styled.div`
   justify-content: space-between;
   z-index: 6;
   text-align: center;
+  @media screen and (min-width: 1600px) {
+    height: 320px;
+  }
   @media screen and (max-width: 600px) {
-    width: 46%;
+    height: 46vw;
   }
 `;
 const CartHeartContainer = styled.div`
@@ -114,26 +116,36 @@ const Heart = styled.img`
 const Image = styled.img`
   //width: 260px;
   width: 100%;
-
-  height: 320px;
+  border: 0.5px solid #d3d3d3;
+  height: 23vw;
   // border-radius: 10px;
   z-index: 2;
+  @media screen and (min-width: 1600px) {
+    height: 320px;
+  }
+  @media screen and (max-width: 600px) {
+    height: 46vw;
+  }
 `;
 const Name = styled.div`
+  font-family: Notosans;
   margin-top: 10px;
   margin-right: auto;
   word-break: break-word;
   text-align: left;
-  font-size: 1.2rem;
+  font-size: 20px;
 `;
 
 const Price = styled.div`
+  font-family: InkLipquid;
+  //font-family: NotoSans;
+  color: #4aa8d8;
+  font-size: 30px;
   margin-top: 5px;
   width: 260px;
   margin-left: auto;
   margin-right: auto;
   text-align: left;
-  font-size: 1.2rem;
   @media screen and (max-width: 600px) {
     // width: 100%;
   }

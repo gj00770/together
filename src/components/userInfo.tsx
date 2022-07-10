@@ -1,45 +1,116 @@
-import React, { useState } from "react";
-import styled from "styled-components";
 //import DaumPostcode from 'react-daum-postcode';
 //import DaumAdr from './daumAdr'
-import DaumPostcode from "react-daum-postcode";
+import axios from "axios";
+import React, { useState } from "react";
+import styled from "styled-components";
+import AddressSummary from "../components/addressSummary";
+import { useUser } from "../hook/useUser";
+import AddAdress from "../modal/addAdress";
+import AddressDetailModal from "../modal/addressDetailModal";
+import DaumAdrr from "../modal/daumAdrr";
+import { requester } from "../remotes/requester";
+import { Address } from "../types/Address";
 
 function UserInfo() {
-  const [openModal, setOpenModal] = useState(false);
-  const [curAddr, setCurAddr] = useState("서울시 구로구 경인로 343");
-  const [userImage, setUserImage] = useState("mockImage/icon.jpeg");
+  const user = useUser();
+  const [openPostcode, setOpenPostcode] = useState<boolean>(false);
+  const [curAddr, setCurAddr] = useState<string>("서울시 구로구 경인로 343");
+  const [userImage, setUserImage] = useState("");
   const [nickName, setNickName] = useState("");
-  const [openNickName, setopenNickName] = useState(true);
+  const [openNickName, setopenNickName] = useState<boolean>(false);
+  const [addAddress, setAddAddress] = useState<boolean>(false);
+  const [isEditModalOpen, setIsEditModalOpen] = useState<boolean>(false);
+  const [openDaumAdr, setOpenDaumAdr] = useState(false);
+  const [selectedAddressId, setSelectedAddressId] = useState<number>();
+
+  console.log("user", user);
+  const deleteAddress = (id: number) => {
+    const accessToken = localStorage.getItem("accessToken");
+    axios.delete(`http://localhost:5000/user/my/address/${id}`, {
+      headers: { Authorization: `Bearer ${accessToken}` },
+    });
+  };
+  //조회
+  // get user/my/address
+  //
+  // const getUserWithAxios = async () => {
+  //   const test = localStorage.getItem("accessToken");
+  //   const { data } = await axios.post(
+  //     "http://localhost:5000/user/test",
+  //     {},
+  //     {
+  //       headers: { Authorization: `Bearer ${test}` },
+  //     }
+  //   );
+  //   // setUserImage(data.profile_image);
+  //   //setNickName(data.nickname);
+  //   // await new Promise((resolve) => setTimeout(resolve, 5000));
+  //   return data;
+  // };
+  // const query = useQuery("users", getUserWithAxios);
+
+  //console.log(user.data.addresses);
   const onComplete = (data: any) => {
     console.log(data);
     setCurAddr(data.address);
+    closePostHandler();
+    setAddAddress(true);
   };
-  const openPostal = () => {
-    setOpenModal(!openModal);
-  };
-  const ㅁㄴㅇㄴㅁ = () => {};
 
+  const closePostHandler = () => {
+    setOpenPostcode(false);
+  };
+  // const openPostHandler = () => {
+  //   setOpenPostcode(true);
+  // };
+
+  const closeAddAddressHandler = () => {
+    setAddAddress(false);
+    console.log(isEditModalOpen);
+  };
   const changeProfileImage = (e: any) => {
     console.log(e.target.files[0].name);
+    //s3 로구현
+    //
+    //const accessToken = localStorage.getItem("accessToken");
     setUserImage(URL.createObjectURL(e.target.files[0]));
-    //  setUserImage(e.target.files[0].name);
-    // const reader = new FileReader();
-    // reader.onloadend = () => {
-    //   const base64 = reader.result;
-    //   if (base64) {
-    //     setImgBase64(base64.toString()); // 파일 base64 상태 업데이트
-    //   }
-    // };
-    // if (e.target.files[0]) {
-    //   reader.readAsDataURL(e.target.files[0]); // 1. 파일을 읽어 버퍼에 저장합니다.
-    //   setUserImage(e.target.files[0]); // 파일 상태 업데이트
-    // }
+    console.log("123123", URL.createObjectURL(e.target.files[0]));
+    requester.put(
+      "http://localhost:5000/user/updateUserProfile",
+      {
+        profile_image: URL.createObjectURL(e.target.files[0]),
+      }
+      // },
+      // {
+      //   headers: { Authorization: `Bearer ${accessToken}` },
+      // }
+    );
+    console.log("hi");
   };
+
+  if (user.isLoading) {
+    return <>Loading ...</>;
+  }
+
   return (
     <UserInfoContainer>
+      {addAddress ? (
+        <AddAdress
+          cityName={curAddr}
+          closeAddAddressHandler={closeAddAddressHandler}
+        />
+      ) : null}
+      <ShippingAddress>유저정보</ShippingAddress>
+      <DaumAdrr
+        onComplete={onComplete}
+        openPostcode={openPostcode}
+        closePostHandler={closePostHandler}
+      />
       <hr />
+      {/* <SSRsafeSuspense/> */}
+      {/* <div onClick={updateUser}>12312312312312</div> */}
       <UserNickNameIcon>
-        <div>
+        <UserNameImgContainer>
           <Category>사진</Category>
           <input
             type="file"
@@ -48,19 +119,21 @@ function UserInfo() {
             style={{ display: "none" }}
           />
           <label htmlFor="imageFile">
-            <IconImage src={userImage} />
+            <IconImage
+              src={userImage === "" ? user.data.profile_image : userImage}
+            />
           </label>
-        </div>
+        </UserNameImgContainer>
         <label htmlFor="imageFile"></label>
       </UserNickNameIcon>
-      <hr />
       <InfoContainer>
         <div style={{ display: "flex" }}>
+          {/* {query.data ? (<Name>123</Name>): <Loading/>} */}
           <Name>닉네임</Name>
           {openNickName ? (
             <InputNickNameHolder autoFocus type="text"></InputNickNameHolder>
           ) : (
-            <UserName>아무개아무개아무개</UserName>
+            <UserName>{user.data.nickname}</UserName>
           )}
         </div>
         {openNickName ? (
@@ -73,51 +146,60 @@ function UserInfo() {
           </UserNameButton>
         )}
       </InfoContainer>
+
+      <ShippingAddressContainer>
+        <ShippingAddress>배송지</ShippingAddress>
+        <AddShippingAddress onClick={() => setOpenPostcode(true)}>
+          +
+        </AddShippingAddress>
+        {openDaumAdr ? <DaumAdrr /> : null}
+      </ShippingAddressContainer>
       <hr />
-      {/* {openModal ?
-                <div style={{ position: 'absolute' }}>
-                    <DaumAdr onComplete={onComplete} />
-                </div>
-                :
-                null
-            } */}
-      <InfoContainer>
-        <TitleName>받는사람정보</TitleName>
-        <PostalCodeButton onClick={openPostal}>주소설정</PostalCodeButton>
-      </InfoContainer>
 
-      <InfoContainer>
-        <div style={{ display: "flex" }}>
-          <Name>이름</Name>
-          <PostalCode>정구민</PostalCode>
-        </div>
-      </InfoContainer>
-
-      <InfoContainer>
-        <div style={{ display: "flex" }}>
-          <Name>주소</Name>
-          <PostalCode>{curAddr}</PostalCode>
-        </div>
-      </InfoContainer>
-
-      <InfoContainer>
-        <div style={{ display: "flex" }}>
-          <Name>상세주소</Name>
-          <PostalCode>삼환로즈빌 106동 801호</PostalCode>
-        </div>
-      </InfoContainer>
-      <InfoContainer>
-        <div style={{ display: "flex" }}>
-          <Name>추가요청사항</Name>
-          <PostalCode>경비실에 맡겨주세요</PostalCode>
-        </div>
-      </InfoContainer>
+      {user.data.addresses
+        ? user.data.addresses.map((ele: Address) => (
+            <AddressSummary
+              address={ele}
+              key={ele.id}
+              onEdit={() => {
+                setSelectedAddressId(ele.id);
+              }}
+              onDelete={() => deleteAddress(ele.id)}
+            />
+          ))
+        : null}
+      {selectedAddressId ? (
+        <AddressDetailModal
+          onClose={() => {
+            setSelectedAddressId(undefined);
+          }}
+          //   address={user.data.addresses ? user.data.addresses[0] : "sdsd"}
+          address={user.data.addresses.find(
+            (ele: Address) => ele.id === selectedAddressId
+          )}
+        />
+      ) : null}
     </UserInfoContainer>
   );
 }
+const ShippingAddressContainer = styled.div`
+  display: flex;
+  justify-content: space-between;
+  margin-top: 50px;
+`;
+const ShippingAddress = styled.div`
+  cursor: pointer;
+  font-family: InkLipquid;
+  font-size: 42px;
+`;
+const AddShippingAddress = styled.div`
+  cursor: pointer;
+  font-size: 30px;
+`;
 const IconImage = styled.img`
   border-radius: 100%;
   height: 70px;
+  width: 70px;
   margin-left: 100px;
   cursor: pointer;
 `;
@@ -129,25 +211,13 @@ const UserInfoContainer = styled.div`
   }
 `;
 const UserNickNameIcon = styled.div`
-  /* margin : 20px 20px 20px auto;
-    width: 120px;
-    background-color: white;
-    text-align: left;
-    font-size: 24px; */
   display: flex;
   margin-bottom: 20px;
-  // width: 800px;
   justify-content: space-between;
 `;
 const InfoContainer = styled.div`
-  /* margin : 20px 20px 20px auto;
-    width: 120px;
-    background-color: white;
-    text-align: left;
-    font-size: 24px; */
   display: flex;
   margin-bottom: 20px;
-  // width: 800px;
   justify-content: space-between;
 `;
 const Category = styled.div``;
@@ -157,6 +227,7 @@ const Name = styled.div`
     background-color: white;
     text-align: left;
     font-size: 24px; */
+  font-family: NotoSans;
   width: 100px;
 `;
 const TitleName = styled.div`
@@ -165,12 +236,14 @@ const TitleName = styled.div`
 `;
 
 const UserName = styled.div`
+  font-family: NotoSans;
   width: 200px;
   height: 30px;
 `;
 const UserNameButton = styled.button`
   width: 100px;
   height: 30px;
+  font-family: NotoSans;
   cursor: pointer;
 `;
 const PostalCode = styled.div`
@@ -178,10 +251,8 @@ const PostalCode = styled.div`
   height: 30px;
   text-align: left;
 `;
-const PostalCodeButton = styled.button`
-  width: 100px;
-  height: 30px;
-  cursor: pointer;
+const UserNameImgContainer = styled.div`
+  font-family: NotoSans;
 `;
 const InputNickNameHolder = styled.input``;
 export default UserInfo;
