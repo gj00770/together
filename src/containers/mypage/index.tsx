@@ -3,9 +3,9 @@ import Head from "next/head";
 import Image from "next/image";
 import React, { useState } from "react";
 import styled from "styled-components";
-import UserInfo from "../components/userInfo";
-import MyCartItemContainer from "../components/myCartItemContainer";
-import LikeItemCointainer from "../components/likeItemContainer";
+import UserInfo from "./components/userInfo";
+import MyCartItemContainer from "./components/myCartItemContainer";
+import LikeItemCointainer from "./components/likeItemContainer";
 import axios from "axios";
 import { useQuery } from "react-query";
 

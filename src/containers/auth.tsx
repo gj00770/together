@@ -7,7 +7,7 @@ import styled from "styled-components";
 import Carosel from "../components/carosel";
 //import ComboBox from '../components/combobox'
 import ComboBox from "../components/comboBox";
-import ItemContainer from "../components/itemContainer";
+import ItemContainer from "./goods/components/itemContainer";
 import ProductCarosel from "../components/productCarosel";
 import router from "next/router";
 import axios from "axios";

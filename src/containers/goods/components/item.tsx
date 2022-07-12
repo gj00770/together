@@ -1,12 +1,14 @@
+import { useRouter } from "next/router";
 import React, { useState } from "react";
 import styled from "styled-components";
+import { Product } from "../../../types/Product";
 
-function Item(img: any) {
+function Item(props: Product, key: number) {
   const [border, setBorder] = useState("0.5px solid #D3D3D3");
   const [opacity, setOpacity] = useState("0.5px solid #D3D3D3");
   const [backgroundColor, setBackgroundColor] = useState("none");
   const [mouseOver, setMoseOver] = useState(false);
-  console.log(img);
+  const router = useRouter();
   const onMouseEvent = () => {
     console.log("his");
     setMoseOver(true);
@@ -17,7 +19,12 @@ function Item(img: any) {
     setMoseOver(false);
     // setBackgroundColor("rgba(0, 0, 0, 0.5)");
   };
-
+  // id: number;
+  // productName: string;
+  // price: number;
+  // end_date: number;
+  // itemImg: string;
+  // itemInfo: string;
   return (
     <ItemContainer
       onMouseEnter={onMouseEvent}
@@ -27,19 +34,17 @@ function Item(img: any) {
         opacity: opacity,
         backgroundColor: backgroundColor,
       }}
+      onClick={() => router.push(`/product/?id=${props.data.id}`)}
     >
-      <Image src={`mockImage/productThumbnail/${img.img}.jpeg`} />
-      <Name>
-        에스투비코퍼레이션 저스트포유 레인보우 커버 무소음 무선 마우스
-      </Name>
-      <Price>32600원</Price>
+      <Image src={`${props.data.itemImg}`} />
+      <Name>{props.data.productName}</Name>
+      <Price>{props.data.price}</Price>
 
       {mouseOver ? (
         <MouseOverContainer>
           <div></div>
           <div>
-            <Date>2022/12/31</Date>
-            <People>26/32명</People>
+            <Date>{props.data.end_date}</Date>
           </div>
           <CartHeartContainer>
             <CartContainer>

@@ -1,11 +1,9 @@
+import { useRouter } from "next/router";
 import React, { useState, useEffect, useRef } from "react";
 import { QueryClient, QueryClientProvider, useQuery } from "react-query";
 import styled from "styled-components";
 import { useProduct } from "../hook/useProduct";
 import Carosel, { CaroselRef } from "./carosel";
-// const dummyNumArr = [
-//   1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20,
-// ];
 
 import Item from "./sliderItem";
 interface Product {
@@ -21,8 +19,6 @@ interface Carosel {
 }
 function useProductList(category: Carosel) {
   const caroselRef = useRef<CaroselRef>(null);
-  // const product = useProduct("가전");
-  //console.log(product);
   const fetchData = async () => {
     const result = await (
       await fetch(`http://localhost:5000/product/${category}`)
@@ -34,20 +30,23 @@ function useProductList(category: Carosel) {
     `${category}`,
     fetchData
   );
-  //console.log("123123", data);
-  //setDummyArr(data);
 
   return { ref: caroselRef, value: data, loading: isLoading };
 }
 
 function ProductCarosel<Carosel>(props: any) {
   const { ref, value, loading } = useProductList(props.category);
-
+  const router = useRouter();
+  const { id } = router.query;
   return (
     <div style={{ marginBottom: "30px" }}>
       <NameContainer>
         <Name>{props.category} </Name>
-        <ViewMore>더보기</ViewMore>
+        <ViewMore
+          onClick={() => router.push(`/goods/?category=${props.category}`)}
+        >
+          더보기
+        </ViewMore>
       </NameContainer>
       <ArrowProductContainer>
         <ArrowRight onClick={() => ref.current?.next()}> &gt;</ArrowRight>
@@ -63,22 +62,14 @@ function ProductCarosel<Carosel>(props: any) {
 }
 
 export default ProductCarosel;
-//259px + 259px + 259px + 259px
-//260px * 4 = 800 + 240 = 1040
-// gap * 4
 
-//1040 80
 const ArrowProductContainer = styled.div`
   width: 95vw;
-  // 23.75vw
   column-gap: 2%;
   max-width: 1120px;
   position: relative;
-  //max-height: 434px;
   display: flex;
   justify-content: center;
-  // column-gap: 2%;
-  //border: 1px solid black;
   @media screen and (min-width: 600px) {
     //height: 39.166667vw;
     //  column-gap: 4%;
@@ -87,7 +78,6 @@ const ArrowProductContainer = styled.div`
   }
   @media screen and (max-width: 600px) {
     height: 70.166667vw;
-    // height: 400px;
     border: 1px solid black;
   }
 `;
@@ -102,6 +92,7 @@ const Name = styled.div`
   font-family: InkLipquid;
 `;
 const ViewMore = styled.div`
+  cursor: pointer;
   font-family: InkLipquid;
   margin-top: auto;
   font-size: 24px;

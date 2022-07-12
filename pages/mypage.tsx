@@ -1,1 +1,1 @@
-export { default } from '../src/containers/mypage';
+export { default } from "../src/containers/mypage";

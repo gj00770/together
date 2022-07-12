@@ -7,7 +7,7 @@ import styled from "styled-components";
 import InfinityCarosel from "../src/components/infinityCarosel";
 //import ComboBox from '../src/components/combobox'
 import ComboBox from "../src/components/comboBox";
-import ItemContainer from "../src/components/itemContainer";
+import ItemContainer from "../src/containers/goods/components/itemContainer";
 import ProductCarosel from "../src/components/productCarosel";
 import MenueBox from "../src/components/menueBox";
 import MenueList from "../src/modal/menueList";

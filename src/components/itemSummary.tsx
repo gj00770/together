@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-function ItemSummary() {
+function ItemSummary(props: any) {
   const [itemQauntity, setItemQuantity] = useState(1);
   const [backgroundcart, setBackgroundcart] = useState("white");
   const [backgroundpurchase, setBackgroundpurchase] = useState("white");
@@ -13,15 +13,12 @@ function ItemSummary() {
       setItemQuantity(itemQauntity - 1);
     }
   };
-
+  console.log(props.data);
   return (
     <ItemSummaryContainer>
-      <Name>
-        에스투비코퍼레이션 저스트포유 레인보우 커버 무소음 무선 마우스{" "}
-      </Name>
-      <Price> 32600원 </Price>
-      <DueDate>2022/12/31 일까지</DueDate>
-      <AcquiredPeople>16/43</AcquiredPeople>
+      <Name>{props.data.productName} </Name>
+      <Price> {props.data.price} </Price>
+      <DueDate>{props.data.end_date}</DueDate>
       <FlexContainer>
         <BuyQuantityContainer>
           <Amount>{itemQauntity}</Amount>

@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
-import Pencile from "../svgs/pen-solid.svg";
-import { Address } from "../types/Address";
+import Pencile from "../../../svgs/pen-solid.svg";
+import { Address } from "../../../types/Address";
 interface Props {
   address: Address;
   onEdit: () => void;

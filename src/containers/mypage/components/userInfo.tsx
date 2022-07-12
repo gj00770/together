@@ -3,13 +3,14 @@
 import axios from "axios";
 import React, { useState } from "react";
 import styled from "styled-components";
-import AddressSummary from "../components/addressSummary";
-import { useUser } from "../hook/useUser";
-import AddAdress from "../modal/addAdress";
-import AddressDetailModal from "../modal/addressDetailModal";
-import DaumAdrr from "../modal/daumAdrr";
-import { requester } from "../remotes/requester";
-import { Address } from "../types/Address";
+import AddressSummary from "./addressSummary";
+import { useUser } from "../../../hook/useUser";
+import AddAdress from "../../../modal/addAdress";
+import AddressDetailModal from "../../../modal/addressDetailModal";
+import DaumAdrr from "../../../modal/daumAdrr";
+import { requester } from "../../../remotes/requester";
+import { Address } from "../../../types/Address";
+import { updateUserProfile } from "../../../remotes/user";
 
 function UserInfo() {
   const user = useUser();
@@ -30,26 +31,7 @@ function UserInfo() {
       headers: { Authorization: `Bearer ${accessToken}` },
     });
   };
-  //조회
-  // get user/my/address
-  //
-  // const getUserWithAxios = async () => {
-  //   const test = localStorage.getItem("accessToken");
-  //   const { data } = await axios.post(
-  //     "http://localhost:5000/user/test",
-  //     {},
-  //     {
-  //       headers: { Authorization: `Bearer ${test}` },
-  //     }
-  //   );
-  //   // setUserImage(data.profile_image);
-  //   //setNickName(data.nickname);
-  //   // await new Promise((resolve) => setTimeout(resolve, 5000));
-  //   return data;
-  // };
-  // const query = useQuery("users", getUserWithAxios);
 
-  //console.log(user.data.addresses);
   const onComplete = (data: any) => {
     console.log(data);
     setCurAddr(data.address);
@@ -60,9 +42,6 @@ function UserInfo() {
   const closePostHandler = () => {
     setOpenPostcode(false);
   };
-  // const openPostHandler = () => {
-  //   setOpenPostcode(true);
-  // };
 
   const closeAddAddressHandler = () => {
     setAddAddress(false);
@@ -75,16 +54,8 @@ function UserInfo() {
     //const accessToken = localStorage.getItem("accessToken");
     setUserImage(URL.createObjectURL(e.target.files[0]));
     console.log("123123", URL.createObjectURL(e.target.files[0]));
-    requester.put(
-      "http://localhost:5000/user/updateUserProfile",
-      {
-        profile_image: URL.createObjectURL(e.target.files[0]),
-      }
-      // },
-      // {
-      //   headers: { Authorization: `Bearer ${accessToken}` },
-      // }
-    );
+    updateUserProfile(e.target.files[0]);
+
     console.log("hi");
   };
 

@@ -1,3 +1,5 @@
+import Link from "next/link";
+import { Router, useRouter } from "next/router";
 import React, { useState } from "react";
 import styled from "styled-components";
 
@@ -6,7 +8,7 @@ function SliderItem(img: any) {
   const [opacity, setOpacity] = useState("0.5px solid #D3D3D3");
   const [backgroundColor, setBackgroundColor] = useState("none");
   const [mouseOver, setMoseOver] = useState(false);
-  // console.log(img);
+  console.log(img.img.id);
   //console.log(img.img.itemImg);
   const onMouseEvent = () => {
     //  console.log("his");
@@ -15,7 +17,9 @@ function SliderItem(img: any) {
     // setBackgroundColor("rgba(0, 0, 0, 0.5)");
     setMoseOver(true);
   };
-
+  const router = useRouter();
+  const { id } = router.query;
+  console.log(id);
   const outMouseEvent = () => {
     setBorder("none");
     // setOpacity("1.0");
@@ -25,6 +29,7 @@ function SliderItem(img: any) {
 
   return (
     <SliderItemContainer
+      onClick={() => router.push(`/product/?id=${img.img.id}`)}
       onMouseEnter={onMouseEvent}
       onMouseLeave={outMouseEvent}
       style={{

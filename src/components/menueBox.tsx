@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import LikeItem from "./likeItem";
+import LikeItem from "../containers/mypage/components/likeItem";
 
 function MenueBox() {
   return (

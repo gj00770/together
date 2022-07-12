@@ -6,7 +6,7 @@ import axios from "axios";
 import DaumAdrr from "../modal/daumAdrr";
 import { useUser } from "../hook/useUser";
 import SSRSafeSuspense from "../hook/useMount";
-import AddressSumarry from "../components/addressSummary";
+import AddressSummary from "../containers/mypage/components/addressSummary";
 import AddressDetailModal from "./addressDetailModal";
 function UserInfo() {
   const user = useUser();
@@ -192,7 +192,7 @@ function UserInfo() {
         </div>
       </InfoContainer> */}
       <AddressDetailModal />
-      <AddressSumarry
+      <AddressSummary
         address={user.data.addresses ? user.data.addresses[0].adress : "sdsd"}
       />
     </UserInfoContainer>

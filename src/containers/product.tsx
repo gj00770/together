@@ -1,3 +1,4 @@
+import Router, { useRouter } from "next/router";
 import React, { useState } from "react";
 import styled from "styled-components";
 // import ItemSummary from '../components/itemSummary'
@@ -5,22 +6,36 @@ import ItemSummary from "../components/itemSummary";
 import ReplyContainer from "../components/replyContainer";
 import SellerInfo from "../components/sellerInfo";
 import Summary from "../components/Summary";
-import Router from "next/router";
+import { useProduct } from "../hook/useProduct";
+import { useProductById } from "../hook/useProductById";
 // import ReplyContainer from '../components/replyContainer'
 // import SellerInfo from '../components/sellerInfo'
 
 function Product() {
-  //const id = Router.query.id;
-  // Router.query["id-1234"] === '1234';
-  // const id = new URLSearchParams(location.search).get('id');
-  //const product = useProduct(id);
-  const [curTab, setCurTab] = useState(TabId.ITEM_INFO);
+  // const id = Router.query.id;
+  //Router.query["id-1234"] === "1234";
+  //const id = new URLSearchParams(document.location.search).get("?id");
 
+  //console.log(id);
+  const router = useRouter();
+  const { id } = router.query;
+  const product = useProductById(id);
+  console.log(id);
+  const [curTab, setCurTab] = useState(TabId.ITEM_INFO);
+  console.log(product);
+  const CONTENT_BY_TAB = {
+    [TabId.ITEM_INFO]: <Summary data={product.data} />,
+    [TabId.REPLY]: <ReplyContainer />,
+    [TabId.ASK]: <SellerInfo />,
+  };
+  if (product.isLoading) {
+    return <div>...loading</div>;
+  }
   return (
     <ProductContainer>
       <ImageItemSummaryContainer>
-        <Image src="mockImage/productThumbnail/1.jpeg" />
-        <ItemSummary />
+        <Image src={`${product.data.itemImg}`} />
+        <ItemSummary data={product.data} />
       </ImageItemSummaryContainer>
       <SummaryTab>
         {Object.values(TabId).map((item) => (
@@ -54,11 +69,6 @@ const LABEL_BY_TAB = {
 };
 
 //const TABS = [{ id: TabId.ITEM_INFO, label: "삼품정보" }, { id: TabId.REPLY, label: "댓글" }, { id: TabId.ASK, label: "문의사항" }]
-const CONTENT_BY_TAB = {
-  [TabId.ITEM_INFO]: <Summary />,
-  [TabId.REPLY]: <ReplyContainer />,
-  [TabId.ASK]: <SellerInfo />,
-};
 
 //      키와value 로 이루어집 map 객체를 뜻한다
 const SummaryTab = styled.div`
