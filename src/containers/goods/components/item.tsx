@@ -1,9 +1,10 @@
 import { useRouter } from "next/router";
 import React, { useState } from "react";
 import styled from "styled-components";
+import { formatComma } from "../../../utils/formatComma";
 import { Product } from "../../../types/Product";
 
-function Item(props: Product, key: number) {
+function Item(props: { data: Product }, key: number) {
   const [border, setBorder] = useState("0.5px solid #D3D3D3");
   const [opacity, setOpacity] = useState("0.5px solid #D3D3D3");
   const [backgroundColor, setBackgroundColor] = useState("none");
@@ -19,12 +20,7 @@ function Item(props: Product, key: number) {
     setMoseOver(false);
     // setBackgroundColor("rgba(0, 0, 0, 0.5)");
   };
-  // id: number;
-  // productName: string;
-  // price: number;
-  // end_date: number;
-  // itemImg: string;
-  // itemInfo: string;
+
   return (
     <ItemContainer
       onMouseEnter={onMouseEvent}

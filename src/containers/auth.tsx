@@ -1,19 +1,9 @@
-import type { NextPage } from "next";
-import Head from "next/head";
-import Image from "next/image";
-import styles from "../styles/Home.module.css";
+import axios from "axios";
+//import ComboBox from '../components/combobox'
+import router from "next/router";
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import Carosel from "../components/carosel";
-//import ComboBox from '../components/combobox'
-import ComboBox from "../components/comboBox";
-import ItemContainer from "./goods/components/itemContainer";
-import ProductCarosel from "../components/productCarosel";
-import router from "next/router";
-import axios from "axios";
-import { QueryClient, QueryClientProvider, useQuery } from "react-query";
-import useClientValue from "../hook/useClientValue";
-import useSetClientState from "../hook/useSetClientState";
+
 async function naverLogin(accessToken: string) {
   console.log(accessToken);
   const token = await axios.post("http://localhost:5000/user/naver-login", {
@@ -40,8 +30,6 @@ function doSome() {
 }
 function Auth() {
   const [islogin, setIsLogin] = useState(true);
-  const username = useClientValue("username", "");
-  console.log("auth...", username);
   const login = () => {
     setIsLogin(!islogin);
     console.log(login);

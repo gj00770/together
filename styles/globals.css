@@ -22,7 +22,7 @@ body {
 }
 @font-face {
   font-family: "NotoSansBold";
-  font-weight: 200;
+  font-weight: 100;
   src: url("/fonts/NotoSansKR-Bold.otf") format("truetype");
 }
 a {

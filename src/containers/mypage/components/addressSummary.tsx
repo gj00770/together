@@ -1,11 +1,14 @@
 import React from "react";
 import styled from "styled-components";
+import CheckCircle from "../../../svgs/circle-check-solid.svg";
 import Pencile from "../../../svgs/pen-solid.svg";
-import { Address } from "../../../types/Address";
+import { AddressEntity } from "../../../types/Address";
 interface Props {
-  address: Address;
+  address: AddressEntity;
   onEdit: () => void;
   onDelete: () => void;
+  checked: boolean;
+  onClick: () => void;
 }
 
 function AddressSummary(props: Props) {
@@ -13,11 +16,27 @@ function AddressSummary(props: Props) {
     <AddressSumarrycontainer>
       <CloseButton onClick={props.onDelete}>x</CloseButton>
       <AddrdressContainer>
+        {props.checked ? (
+          <CheckCircle
+            width="32px"
+            fill="#4aa8d8"
+            style={{ marginLeft: "24px" }}
+            cursor="pointer"
+          />
+        ) : (
+          <CheckCircle
+            width="32px"
+            style={{ marginLeft: "24px" }}
+            fill=" #D3D3D3"
+            cursor="pointer"
+            onClick={props.onClick}
+          />
+        )}
         <UserAddress>{props.address.adress}</UserAddress>
         <Name>{props.address.name}</Name>
         <Request></Request>
         <Edit>
-          <Pencile width="30px" onClick={props.onEdit} />
+          <Pencile width="22px" onClick={props.onEdit} />
         </Edit>
       </AddrdressContainer>
       <Edit></Edit>
@@ -25,14 +44,18 @@ function AddressSummary(props: Props) {
   );
 }
 const AddressSumarrycontainer = styled.div`
-  border-bottom: 0.3px solid #d3d3d3;
+  background-color: white;
+  box-shadow: rgb(0 0 0 / 7%) 0px 3px 4px 0px;
+  margin-bottom: 15px;
   width: 800px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   font-family: "NotoSans";
+  font-size: 23px;
   @media screen and (max-width: 800px) {
-    width: 100%;
+    width: 90vw;
+    font-size: 14px;
   }
 `;
 const CloseButton = styled.div`
@@ -50,14 +73,9 @@ const Edit = styled.div`
   cursor: pointer;
   margin-right: 50px;
 `;
-const UserAddress = styled.div`
-  font-size: 23px;
-`;
+const UserAddress = styled.div``;
 const Name = styled.div`
-  font-size: 23px;
-  margin-left: 40px;
+  margin: 0 20px 0 20px;
 `;
-const Request = styled.div`
-  font-size: 23px;
-`;
+const Request = styled.div``;
 export default AddressSummary;

@@ -1,124 +1,192 @@
+import Link from "next/link";
 import React, { useState } from "react";
 import styled from "styled-components";
-import Link from "next/link";
-import useClientValue from "../hook/useClientValue";
+//import useClientValue from "../hooks/useClientValue";
+import { useUser } from "../hooks/useUser";
+import LoginModal from "../modal/loginModal";
+import MenueList from "../modal/menueList";
+import MypageLogout from "../modal/MypageLogout";
+import DownArrow from "../svgs/caret-down-solid.svg";
 import HamburgerIcon from "../svgs/bars-solid.svg";
 import ComboBox from "./comboBox";
-import MenueList from "../modal/menueList";
 //import userPersistence from "../hook/usePersistentContext";
-function Header({ login }: any) {
-  const username = useClientValue("username", "");
-  console.log("auth...", username);
-  console.log(login);
-  const [isLogin, setIsLogin] = useState(true);
-  //const [asddd] = userPersistence("true");
+function Header() {
+  //  const username = useClientValue("username", "");
+  //console.log("auth...", username);
+  const { data: user, refetch: refetch } = useUser();
+  console.log(user);
+
+  const [isOpenModal, setIsOpenModal] = useState(false);
   const [mouseOver, setMoseOver] = useState(false);
+  const [mouseOverUser, setMoseOverUser] = useState(false);
   const onMouseHandler = () => {
-    console.log("his");
-    // setBorder("2px 2px 2px 2px #D3D3D3");
-    //   setOpacity("0.5");
-    // setBackgroundColor("rgba(0, 0, 0, 0.5)");
     setMoseOver(true);
   };
 
   const outMouseHandler = () => {
-    // setOpacity("1.0");
     setMoseOver(false);
-    // setBackgroundColor("rgba(0, 0, 0, 0.5)");
   };
+  const onClose = () => {
+    setIsOpenModal(!isOpenModal);
+  };
+  const onMouseUserHandler = () => {
+    setMoseOverUser(true);
+  };
+  const outMouseUserHandler = () => {
+    setMoseOverUser(false);
+  };
+
   return (
-    <div>
-      {/* <SignUpSignInContainer>
-          <Logo>
-            <Link href="/">Together</Link>
-            <div>{username}</div>{" "}
-          </Logo>
-          <SignIn>회원가입</SignIn>
-          <SignIn>로그인</SignIn>
-        </SignUpSignInContainer> */}
-      <HeaderContainer>
-        {/* <div onClick={login}>진짜로그인 </div>
-      <Link href="/mypage">ㅁㄴㅇㄴㅁ</Link>
-      <Logo>
-        <Link href="/">Together</Link>
-      </Logo>
-      <LoginSignUpContainer>
-        <Link href="/product">
-          <Login>로그인</Login>
+    <HeaderContainer>
+      {isOpenModal ? <LoginModal onClose={onClose} /> : null}
+      <SmallLine>
+        {" "}
+        {user ? (
+          <Name
+            onMouseEnter={onMouseUserHandler}
+            onMouseLeave={outMouseUserHandler}
+          >
+            {user.name}님
+            <Arrow>
+              <DownArrow width="10px" />
+            </Arrow>
+            {mouseOverUser ? <MypageLogout refetch={refetch} /> : null}
+          </Name>
+        ) : (
+          <Login onClick={() => setIsOpenModal(true)}>로그인 </Login>
+        )}
+      </SmallLine>
+      <FirstHeader>
+        <Link href="/">
+          <LogoContainer>
+            <Logo>TOGETHER</Logo>
+            <KoreanLogo>투게더</KoreanLogo>
+          </LogoContainer>
         </Link>
-      </LoginSignUpContainer>
-      <Link href="/goods">
-        <Login>goods</Login>
-        
-      </Link> */}
-        <HamburgerContaienr
+
+        <ComboBox />
+        <HamburgerContaienr>
+          <Cart src={`mockImage/shopping-cart.png`} />
+        </HamburgerContaienr>
+      </FirstHeader>
+      <SecondHeader>
+        {" "}
+        <MenueContainer
           onMouseEnter={onMouseHandler}
           onMouseLeave={outMouseHandler}
         >
           <HamburgerIcon width="28" />
+          <Category>카테고리</Category>
           {mouseOver ? <MenueList /> : null}
-        </HamburgerContaienr>
-
-        <RightIconContainer>
-          <ComboBox />
-          <HamburgerContaienr>
-            <Cart src={`mockImage/shopping-cart.png`} />
-          </HamburgerContaienr>
-
-          <HamburgerContaienr>
-            {isLogin ? (
-              <Link href="/mypage"> 마이페이지</Link>
-            ) : (
-              <Login onClick={login}>로그인 </Login>
-            )}
-          </HamburgerContaienr>
-        </RightIconContainer>
-      </HeaderContainer>
-    </div>
+        </MenueContainer>
+        <CategoryContainer>
+          <Option>신상품</Option>
+          <Option>베스트</Option>
+          <Option>특가</Option>
+        </CategoryContainer>
+        <HamburgerContaienr></HamburgerContaienr>
+      </SecondHeader>
+    </HeaderContainer>
   );
 }
-const SignUpSignInContainer = styled.div``;
-const SignIn = styled.div``;
+const FirstHeader = styled.div`
+  display: flex;
+  max-width: 1100px;
+  width: 90vw;
+  justify-content: space-between;
+`;
+const CategoryContainer = styled.div`
+  font-family: NotoSans;
+  display: flex;
+  align-items: center;
+  @media screen and (max-width: 800px) {
+    justify-content: space-between;
+    width: 70%;
+  }
+`;
+const Option = styled.div`
+  font-family: NotoSans;
+  font-size: 22px;
+  width: 150px;
+  text-align: center;
+  @media screen and (max-width: 800px) {
+    width: 70px;
+  }
+`;
+const Category = styled.div`
+  margin-left: 15px;
+  font-family: NotoSans;
+  font-size: 22px;
+`;
+const SecondHeader = styled.div`
+  margin-top: 10px;
+  margin-bottom: 20px;
+  display: flex;
+  max-width: 1100px;
+  width: 90vw;
+  justify-content: space-between;
+  align-items: center;
+`;
+
+const MenueContainer = styled.div`
+  display: flex;
+  position: relative;
+  @media screen and (max-width: 800px) {
+    display: none;
+  }
+`;
+const LogoContainer = styled.div`
+  display: flex;
+`;
+const SmallLine = styled.div`
+  max-width: 1100px;
+  width: 90vw;
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 12px;
+
+  @media screen and (max-width: 800px) {
+    display: none;
+  }
+`;
 const HeaderContainer = styled.div`
-  position: fixed;
+  box-shadow: rgb(0 0 0 / 7%) 0px 3px 4px 0px;
   z-index: 99;
   width: 100vw;
   //background-color: #4aa8d8;
   background-color: white;
-  height: 50px;
+  height: 160px;
   line-height: 40px;
   display: flex;
-  justify-content: space-between;
-`;
-const Logo = styled.div`
-  font-size: 24px;
-  color: black;
-`;
-const HamburgerContaienr = styled.div`
-  display: flex;
-  margin-left: 20px;
-`;
-// const HamburgerContaienr = styled.div`
-//   display: flex;
-//   margin-left: 20px;
-// `;
-// const HamburgerContaienr = styled.div`
-//   display: flex;
-//   margin-left: 20px;
-// `;
-const Login = styled.div`
-  color: white;
-`;
-const RightIconContainer = styled.div`
-  display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
-  margin-right: 30px;
+  // justify-content: space-between;
 `;
+const Logo = styled.div`
+  font-size: 39px;
+  color: #4aa8d8;
+  font-family: InkLipquid;
+`;
+const KoreanLogo = styled.div`
+  margin-left: 15px;
+  font-size: 32px;
+  color: #4aa8d8;
+  font-family: NotoSans;
+`;
+const HamburgerContaienr = styled.div``;
+const Arrow = styled.div`
+  margin-top: 3px;
+  margin-left: 12px;
+`;
+const Login = styled.div``;
+
 const Cart = styled.img`
   width: 40px;
 `;
-const Heart = styled.img`
-  width: 40px;
+const Name = styled.div`
+  cursor: pointer;
+  font-size: 14px;
+  display: flex;
 `;
 export default Header;

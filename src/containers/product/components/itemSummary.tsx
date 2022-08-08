@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import styled from "styled-components";
+import { formatComma } from "../../../utils/formatComma";
+import { useSlashDate } from "../../../utils/useSlashDate";
 function ItemSummary(props: any) {
   const [itemQauntity, setItemQuantity] = useState(1);
   const [backgroundcart, setBackgroundcart] = useState("white");
@@ -13,12 +15,11 @@ function ItemSummary(props: any) {
       setItemQuantity(itemQauntity - 1);
     }
   };
-  console.log(props.data);
   return (
     <ItemSummaryContainer>
       <Name>{props.data.productName} </Name>
-      <Price> {props.data.price} </Price>
-      <DueDate>{props.data.end_date}</DueDate>
+      <Price> {formatComma(props.data.price)} </Price>
+      <DueDate>{useSlashDate(props.data.end_date)}</DueDate>
       <FlexContainer>
         <BuyQuantityContainer>
           <Amount>{itemQauntity}</Amount>
@@ -63,13 +64,13 @@ const ItemSummaryContainer = styled.div`
   }
 `;
 const Name = styled.div`
-  font-size: 28px;
-  font-family: "NotoSans-Bold";
+  font-size: 40px;
+  font-family: NotoSansBold;
 `;
 const Price = styled.div`
-  font-size: 30px;
-  font-family: "NotoSans-Bold";
-  color: red;
+  font-size: 44px;
+  font-family: NotoSansBold;
+  color: #4aa8d8;
 `;
 const BuyQuantityContainer = styled.div`
   display: flex;
@@ -103,9 +104,9 @@ const CartBtn = styled.button`
   border: 2px solid #4aa8d8;
   color: black;
   background-color: #fafafa;
-  font-family: NotoSans-Bold;
+  font-family: NotoSansBold;
   width: 44%;
-  font-size: 20px;
+  font-size: 22px;
   padding-bottom: 3px;
   @media screen and (max-width: 700px) {
     border: 1px solid #4aa8d8;
@@ -116,7 +117,7 @@ const PurchaseBtn = styled.button`
   background-color: #fafafa;
   border: 2px solid #4aa8d8;
   color: black;
-  font-family: NotoSans-Bold;
+  font-family: NotoSansBold;
   width: 44%;
   font-size: 20px;
   padding-bottom: 3px;
@@ -125,7 +126,8 @@ const PurchaseBtn = styled.button`
   }
 `;
 const DueDate = styled.div`
-  font-size: 24px;
+  font-size: 35px;
+  font-family: NotoSansBold;
 `;
 const AcquiredPeople = styled.div`
   font-size: 24px;

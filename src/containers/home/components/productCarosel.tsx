@@ -2,10 +2,13 @@ import { useRouter } from "next/router";
 import React, { useState, useEffect, useRef } from "react";
 import { QueryClient, QueryClientProvider, useQuery } from "react-query";
 import styled from "styled-components";
-import { useProduct } from "../hook/useProduct";
-import Carosel, { CaroselRef } from "./carosel";
-
-import Item from "./sliderItem";
+import LoadingSliderItem from "./LoadingSlideritem";
+//import { useProduct } from "../hook/useProduct";
+import Carosel, { CaroselRef } from "../../../components/carosel";
+//   1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20,
+// ];
+const NUM = ["1", "2", "3", "4", "5", "6"];
+import Item from "../../../components/SliderItem";
 interface Product {
   id: number;
   productName: string;
@@ -21,8 +24,9 @@ function useProductList(category: Carosel) {
   const caroselRef = useRef<CaroselRef>(null);
   const fetchData = async () => {
     const result = await (
-      await fetch(`http://localhost:5000/product/${category}`)
+      await fetch(`http://localhost:5000/product/findcat/${category}`)
     ).json();
+
     return result;
     console.log(result);
   };
@@ -38,6 +42,9 @@ function ProductCarosel<Carosel>(props: any) {
   const { ref, value, loading } = useProductList(props.category);
   const router = useRouter();
   const { id } = router.query;
+  // if (loading) {
+  //   return <div>.../sdsd</div>;
+  // }
   return (
     <div style={{ marginBottom: "30px" }}>
       <NameContainer>
@@ -53,8 +60,9 @@ function ProductCarosel<Carosel>(props: any) {
         <ArrowLeft onClick={() => ref.current?.prev()}> &lt;</ArrowLeft>
 
         <Carosel ref={ref} infinity={false} gap={2}>
-          {!loading &&
-            value.map((ele: Product) => <Item img={ele} key={ele.id} />)}
+          {loading
+            ? NUM.map((ele) => <LoadingSliderItem key={ele} />)
+            : value.map((ele: Product) => <Item data={ele} key={ele.id} />)}
         </Carosel>
       </ArrowProductContainer>
     </div>
@@ -89,11 +97,11 @@ const NameContainer = styled.div`
 `;
 const Name = styled.div`
   font-size: 52px;
-  font-family: InkLipquid;
+  font-family: NotoSansBold;
 `;
 const ViewMore = styled.div`
   cursor: pointer;
-  font-family: InkLipquid;
+  font-family: NotoSansBold;
   margin-top: auto;
   font-size: 24px;
   margin-right: 20px;

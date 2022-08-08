@@ -1,12 +1,17 @@
+import axios from "axios";
+import { useRouter } from "next/router";
 import React, { useState } from "react";
 import styled from "styled-components";
-function Reply() {
+import { ReplyType } from "../../../types/Reply";
+interface Props {
+  data: ReplyType;
+}
+function Reply(props: Props) {
   const [overFlowY, setOverFlowY] = useState("hidden");
   const [showButton, setShowButton] = useState(false);
   const expand = () => {
     setOverFlowY("visible");
   };
-
   return (
     <RplyContainer>
       <IconImage src="mockImage/icon.jpeg" />
@@ -15,11 +20,7 @@ function Reply() {
           <UserName>아무개</UserName>
           <Date>2022/12/31</Date>
         </UserNameDateContianer>
-        <ReplyText>
-          와 정말싸요
-          ##########################################!##########################################!##########################################!
-        </ReplyText>
-        <ReplyToReply>답글보기</ReplyToReply>
+        <ReplyText>{props.data.content}</ReplyText>
       </ReplySummary>
     </RplyContainer>
   );

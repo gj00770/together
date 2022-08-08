@@ -2,7 +2,7 @@ import "../styles/globals.css";
 import type { AppProps } from "next/app";
 import Header from "../src/components/header";
 import React, { useEffect, useState } from "react";
-import Login from "../src/modal/login";
+import LoginModal from "../src/modal/loginModal";
 import { QueryClient, QueryClientProvider, useQuery } from "react-query";
 import Head from "next/head";
 import router, { useRouter } from "next/router";
@@ -11,6 +11,7 @@ import { access } from "fs";
 import { persistQueryClient } from "react-query/types/persistQueryClient-experimental";
 import { PortalProvider } from "../src/contexts/PortalProvider";
 import Banner from "../src/components/banner";
+import Footer from "../src/components/Footer";
 //  localStorage.setItem("accessToken", "");
 // window.getRedirectResult
 
@@ -41,9 +42,9 @@ function MyApp({ Component, pageProps }: AppProps) {
       <PortalProvider>
         <QueryClientProvider client={queryClient}>
           <div>
-            {islogin ? <Login login={login} /> : null}
-            <Header login={login} />
+            <Header />
             <Component {...pageProps} />
+            <Footer />
           </div>
         </QueryClientProvider>
       </PortalProvider>

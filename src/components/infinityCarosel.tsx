@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
 import styled from "styled-components";
-const dummyNumArr = [1, 2, 3, 4, 5, 1, 2, 3, 4, 5, 1, 2, 3, 4, 5];
 const arr = [1, 2, 3, 4, 5];
 const dummyNumArrColor = ["pink", "green", "pink", "green", "yellow"];
 import Carosel2, { CaroselRef } from "./carosel";
@@ -14,7 +13,6 @@ function CaroselEle(props: any) {
   );
 }
 function InfinityCarosel() {
-  // let dummyList: any = dummyArr.map((ele, key) => (<CaroselEle key={key} number={ele} horizontalValue={horizontalValue} />));
   const caroselRef = useRef<CaroselRef>(null);
 
   return (

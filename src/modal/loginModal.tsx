@@ -7,7 +7,7 @@ import {
   useQuery,
   useQueryClient,
 } from "react-query";
-import useSetClientState from "../hook/useSetClientState";
+import useSetClientState from "../hooks/useSetClientState";
 import { createWebStoragePersistor } from "react-query/createWebStoragePersistor-experimental";
 //if (typeof window !== "undefined") {
 //here `window` is available
@@ -15,8 +15,10 @@ if (typeof window !== "undefined") {
   // Client-side-only code
   const { naver } = window as any;
 }
-
-function Login({ login }: any) {
+interface Props {
+  onClose: () => void;
+}
+function LoginModal({ onClose }: Props) {
   //}
   const initializeNaverLogin = () => {
     const naverLogin = new naver.LoginWithNaverId({
@@ -47,7 +49,7 @@ function Login({ login }: any) {
       <LoginContainer>
         <NameCloseConrainer>
           <Name>together</Name>
-          <Close onClick={login}>X</Close>
+          <Close onClick={onClose}>X</Close>
         </NameCloseConrainer>
         <Summary>공동구매 앱 together에 오신걸 환영합니다!</Summary>
         <Summary>로그인하여서 together를 사용해보세요!</Summary>
@@ -79,7 +81,8 @@ const LoginModalRoot = styled.div`
   background-color: rgba(0, 0, 0, 0.5);
   width: 100vw;
   height: 100vh;
-  position: fixed;
+  position: absolute;
+  top: 0;
 `;
 
 const LoginContainer = styled.div`
@@ -150,4 +153,4 @@ const LogoNaver = styled.div`
   left: 10px;
 `;
 const AuthName = styled.div``;
-export default Login;
+export default LoginModal;

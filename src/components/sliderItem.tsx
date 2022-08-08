@@ -1,35 +1,38 @@
+import axios from "axios";
 import Link from "next/link";
 import { Router, useRouter } from "next/router";
 import React, { useState } from "react";
+import { useQuery } from "react-query";
 import styled from "styled-components";
-
-function SliderItem(img: any) {
+import { createCartItem } from "../remotes/cartItem";
+import { Product } from "../types/Product";
+import { formatComma } from "../utils/formatComma";
+import { useSlashDate } from "../utils/useSlashDate";
+interface Props {
+  data: Product;
+}
+function SliderItem(props: Props) {
   const [border, setBorder] = useState("0.5px solid #D3D3D3");
   const [opacity, setOpacity] = useState("0.5px solid #D3D3D3");
   const [backgroundColor, setBackgroundColor] = useState("none");
   const [mouseOver, setMoseOver] = useState(false);
-  console.log(img.img.id);
-  //console.log(img.img.itemImg);
   const onMouseEvent = () => {
-    //  console.log("his");
-    // setBorder("2px 2px 2px 2px #D3D3D3");
-    //   setOpacity("0.5");
-    // setBackgroundColor("rgba(0, 0, 0, 0.5)");
     setMoseOver(true);
   };
   const router = useRouter();
-  const { id } = router.query;
-  console.log(id);
+
   const outMouseEvent = () => {
     setBorder("none");
-    // setOpacity("1.0");
     setMoseOver(false);
-    // setBackgroundColor("rgba(0, 0, 0, 0.5)");
   };
-
+  const addCartItem = (e: any) => {
+    console.log("hi");
+    e.stopPropagation();
+    createCartItem(props.data.id, 1);
+  };
   return (
     <SliderItemContainer
-      onClick={() => router.push(`/product/?id=${img.img.id}`)}
+      onClick={() => router.push(`/product/?id=${props.data.id}`)}
       onMouseEnter={onMouseEvent}
       onMouseLeave={outMouseEvent}
       style={{
@@ -38,20 +41,19 @@ function SliderItem(img: any) {
         backgroundColor: backgroundColor,
       }}
     >
-      <Image src={`${img.img.itemImg}`} />
+      <Image src={`${props.data.itemImg}`} />
 
-      <Name>{img.img.productName}</Name>
-      <Price>{img.img.price}</Price>
+      <Name>{props.data.productName}</Name>
+      <Price>{formatComma(props.data.price)}</Price>
       {mouseOver ? (
         <MouseOverContainer style={{}}>
           <div></div>
           <div>
-            <Date>2022/12/31</Date>
-            <People>26/32명</People>
+            <Date> {useSlashDate(props.data.end_date)}</Date>
           </div>
           <CartHeartContainer>
             <CartContainer>
-              <Cart src={`mockImage/shopping-cart.png`} />
+              <Cart src={`mockImage/shopping-cart.png`} onClick={addCartItem} />
             </CartContainer>
             <Heart src={`mockImage/heart.png`} />
           </CartHeartContainer>
@@ -103,6 +105,7 @@ const Cart = styled.img`
   height: 60%;
 `;
 const CartContainer = styled.div`
+  z-index: 99;
   //width: 260px;
   display: flex;
   align-items: center;
@@ -121,8 +124,8 @@ const Heart = styled.img`
 const Image = styled.img`
   //width: 260px;
   width: 100%;
-  border: 0.5px solid #d3d3d3;
-  height: 23vw;
+  height: 258px;
+  border-radius: 10px;
   // border-radius: 10px;
   z-index: 2;
   @media screen and (min-width: 1600px) {
@@ -142,7 +145,7 @@ const Name = styled.div`
 `;
 
 const Price = styled.div`
-  font-family: InkLipquid;
+  font-family: NotoSansBold;
   //font-family: NotoSans;
   color: #4aa8d8;
   font-size: 30px;

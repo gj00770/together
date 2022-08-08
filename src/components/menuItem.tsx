@@ -1,3 +1,4 @@
+import { useRouter } from "next/router";
 import React, { useState } from "react";
 import styled from "styled-components";
 interface propsType {
@@ -7,19 +8,15 @@ function MenueItem(props: propsType) {
   const [mouseOver, setMoseOver] = useState(false);
   const onMouseHandler = () => {
     console.log("his");
-    // setBorder("2px 2px 2px 2px #D3D3D3");
-    //   setOpacity("0.5");
-    // setBackgroundColor("rgba(0, 0, 0, 0.5)");
     setMoseOver(true);
   };
-
+  const router = useRouter();
   const outMouseHandler = () => {
-    // setOpacity("1.0");
     setMoseOver(false);
-    // setBackgroundColor("rgba(0, 0, 0, 0.5)");
   };
   return (
     <Item
+      onClick={() => router.push(`/goods/?category=${props.categoryName}`)}
       onMouseEnter={onMouseHandler}
       onMouseLeave={outMouseHandler}
       style={{

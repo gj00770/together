@@ -1,20 +1,46 @@
-import React from "react";
+import axios from "axios";
+import React, { useState } from "react";
+import { useMutation, useQueryClient } from "react-query";
 import styled from "styled-components";
+import { createCartItem } from "../../../remotes/cartItem";
+import { deleteCartItem } from "../../../remotes/cartItem/deletecartItem";
+import { cartItem } from "../../../types/CartItem";
+import { formatComma } from "../../../utils/formatComma";
+interface Props {
+  data: cartItem;
+  refetch: () => void;
+}
+function MyCartItem(props: Props) {
+  //const queryClient = useQueryClient();
 
-function MyCartItem() {
+  const plusOnclick = async () => {
+    await createCartItem(props.data.product.id, 1);
+    await props.refetch();
+  };
+  const minusOnClick = async () => {
+    await createCartItem(props.data.product.id, -1);
+    await props.refetch();
+  };
+  const onClick = async () => {
+    await deleteCartItem(props.data.id);
+    await props.refetch();
+  };
+
   return (
     <MyCartItemContainer>
-      <Image src="mockImage/productThumbnail/3.jpeg" />
-      <CloseButton>x</CloseButton>
+      <Image src={`${props.data.product.itemImg}`} />
+      <CloseButton onClick={onClick}>x</CloseButton>
       <InfoContainer>
-        <ItemName>asdsadsdsds</ItemName>
+        <ItemName>{props.data.product.productName}</ItemName>
         <AmountPriceContainer>
           <ArrowContainer>
-            <ArrowBTN>+</ArrowBTN>
-            <ArrowBTN>3</ArrowBTN>
-            <ArrowBTN>-</ArrowBTN>
+            <ArrowBTN onClick={minusOnClick}> -</ArrowBTN>
+            <ArrowBTN>{props.data.count}</ArrowBTN>
+            <ArrowBTN onClick={plusOnclick}>+</ArrowBTN>
           </ArrowContainer>
-          <ItemPrice>32600</ItemPrice>
+          <ItemPrice>
+            {formatComma(props.data.count * props.data.product.price)}
+          </ItemPrice>
         </AmountPriceContainer>
       </InfoContainer>
     </MyCartItemContainer>
@@ -32,23 +58,30 @@ const MyCartItemContainer = styled.div`
   width: 90%;
   max-width: 720px;
   margin-top: 20px;
-  height: 150px;
   // background-color: white;
   display: flex;
   align-items: center;
   border-bottom: 0.3px solid #d3d3d3;
+  background-color: white;
+  box-shadow: rgb(0 0 0 / 7%) 0px 3px 4px 0px;
 `;
 const Image = styled.img`
   width: 140px;
   height: 120px;
-  margin-left: 10px;
   // border: 0.5px solid #d3d3d3;
+  @media screen and (max-width: 800px) {
+    width: 120px;
+    height: 100px;
+  }
+  @media screen and (max-width: 350px) {
+  }
 `;
 const InfoContainer = styled.div`
   // width :580px;
   height: 120px;
   margin-left: 10px;
   width: 100%;
+  margin-bottom: 5px;
 `;
 const ItemName = styled.div`
   width: 560px;
@@ -58,11 +91,11 @@ const ItemName = styled.div`
   font-size: 22px;
   @media screen and (max-width: 800px) {
     font-size: 14px;
-    width: 80%;
+    width: 50%;
   }
   @media screen and (max-width: 350px) {
     font-size: 8px;
-    width: 70%;
+    width: 40%;
   }
 `;
 
@@ -80,7 +113,7 @@ const AmountPriceContainer = styled.div`
   display: flex;
   margin-left: auto;
   margin-right: 30px;
-  width: 200px;
+  width: 210px;
 `;
 
 const ItemAmount = styled.div`
@@ -113,6 +146,9 @@ const ArrowBTN = styled.button`
   border: none;
   background-color: white;
   width: 35px;
+  @media screen and (max-width: 800px) {
+    width: 20px;
+  }
 `;
 
 export default MyCartItem;

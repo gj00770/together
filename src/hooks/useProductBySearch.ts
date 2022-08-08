@@ -1,13 +1,13 @@
 import axios from "axios";
 import { useQuery } from "react-query";
 
-export function useProduct(category: string) {
+export function useProductBySearch(search: any) {
   // customHook naming must start with "use"
   const getProductWithAxios = async () => {
+    console.log(search);
     const test = localStorage.getItem("accessToken");
-    console.log(category);
     const { data } = await axios.get(
-      `http://localhost:5000/product/${category}`,
+      `http://localhost:5000/product/search/${search}`,
       {}
     );
     // setUserImage(data.profile_image);
@@ -15,7 +15,7 @@ export function useProduct(category: string) {
     // await new Promise((resolve) => setTimeout(resolve, 5000));
     return data;
   };
-  const query = useQuery(`Product`, getProductWithAxios);
+  const query = useQuery(`Productse${search}`, getProductWithAxios);
 
   return { data: query.data, isLoading: query.isLoading };
 }

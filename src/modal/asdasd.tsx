@@ -4,9 +4,9 @@ import styled from "styled-components";
 //import DaumAdr from './daumAdr'
 import axios from "axios";
 import DaumAdrr from "../modal/daumAdrr";
-import { useUser } from "../hook/useUser";
-import SSRSafeSuspense from "../hook/useMount";
-import AddressSummary from "../containers/mypage/components/addressSummary";
+import { useUser } from "../hooks/useUser";
+import SSRSafeSuspense from "../hooks/useMount";
+import AddressSummary from "../containers/mypage/components/AddressSummary";
 import AddressDetailModal from "./addressDetailModal";
 function UserInfo() {
   const user = useUser();

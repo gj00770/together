@@ -1,28 +1,21 @@
 import Router, { useRouter } from "next/router";
 import React, { useState } from "react";
 import styled from "styled-components";
-// import ItemSummary from '../components/itemSummary'
-import ItemSummary from "../components/itemSummary";
-import ReplyContainer from "../components/replyContainer";
-import SellerInfo from "../components/sellerInfo";
-import Summary from "../components/Summary";
-import { useProduct } from "../hook/useProduct";
-import { useProductById } from "../hook/useProductById";
-// import ReplyContainer from '../components/replyContainer'
-// import SellerInfo from '../components/sellerInfo'
+import ItemSummary from "./components/itemSummary";
+import ReplyContainer from "./components/replyContainer";
+import SellerInfo from "./components/sellerInfo";
+import Summary from "./components/Summary";
+import { useProductById } from "../../hooks/useProductById";
 
 function Product() {
   // const id = Router.query.id;
   //Router.query["id-1234"] === "1234";
   //const id = new URLSearchParams(document.location.search).get("?id");
-
   //console.log(id);
   const router = useRouter();
   const { id } = router.query;
   const product = useProductById(id);
-  console.log(id);
   const [curTab, setCurTab] = useState(TabId.ITEM_INFO);
-  console.log(product);
   const CONTENT_BY_TAB = {
     [TabId.ITEM_INFO]: <Summary data={product.data} />,
     [TabId.REPLY]: <ReplyContainer />,
@@ -53,10 +46,6 @@ function Product() {
   );
 }
 
-// function Tab() { //추상화
-
-// }
-
 enum TabId {
   ITEM_INFO = "itemInfo",
   REPLY = "reply",
@@ -71,6 +60,9 @@ const LABEL_BY_TAB = {
 //const TABS = [{ id: TabId.ITEM_INFO, label: "삼품정보" }, { id: TabId.REPLY, label: "댓글" }, { id: TabId.ASK, label: "문의사항" }]
 
 //      키와value 로 이루어집 map 객체를 뜻한다
+// const ProductGap = styled.div`
+//   margin-bottom: 100px;
+// `;
 const SummaryTab = styled.div`
   display: flex;
   width: 800px;
@@ -97,7 +89,7 @@ const ProductContainer = styled.div`
   width: 800px;
   margin-right: auto;
   margin-left: auto;
-  padding-top: 40px;
+  margin-top: 5px;
   background-color: white;
   @media screen and (max-width: 700px) {
     width: 100%;

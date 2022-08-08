@@ -26,24 +26,7 @@ function AddAdress(props: any) {
     setRequest(e.target.value);
   };
   console.log(props.address);
-  const changeProfileImage = () => {
-    const accessToken = localStorage.getItem("accessToken");
-    axios.put(
-      "http://localhost:5000/user/putAdress",
 
-      {
-        id: props.address.id,
-        name: name,
-        adressDetaile: adressDetaile,
-        request: request,
-      },
-      {
-        headers: { Authorization: `Bearer ${accessToken}` },
-      }
-    );
-    props.closeEditModal();
-    router.push("/mypage");
-  };
   const updateUser = async () => {
     const accessToken = localStorage.getItem("accessToken");
     const { data } = await axios.post(
@@ -59,6 +42,8 @@ function AddAdress(props: any) {
       }
     );
     console.log("hi");
+    await props.closeAddAddressHandler();
+    await props.refetch();
     return data;
   };
   return (
@@ -91,8 +76,7 @@ function AddAdress(props: any) {
 }
 const AddAdressBackground = styled.div`
   border: 1px solid black;
-  height: 200px;
-  width: 800px;
+
   top: 0;
   left: 0;
   position: absolute;
@@ -103,9 +87,6 @@ const AddAdressBackground = styled.div`
   justify-content: center;
   align-items: center;
   flex-direction: column;
-  @media screen and (max-width: 800px) {
-    width: 100%;
-  }
 `;
 const CloseButton = styled.div`
   margin-left: auto;
@@ -130,6 +111,10 @@ const AddAdresscontainer = styled.div`
   width: 600px;
   background-color: white;
   height: 700px;
+  @media screen and (max-width: 800px) {
+    width: 100vw;
+    height: 100vh;
+  }
 `;
 const TitleName = styled.div`
   font-size: 35px;

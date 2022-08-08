@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import Link from "next/link";
-import useClientValue from "../hook/useClientValue";
+import useClientValue from "../hooks/useClientValue";
 //import userPersistence from "../hook/usePersistentContext";
 function Banner({ login }: any) {
   const username = useClientValue("username", "");

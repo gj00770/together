@@ -1,15 +1,77 @@
+import axios from "axios";
+import { flatMap } from "lodash";
 import React from "react";
+import { useInfiniteQuery } from "react-query";
 import styled from "styled-components";
-import LikeItem from "./likeItem";
+import { PurchaseItem } from "../../../types/PurchaseItem";
+import { version4 } from "../../../utils/sortByDate";
+import LikeItem from "./LikeItem";
+function usePurchaseItem() {
+  const token = localStorage.getItem("accessToken");
 
+  const query = useInfiniteQuery(
+    "purchaseItem",
+    async ({ pageParam = 0 }) => {
+      const { data } = await axios.get<{ item: PurchaseItem[]; count: number }>(
+        `http://localhost:5000/purchase`,
+        {
+          params: { page: pageParam },
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
+      return { data: data.item, nextPage: pageParam + 1, count: data.count };
+    },
+    {
+      getNextPageParam: (lastPage) => {
+        return lastPage.nextPage;
+      },
+    }
+  );
+  const data = query.data;
+
+  return {
+    data: flatMap(data?.pages.map(({ data }) => data)),
+    count: data?.pages[0].count,
+    isLoading: query.isLoading,
+    refetch: query.refetch,
+    isFetching: query.isFetching,
+    fetchNextPage: query.fetchNextPage,
+  };
+}
 function LikeItemContainer() {
+  const { data, isLoading, refetch, isFetching, fetchNextPage, count } =
+    usePurchaseItem();
+  //console.log(version4(data));
+  // 35
+  // 3
+  // fllor(35)
+  //올림
+  // 4
+  // ㅁㄴㅇ
+
+  // 35
+  //
+  console.log(count);
+  if (isLoading) {
+    return <div>...</div>;
+  }
   return (
     <MyCartItemContainer>
-      <Date>2022년 12월 31일</Date>
-      <Line />
-      <LikeItem />
-      <LikeItem />
-      <LikeItem />
+      {version4(data).map((ele) => (
+        <div>
+          <Date>
+            {ele.year}년 {ele.month}월 {ele.date}일
+          </Date>
+          <Line />
+
+          {ele.list.map((ele, key) => (
+            <LikeItem product={ele} key={key} />
+          ))}
+        </div>
+      ))}
+      {data.length === count ? null : (
+        <div onClick={() => fetchNextPage()}>더보기</div>
+      )}
     </MyCartItemContainer>
   );
 }

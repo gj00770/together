@@ -1,9 +1,8 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-import { Product } from "../types/Product";
-import ItemSummary from "./itemSummary";
+import { Product } from "../../../types/Product";
 
-function Summary(props: any) {
+function Summary(props: { data: Product }) {
   const [overFlowY, setOverFlowY] = useState("hidden");
   const expand = () => {
     setOverFlowY("visible");

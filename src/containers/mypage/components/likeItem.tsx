@@ -1,15 +1,21 @@
 import React from "react";
 import styled from "styled-components";
-
-function LikeItem() {
+import { PurchaseItem } from "../../../types/PurchaseItem";
+import Product from "../../product";
+interface Props {
+  product: PurchaseItem;
+}
+function LikeItem(props: Props) {
   return (
     <MyCartItemContainer>
-      <Image src="mockImage/productThumbnail/3.jpeg" />
-      <CloseButton>x</CloseButton>
+      <Image src={props.product.product.itemImg} />
       <InfoContainer>
-        <ItemName>asdsadsdsds</ItemName>
+        <ItemName>{props.product.product.productName}</ItemName>
         <AmountPriceContainer>
-          <ItemPrice>32600</ItemPrice>
+          <ArrowContainer>
+            <ArrowBTN>{props.product.count}</ArrowBTN>
+          </ArrowContainer>
+          <ItemPrice>{props.product.product.price}</ItemPrice>
         </AmountPriceContainer>
       </InfoContainer>
     </MyCartItemContainer>

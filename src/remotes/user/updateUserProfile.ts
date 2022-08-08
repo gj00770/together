@@ -5,3 +5,8 @@ export async function updateUserProfile(file: File) {
     profile_image: URL.createObjectURL(file),
   });
 }
+export async function updateUserDefaultAdress(id: number) {
+  requester.put("http://localhost:5000/user/updateUserProfile", {
+    default_address: id,
+  });
+}
