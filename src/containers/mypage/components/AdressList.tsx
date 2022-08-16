@@ -23,13 +23,17 @@ function AdressList() {
   const onComplete = (data: any) => {
     setCurAddr(data.address);
     setOpenPostcode(false);
+    user.refetch();
+  };
+  const onCompleteAdd = (data: any) => {
+    setCurAddr(data.address);
+    setOpenPostcode(false);
     setAddAddress(true);
   };
-
   const closeAddAddressHandler = async () => {
     await setAddAddress(false);
     await user.refetch();
-    console.log(isEditModalOpen);
+    isEditModalOpen;
   };
   const handleAddressClick = async (id: number) => {
     setCurrentId(id);
@@ -49,12 +53,12 @@ function AdressList() {
         <AddAdress
           cityName={curAddr}
           closeAddAddressHandler={closeAddAddressHandler}
+          refetch={user.refetch}
         />
       ) : null}
       {openPostcode ? (
         <DaumAdrr
-          onComplete={onComplete}
-          openPostcode={() => setOpenPostcode(true)}
+          onComplete={selectedAddressId ? onComplete : onCompleteAdd}
           closePostHandler={() => setOpenPostcode(false)}
         />
       ) : null}
@@ -82,7 +86,10 @@ function AdressList() {
               onEdit={() => {
                 setSelectedAddressId(ele.id);
               }}
-              onDelete={() => deleteAddress(ele.id)}
+              onDelete={() => {
+                deleteAddress(ele.id);
+                user.refetch();
+              }}
             />
           ))
         : null}
@@ -94,8 +101,8 @@ function AdressList() {
           address={user.data?.addresses.find(
             (ele: AddressEntity) => ele.id === selectedAddressId
           )}
-          curAddr={undefined}
-          openPostcode={() => {}}
+          curAddr={curAddr}
+          openPostcode={() => setOpenPostcode(true)}
         />
       ) : null}
     </div>
@@ -104,6 +111,10 @@ function AdressList() {
 const ShippingAddressContainer = styled.div`
   display: flex;
   margin-top: 50px;
+  width: 800px;
+  @media screen and (max-width: 800px) {
+    width: 90vw;
+  }
 `;
 const CircleContainer = styled.div`
   display: flex;

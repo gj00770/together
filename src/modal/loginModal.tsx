@@ -1,14 +1,18 @@
 import axios from "axios";
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import styled from "styled-components";
+import CloseButton from "../svgs/x-solid.svg";
 import {
   QueryClient,
   QueryClientProvider,
   useQuery,
   useQueryClient,
 } from "react-query";
-import useSetClientState from "../hooks/useSetClientState";
+//import useSetClientState from "../hooks/useSetClientState";
 import { createWebStoragePersistor } from "react-query/createWebStoragePersistor-experimental";
+import { PortalConsumer } from "../contexts/PortalProvider";
+import { useModal } from "../contexts/ModalProvider";
+
 //if (typeof window !== "undefined") {
 //here `window` is available
 if (typeof window !== "undefined") {
@@ -30,47 +34,70 @@ function LoginModal({ onClose }: Props) {
     naverLogin.init();
   };
   const [current, setCurrent] = useState("");
-  console.log("2323", useSetClientState);
-  const setClientState = useSetClientState("username");
+  //const setClientState = useSetClientState("username");
 
   const handleClick = () => {
     setCurrent("카카오");
-    setClientState("zkzkdh");
+    // setClientState("zkzkdh");
   };
   //const KAKAO_AUTH_URL = `https://kauth.kakao.com/oauth/authorize?client_id=${process.env.NEXT_PUBLIC_KAKAO_ID}&redirect_uri=${location.href}&response_type=code`;
   const KAKAO_AUTH_URL = `https://kauth.kakao.com/oauth/authorize?client_id=${process.env.NEXT_PUBLIC_KAKAO_ID}&redirect_uri=${process.env.NEXT_PUBLIC_REDIRECT_URL}&response_type=code`;
 
   useEffect(() => {
     initializeNaverLogin();
+    document.body.style.cssText = `
+    position: fixed; 
+    top: -${0}px;
+    overflow-y: scroll;
+    width: 100%;`;
+    return () => {
+      const scrollY = document.body.style.top;
+      document.body.style.cssText = "";
+      window.scrollTo(0, parseInt(scrollY || "0", 10) * -1);
+    };
   }, []);
 
   return (
     <LoginModalRoot>
       <LoginContainer>
         <NameCloseConrainer>
-          <Name>together</Name>
-          <Close onClick={onClose}>X</Close>
+          <Name>Together</Name>
+          <CloseButton
+            onClick={onClose}
+            fill="grey"
+            width="12px"
+            style={{
+              position: "absolute",
+              right: "12px",
+              top: "12px",
+              cursor: "pointer",
+            }}
+          />
         </NameCloseConrainer>
-        <Summary>공동구매 앱 together에 오신걸 환영합니다!</Summary>
-        <Summary>로그인하여서 together를 사용해보세요!</Summary>
+        <Summary>공동구매를 위한 커리어 플랫폼, Together!!</Summary>
+        <SummaryDetail>
+          원하시는 아이템을 공공구매 아이템으로 더욱더 쉽게 만나보실수있습니다.
+        </SummaryDetail>
         {/* <AuthContianer onClick={() => setClientState("네이버")}>
           <Logo src="mockImage/google.png" />
           <AuthName>구글로로그인</AuthName>
         </AuthContianer> */}
-        <AuthContianer>
-          <a href={KAKAO_AUTH_URL} onClick={() => setClientState("카카오")}>
-            <Logo src="mockImage/kakao.png" />
+        <AuthContianer href={KAKAO_AUTH_URL}>
+          <Logo src="mockImage/kakao.png" />
 
-            <AuthName>카카오로로그인</AuthName>
-          </a>
+          <AuthName>카카오로로그인</AuthName>
         </AuthContianer>
 
-        <AuthContianer>
+        <AuthContianerNaver>
           <LogoNaver>
             <div id="naverIdLogin" />
           </LogoNaver>
           <AuthName>네이버로로그인</AuthName>
-        </AuthContianer>
+        </AuthContianerNaver>
+        <Footer>
+          정마세요! 여러분의 지원 활동은 SNS에 노출되지 않습니다. 포트폴리오용
+          입니다.
+        </Footer>
       </LoginContainer>
     </LoginModalRoot>
   );
@@ -84,14 +111,22 @@ const LoginModalRoot = styled.div`
   position: absolute;
   top: 0;
 `;
+const Footer = styled.div`
+  font-size: 12px;
+  line-height: 15px;
+  width: 340px;
+  margin: 30px 0 40px 0;
+  color: grey;
+`;
 
 const LoginContainer = styled.div`
+  text-align: center;
   position: absolute;
   display: flex;
   flex-direction: column;
   align-items: center;
   width: 100%;
-  max-width: 500px;
+  max-width: 400px;
   background-color: white;
   font-size: 24px;
   top: 50%;
@@ -99,6 +134,7 @@ const LoginContainer = styled.div`
   margin-left: -200px;
   margin-top: -400px;
   max-height: calc(100vh - 150px);
+
   @media screen and (max-width: 700px) {
     max-width: none;
     max-height: none;
@@ -112,23 +148,51 @@ const LoginContainer = styled.div`
 `;
 
 const NameCloseConrainer = styled.div`
-  margin-bottom: 120px;
+  margin-bottom: 80px;
   display: flex;
   width: 100%;
+  max-width: 360px;
   justify-content: center;
 `;
-const Name = styled.div``;
-const Close = styled.div`
-  position: absolute;
-  right: 0%;
-  top: 0%;
+const Name = styled.div`
+  font-family: InkLipquid;
+  color: #4aa8d8;
+  font-size: 32px;
+  margin-top: 12px;
 `;
+
 const Summary = styled.div`
-  width: 370px;
-  height: 140px;
-  font-size: 24px;
+  width: 340px;
+  height: 120px;
+  font-size: 26px;
+  font-family: NotoSansBold;
+  word-break: break-word;
 `;
-const AuthContianer = styled.div`
+const SummaryDetail = styled.div`
+  text-align: center;
+  word-break: break-word;
+  line-height: 33px;
+  color: grey;
+  height: 100px;
+  width: 280px;
+  font-size: 16px;
+  font-family: NotoSans;
+`;
+const AuthContianer = styled.a`
+  margin-top: 40px;
+  cursor: pointer;
+  display: flex;
+  position: relative;
+  width: 360px;
+  height: 50px;
+  border: 3px solid #4aa8d8;
+  border-radius: 40px;
+  margin-bottom: 10px;
+  align-items: center;
+  justify-content: center;
+`;
+const AuthContianerNaver = styled.div`
+  cursor: pointer;
   display: flex;
   position: relative;
   width: 360px;
@@ -149,8 +213,15 @@ const Logo = styled.img`
 const LogoNaver = styled.div`
   width: 40px;
   height: 40px;
+  margin-top: 5px;
   position: absolute;
   left: 10px;
 `;
-const AuthName = styled.div``;
+const AuthName = styled.div`
+  font-family: NotoSans;
+`;
 export default LoginModal;
+export function useLoginModal() {
+  const { open, close } = useModal();
+  return useCallback(() => open(<LoginModal onClose={close} />), [open, close]);
+}

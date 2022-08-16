@@ -1,6 +1,6 @@
 import "../styles/globals.css";
 import type { AppProps } from "next/app";
-import Header from "../src/components/header";
+import Header from "../src/components/Header";
 import React, { useEffect, useState } from "react";
 import LoginModal from "../src/modal/loginModal";
 import { QueryClient, QueryClientProvider, useQuery } from "react-query";
@@ -10,8 +10,9 @@ import axios from "axios";
 import { access } from "fs";
 import { persistQueryClient } from "react-query/types/persistQueryClient-experimental";
 import { PortalProvider } from "../src/contexts/PortalProvider";
-import Banner from "../src/components/banner";
+import Banner from "../src/components/Banner";
 import Footer from "../src/components/Footer";
+import { ModalProvider } from "../src/contexts/ModalProvider";
 //  localStorage.setItem("accessToken", "");
 // window.getRedirectResult
 
@@ -22,16 +23,9 @@ function MyApp({ Component, pageProps }: AppProps) {
   //  const [queryClient] = useState(() => new QueryClient());
   const queryClient = new QueryClient();
 
-  //queryClient.setQueryData("username", "네이버");
-  // const { data: username } = useQuery("username", {
-  //   initialData: "",
-  //   staleTime: Infinity,
-  // });
-  //console.log(username);
   const [islogin, setIsLogin] = useState(true);
   const login = () => {
     setIsLogin(!islogin);
-    console.log(login);
   };
 
   return (
@@ -41,11 +35,13 @@ function MyApp({ Component, pageProps }: AppProps) {
       </Head>
       <PortalProvider>
         <QueryClientProvider client={queryClient}>
-          <div>
-            <Header />
-            <Component {...pageProps} />
-            <Footer />
-          </div>
+          <ModalProvider>
+            <div>
+              <Header />
+              <Component {...pageProps} />
+              <Footer />
+            </div>
+          </ModalProvider>
         </QueryClientProvider>
       </PortalProvider>
     </>

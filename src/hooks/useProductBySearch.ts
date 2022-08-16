@@ -4,7 +4,6 @@ import { useQuery } from "react-query";
 export function useProductBySearch(search: any) {
   // customHook naming must start with "use"
   const getProductWithAxios = async () => {
-    console.log(search);
     const test = localStorage.getItem("accessToken");
     const { data } = await axios.get(
       `http://localhost:5000/product/search/${search}`,

@@ -6,7 +6,7 @@ export interface PurchaseItem {
 
   time: Date;
 
-  product: Product[];
+  product: Product;
 }
 
 //{id ; asd ; co asda ; product = { id : 123 , asd}

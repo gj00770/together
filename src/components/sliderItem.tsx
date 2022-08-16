@@ -8,6 +8,7 @@ import { createCartItem } from "../remotes/cartItem";
 import { Product } from "../types/Product";
 import { formatComma } from "../utils/formatComma";
 import { useSlashDate } from "../utils/useSlashDate";
+import Cart from "../svgs/cart-shopping-solid.svg";
 interface Props {
   data: Product;
 }
@@ -25,8 +26,7 @@ function SliderItem(props: Props) {
     setBorder("none");
     setMoseOver(false);
   };
-  const addCartItem = (e: any) => {
-    console.log("hi");
+  const addCartItem = (e: React.FormEvent<HTMLDivElement>) => {
     e.stopPropagation();
     createCartItem(props.data.id, 1);
   };
@@ -41,11 +41,16 @@ function SliderItem(props: Props) {
         backgroundColor: backgroundColor,
       }}
     >
-      <Image src={`${props.data.itemImg}`} />
+      <ImgContainer>
+        <Image src={`${props.data.itemImg}`} />
+        <CartContainer onClick={addCartItem}>
+          <Cart fill="white" height="24px" />
+        </CartContainer>
+      </ImgContainer>
 
       <Name>{props.data.productName}</Name>
       <Price>{formatComma(props.data.price)}</Price>
-      {mouseOver ? (
+      {/* {mouseOver ? (
         <MouseOverContainer style={{}}>
           <div></div>
           <div>
@@ -55,10 +60,9 @@ function SliderItem(props: Props) {
             <CartContainer>
               <Cart src={`mockImage/shopping-cart.png`} onClick={addCartItem} />
             </CartContainer>
-            <Heart src={`mockImage/heart.png`} />
           </CartHeartContainer>
         </MouseOverContainer>
-      ) : null}
+      ) : null} */}
     </SliderItemContainer>
   );
 }
@@ -76,56 +80,35 @@ const SliderItemContainer = styled.div`
     width: 46%;
   }
 `;
-const MouseOverContainer = styled.div`
-  //width: 260px;
-  width: 23%;
-  height: 23vw;
-  background-color: rgba(0, 0, 0, 0.5);
-  position: absolute;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  z-index: 6;
-  text-align: center;
-  @media screen and (min-width: 1600px) {
-    height: 320px;
-  }
+
+const ImgContainer = styled.div`
+  position: relative;
+  width: 100%;
+  height: 320px;
   @media screen and (max-width: 600px) {
     height: 46vw;
   }
-`;
-const CartHeartContainer = styled.div`
-  display: flex;
-  justify-content: space-between;
   //width: 260px;
 `;
-const Cart = styled.img`
-  //width: 260px;
-  width: 60%;
-  height: 60%;
-`;
+
 const CartContainer = styled.div`
-  z-index: 99;
-  //width: 260px;
+  position: absolute;
   display: flex;
-  align-items: center;
   justify-content: center;
-  width: 30%;
-  height: 90%;
+  align-items: center;
+  width: 50px;
+  height: 50px;
   border-radius: 100%;
   background-color: #4aa8d8;
+  opacity: 0.7;
+  bottom: 5px;
+  left: 5px;
 `;
-const Heart = styled.img`
-  //width: 260px;
 
-  width: 30%;
-  height: 90%;
-`;
 const Image = styled.img`
   //width: 260px;
   width: 100%;
-  height: 258px;
-  border-radius: 10px;
+  height: 320px;
   // border-radius: 10px;
   z-index: 2;
   @media screen and (min-width: 1600px) {
@@ -141,14 +124,14 @@ const Name = styled.div`
   margin-right: auto;
   word-break: break-word;
   text-align: left;
-  font-size: 20px;
+  font-size: 17px;
 `;
 
 const Price = styled.div`
   font-family: NotoSansBold;
   //font-family: NotoSans;
   color: #4aa8d8;
-  font-size: 30px;
+  font-size: 17px;
   margin-top: 5px;
   width: 260px;
   margin-left: auto;
@@ -158,21 +141,5 @@ const Price = styled.div`
     // width: 100%;
   }
 `;
-const Date = styled.div`
-  width: 100%;
-  margin-left: auto;
-  margin-right: auto;
-  font-size: 2rem;
-  text-align: center;
-  color: white;
-`;
 
-const People = styled.div`
-  width: 260px;
-  margin-left: auto;
-  margin-right: auto;
-  font-size: 2rem;
-  text-align: center;
-  color: white;
-`;
 export default SliderItem;

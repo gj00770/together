@@ -4,31 +4,37 @@ import { QueryClient, QueryClientProvider, useQuery } from "react-query";
 import styled from "styled-components";
 import LoadingSliderItem from "./LoadingSlideritem";
 //import { useProduct } from "../hook/useProduct";
-import Carosel, { CaroselRef } from "../../../components/carosel";
+import Carosel, { CaroselRef } from "../../../components/Carosel";
 //   1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20,
 // ];
 const NUM = ["1", "2", "3", "4", "5", "6"];
-import Item from "../../../components/SliderItem";
-interface Product {
-  id: number;
-  productName: string;
-  itemImg: string;
-  itemInfo: string;
-  price: number;
-  end_date: number;
+interface CategoryList {
+  화장품: string;
+  의류: string;
+  가전: string;
+  식품: string;
 }
+const CategorySummary: CategoryList = {
+  화장품: "내 피부 관리를 위한 아이템",
+  의류: "이런옷 어때요?",
+  가전: "집안의 핫 아이템",
+  식품: "식탁위 단골 재료",
+};
+import Item from "../../../components/SliderItem";
+import axios from "axios";
+import { Product } from "../../../types/Product";
+
 interface Carosel {
   category: string;
 }
-function useProductList(category: Carosel) {
+function useProductList(category: string) {
   const caroselRef = useRef<CaroselRef>(null);
   const fetchData = async () => {
-    const result = await (
-      await fetch(`http://localhost:5000/product/findcat/${category}`)
-    ).json();
-
-    return result;
-    console.log(result);
+    const { data } = await axios.get(
+      `http://localhost:5000/product/findcarosel/${category}`,
+      {}
+    );
+    return data;
   };
   const { isLoading, isError, data, error } = useQuery(
     `${category}`,
@@ -37,23 +43,21 @@ function useProductList(category: Carosel) {
 
   return { ref: caroselRef, value: data, loading: isLoading };
 }
-
-function ProductCarosel<Carosel>(props: any) {
-  const { ref, value, loading } = useProductList(props.category);
+interface Props {
+  category: string;
+}
+function ProductCarosel({ category }: Props) {
+  const { ref, value, loading } = useProductList(category);
   const router = useRouter();
-  const { id } = router.query;
   // if (loading) {
   //   return <div>.../sdsd</div>;
   // }
   return (
-    <div style={{ marginBottom: "30px" }}>
+    <div style={{ marginBottom: "30px", marginTop: "120px" }}>
       <NameContainer>
-        <Name>{props.category} </Name>
-        <ViewMore
-          onClick={() => router.push(`/goods/?category=${props.category}`)}
-        >
-          더보기
-        </ViewMore>
+        <Name onClick={() => router.push(`/goods/?category=${category}`)}>
+          {CategorySummary[category]}{" "}
+        </Name>
       </NameContainer>
       <ArrowProductContainer>
         <ArrowRight onClick={() => ref.current?.next()}> &gt;</ArrowRight>
@@ -85,19 +89,22 @@ const ArrowProductContainer = styled.div`
     // border: 1px solid black;
   }
   @media screen and (max-width: 600px) {
-    height: 70.166667vw;
-    border: 1px solid black;
   }
 `;
 const NameContainer = styled.div`
   width: 90vw;
   max-width: 1120px;
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
 `;
 const Name = styled.div`
-  font-size: 52px;
-  font-family: NotoSansBold;
+  font-size: 32px;
+  margin-bottom: 24px;
+  font-family: NotoSans;
+  cursor: pointer;
+  @media screen and (max-width: 600px) {
+    font-size: 22px;
+  }
 `;
 const ViewMore = styled.div`
   cursor: pointer;

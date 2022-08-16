@@ -2,9 +2,11 @@ import React, { useState, useEffect, useRef } from "react";
 import styled from "styled-components";
 const arr = [1, 2, 3, 4, 5];
 const dummyNumArrColor = ["pink", "green", "pink", "green", "yellow"];
-import Carosel2, { CaroselRef } from "./carosel";
-
-function CaroselEle(props: any) {
+import Carosel2, { CaroselRef } from "./Carosel";
+interface Props {
+  number: number;
+}
+function CaroselEle(props: Props) {
   return (
     <CaroselEleS
       style={{ backgroundColor: ` ${dummyNumArrColor[props.number - 1]}` }}
@@ -34,8 +36,7 @@ export default InfinityCarosel;
 const CaroselContainer = styled.div`
   //display: flex;
   max-width: 1900px;
-  max-height: 390px;
-  margin: 20px;
+  max-height: 440px;
   overflow-x: hidden;
   width: 100vw;
   height: 30vw;
@@ -80,9 +81,9 @@ const CaroselEleS = styled.img`
   flex: none;
   box-sizing: content-box;
   width: 100vw;
-  height: 30vw;
+  //height: 30vw;
   max-width: 1900px;
-  max-height: 390px;
+  //max-height: 3px;
 `;
 
 const CaroselList = styled.div`

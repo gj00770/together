@@ -1,37 +1,57 @@
 import axios from "axios";
 import { useRouter } from "next/router";
-import React, { useState } from "react";
-import { useQuery } from "react-query";
+import React, { useEffect, useState } from "react";
+import { useInfiniteQuery, useQuery } from "react-query";
 import styled from "styled-components";
 import ReplyComPonent from "./reply";
 import { ReplyType } from "../../../types/Reply";
 import LoadingReply from "./loadingReply";
-function getReply(id: any) {
-  const getReplyWithAxios = async () => {
-    const { data } = await axios.get(
-      `http://localhost:5000/product/${id}/reply`
-    );
-    return data;
-  };
+import { flatMap } from "lodash";
 
-  const query = useQuery(`Reply${id}`, getReplyWithAxios);
-  return { data: query.data, isLoading: query.isLoading };
+function useReply(id: number) {
+  const query = useInfiniteQuery(
+    `reply${id}`,
+    async ({ pageParam = 0 }) => {
+      const { data } = await axios.get<{ item: ReplyType[]; count: number }>(
+        `http://localhost:5000/product/${id}/reply`,
+        {
+          params: { page: pageParam },
+        }
+      );
+      return { data: data, nextPage: pageParam + 1 };
+    },
+    {
+      getNextPageParam: (lastPage) => {
+        return lastPage.nextPage;
+      },
+    }
+  );
+  const data = query.data;
+  console.log(data);
+  return {
+    data: flatMap(data?.pages.map(({ data }) => data.item)),
+    isLoading: query.isLoading,
+    refetch: query.refetch,
+    isFetching: query.isFetching,
+    fetchNextPage: query.fetchNextPage,
+  };
 }
 
 function ReplyContainer() {
-  const [overFlowY, setOverFlowY] = useState("hidden");
   const [showButton, setShowButton] = useState(false);
   const [reply, setReply] = useState("");
   const router = useRouter();
   const { id } = router.query;
-  const { data, isLoading } = getReply(id);
-  // console.log(reply2);
+  const [fetching, setFetching] = useState(false);
+  const { data, isLoading, refetch, isFetching, fetchNextPage } = useReply(
+    Number(id)
+  );
+  console.log(data);
   const focusEvent = () => {
     setShowButton(!showButton);
-    console.log("hi");
   };
-  const onEnter = (e: React.KeyboardEvent) => {
-    console.log(e);
+
+  const onEnter = async (e: React.KeyboardEvent) => {
     if (e.key === "Enter") {
       const token = localStorage.getItem("accessToken");
       axios.post(
@@ -41,27 +61,51 @@ function ReplyContainer() {
           headers: { Authorization: `Bearer ${token}` },
         }
       );
-      setShowButton(false);
-      setReply("");
+      await setShowButton(false);
+      await setReply("");
+      await refetch();
     }
   };
+
   const onChange = (
     e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>
   ) => {
     setReply(e.target.value);
   };
-  const onClick = () => {
+
+  const onClick = async () => {
     const token = localStorage.getItem("accessToken");
-    axios.post(
+    await axios.post(
       `http://localhost:5000/product/${id}/reply`,
       { content: reply },
       {
         headers: { Authorization: `Bearer ${token}` },
       }
     );
-    setShowButton(false);
-    setReply("");
+    await setShowButton(false);
+    await setReply("");
+    await refetch();
   };
+
+  const handleScroll = () => {
+    const scrollHeight = document.documentElement.scrollHeight;
+    const scrollTop = document.documentElement.scrollTop;
+    const clientHeight = document.documentElement.clientHeight;
+    if (scrollTop + clientHeight + 1 >= scrollHeight && fetching === false) {
+      // 페이지 끝에 도달하면 추가 데이터를 받아온다
+      fetchNextPage();
+    }
+  };
+
+  useEffect(() => {
+    // scroll event listener 등록
+    window.addEventListener("scroll", handleScroll);
+    return () => {
+      // scroll event listener 해제
+      window.removeEventListener("scroll", handleScroll);
+    };
+  });
+
   return (
     <ReplyContainerContainer>
       <ReplyComposeContainer>
@@ -71,7 +115,6 @@ function ReplyContainer() {
             placeholder="댓글을입력해주세요"
             value={reply}
             onFocus={focusEvent}
-            onBlur={focusEvent}
             onChange={onChange}
             onKeyDown={onEnter}
           ></Compose>
@@ -79,7 +122,7 @@ function ReplyContainer() {
           {showButton ? (
             <ButtonContainer>
               <Button onClick={onClick}>확인</Button>
-              <Button>취소</Button>
+              <Button onClick={() => refetch()}>취소</Button>
             </ButtonContainer>
           ) : null}
         </div>
@@ -132,7 +175,6 @@ const Compose = styled.textarea`
   resize: none;
   width: 100%;
   border: none;
-  font-size: 1rem;
 `;
 const ReplyContainerContainer = styled.div`
   // border: 1px solid black;

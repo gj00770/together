@@ -6,14 +6,11 @@ import SearchIcon from "../svgs/searchIcon.svg";
 function ComboBox() {
   const [inputValue, setInputValue] = useState("");
   const router = useRouter();
-  const handleInputValue = (e: any) => {
-    console.log(e.target.value);
+  const handleInputValue = (e: React.ChangeEvent<HTMLInputElement>) => {
     setInputValue(e.target.value);
   };
-  const handleKeyDown = (e: any) => {
-    console.log(e);
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
     if (e.key === "Enter") {
-      console.log("do validate");
       router.push(`/goods/?search=${inputValue}`);
     }
   };

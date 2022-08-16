@@ -1,16 +1,16 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import UserInfo from "./components/UserInfo";
-import MyCartItemContainer from "./components/MyCartItemContainer";
-import LikeItemCointainer from "./components/LikeItemContainer";
+import LikeItemCointainer from "./components/PurchaseItemContainer";
 import AdressList from "./components/AdressList";
 import ArrowRight from "../../svgs/arrow-right-solid.svg";
 import ArrowLeft from "../../svgs/arrow-left-solid.svg";
+
 function MyPage() {
   const [curTab, setCurTab] = useState(TabId.MYPAGE);
   const [isOn2, setisOn] = useState(false);
 
-  console.log(isOn2);
+  isOn2;
   return (
     <MyPageContainer>
       <SliderContainer isOn={isOn2}>
@@ -27,7 +27,7 @@ function MyPage() {
             >
               {LABEL_BY_TAB[item]}
               <ArrowRight
-                width="24px"
+                width="14px"
                 fill={item === curTab ? "#4aa8d8" : null}
               />
             </TabMenuItem>
@@ -48,19 +48,16 @@ function MyPage() {
 
 enum TabId {
   MYPAGE = "mypage",
-  CART_ITEM = "cartItem",
   BUY_LIST = "buyList",
   ADRESS_LIST = "adressList",
 }
 const LABEL_BY_TAB = {
   [TabId.MYPAGE]: "유저정보",
-  [TabId.CART_ITEM]: "장바구니",
   [TabId.BUY_LIST]: "구매목록",
   [TabId.ADRESS_LIST]: "주소목록",
 };
 const CONTENT_BY_TAB = {
   [TabId.MYPAGE]: <UserInfo />,
-  [TabId.CART_ITEM]: <MyCartItemContainer />,
   [TabId.BUY_LIST]: <LikeItemCointainer />,
   [TabId.ADRESS_LIST]: <AdressList />,
 };
@@ -86,8 +83,8 @@ const MyPageContainer = styled.div`
   @media screen and (max-width: 800px) {
     width: 100vw;
     position: relative;
-    overflow-x: hidden;
-    height: 700px;
+    //overflow-x: hidden;
+    overflow-y: none;
   }
 `;
 const Tab = styled.div`
@@ -118,17 +115,14 @@ const TabMenuItem = styled.div<{ active: boolean }>`
   //width: 33.3333%;
   width: 200px;
   height: 56px;
-  font-size: 20px;
-  line-height: 40px;
-  border: 0.3px solid #d3d3d3;
-  background-color: ${(props) =>
-    props.active ? "rgb(235, 229, 229) " : "white"};
+  font-size: 14px;
+  line-height: 55px;
+  border: 1px solid rgb(242, 242, 242);
+  background-color: ${(props) => (props.active ? "#fafafa " : "white")};
   color: ${(props) => (props.active ? "#4aa8d8 " : "rgb(102, 102, 102);")};
   @media screen and (max-width: 800px) {
     width: 100vw;
     height: 90px;
-    font-size: 18px;
-    font-size: 32px;
     line-height: 73px;
   }
 `;

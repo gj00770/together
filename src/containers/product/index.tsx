@@ -8,10 +8,6 @@ import Summary from "./components/Summary";
 import { useProductById } from "../../hooks/useProductById";
 
 function Product() {
-  // const id = Router.query.id;
-  //Router.query["id-1234"] === "1234";
-  //const id = new URLSearchParams(document.location.search).get("?id");
-  //console.log(id);
   const router = useRouter();
   const { id } = router.query;
   const product = useProductById(id);
@@ -70,6 +66,7 @@ const SummaryTab = styled.div`
   justify-content: space-between;
   font-size: 24px;
   position: sticky;
+  top: 0;
   @media screen and (max-width: 700px) {
     width: 100%;
   }

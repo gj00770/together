@@ -5,7 +5,7 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import LoadingSpinner from "../../../components/loading/LoadingSpinner";
 import { useUser } from "../../../hooks/useUser";
-import { updateUserProfile } from "../../../remotes/user";
+import { updateUserNickName, updateUserProfile } from "../../../remotes/user";
 import Pencile from "../../../svgs/pen-solid.svg";
 function UserInfo() {
   const user = useUser();
@@ -14,39 +14,20 @@ function UserInfo() {
   const [userImage, setUserImage] = useState("");
   const [openNickName, setopenNickName] = useState<boolean>(false);
   const [addAddress, setAddAddress] = useState<boolean>(false);
-  const [isEditModalOpen, setIsEditModalOpen] = useState<boolean>(false);
+  const [inputvalue, setInputvalue] = useState<string>("");
 
-  console.log("user", user);
-  const router = useRouter();
-  const onComplete = (data: any) => {
-    console.log(data);
-    setCurAddr(data.address);
-    closePostHandler();
-    setAddAddress(true);
-  };
-
-  const closePostHandler = () => {
-    setOpenPostcode(false);
-  };
-
-  const closeAddAddressHandler = () => {
-    setAddAddress(false);
-    console.log(isEditModalOpen);
-  };
   const changeProfileImage = (e: any) => {
-    console.log(e.target.files[0].name);
     //s3 로구현
     setUserImage(URL.createObjectURL(e.target.files[0]));
-    console.log("123123", URL.createObjectURL(e.target.files[0]));
     updateUserProfile(e.target.files[0]);
+  };
+  const clickNickName = async () => {
+    //s3 로구현
+    await setopenNickName(!openNickName);
+    await updateUserNickName(inputvalue);
+    await user.refetch();
+  };
 
-    console.log("hi");
-  };
-  const logOut = () => {
-    localStorage.removeItem("accessToken");
-    user.refetch();
-    router.push("/");
-  };
   if (user.isLoading) {
     return (
       <>
@@ -58,7 +39,7 @@ function UserInfo() {
   return (
     <UserInfoContainer>
       <div>
-        <ShippingAddress>유저정보111</ShippingAddress>
+        <ShippingAddress>유저정보</ShippingAddress>
       </div>
 
       <hr />
@@ -75,7 +56,7 @@ function UserInfo() {
           />
           <label htmlFor="imageFile">
             <IconImage
-              src={userImage === "" ? user.data.profile_image : userImage}
+              src={userImage === "" ? user.data?.profile_image : userImage}
             />
           </label>
         </UserNameImgContainer>
@@ -84,15 +65,18 @@ function UserInfo() {
       <InfoContainer>
         <div style={{ display: "flex" }}>
           {openNickName ? (
-            <InputNickNameHolder autoFocus type="text"></InputNickNameHolder>
+            <InputNickNameHolder
+              autoFocus
+              type="text"
+              value={inputvalue}
+              onChange={(e) => setInputvalue(e.target.value)}
+            ></InputNickNameHolder>
           ) : (
-            <UserName>{user.data.nickname}</UserName>
+            <UserName>{user.data?.nickname}</UserName>
           )}
 
           {openNickName ? (
-            <UserNameButton onClick={() => setopenNickName(!openNickName)}>
-              확인
-            </UserNameButton>
+            <UserNameButton onClick={clickNickName}>확인</UserNameButton>
           ) : (
             <Pencile
               width="24"
@@ -124,7 +108,7 @@ const UserInfoContainer = styled.div`
   width: 67vw;
 
   @media screen and (max-width: 800px) {
-    width: 100vw;
+    width: 83vw;
   }
 `;
 const UserNickNameIcon = styled.div`
@@ -158,6 +142,7 @@ const UserName = styled.div`
   height: 30px;
   text-align: center;
   border: 1px solid grey;
+  margin-left: 30px;
 `;
 const UserNameButton = styled.button`
   width: 100px;
@@ -173,22 +158,3 @@ const UserNameImgContainer = styled.div`
 `;
 const InputNickNameHolder = styled.input``;
 export default UserInfo;
-
-// function func(arg: any) {
-//   if (typeof arg !== "object") {
-//     return;
-//   }
-//   console.log(arg.test.abc);
-// }
-
-// function func2(arg: unknown) {
-//   if (typeof arg !== "object" || arg == null) {
-//     return;
-//   }
-//   const obj = arg as Record<string, unknown>;
-//   const test = obj.test;
-//   if (typeof test !== 'object' || test == null) {
-//     return;
-//   }
-//   console.log(test.abc);
-// }

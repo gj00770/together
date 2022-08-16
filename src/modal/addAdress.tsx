@@ -1,15 +1,16 @@
 import DaumPostcode from "react-daum-postcode";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import axios from "axios";
 import router from "next/router";
 interface Address {
-  closeEditModal: any;
-  address: string[];
+  // address: string[];
+  closeAddAddressHandler: () => void;
+  cityName: string | undefined;
+  refetch: () => void;
 }
-function AddAdress(props: any) {
+function AddAdress(props: Address) {
   // const colseHandler = (data: any) => {
-  //   console.log(data);
   //   setCurAddr(data.address);
   // };
   const [name, setName] = useState<string>();
@@ -25,7 +26,6 @@ function AddAdress(props: any) {
   const HandleRequest = (e: React.ChangeEvent<HTMLInputElement>) => {
     setRequest(e.target.value);
   };
-  console.log(props.address);
 
   const updateUser = async () => {
     const accessToken = localStorage.getItem("accessToken");
@@ -41,11 +41,23 @@ function AddAdress(props: any) {
         headers: { Authorization: `Bearer ${accessToken}` },
       }
     );
-    console.log("hi");
     await props.closeAddAddressHandler();
     await props.refetch();
     return data;
   };
+  useEffect(() => {
+    document.body.style.cssText = `
+    position: fixed;
+    top: -${0}px;
+    overflow-y: scroll;`;
+    // width: 100%;`;
+    return () => {
+      const scrollY = document.body.style.top;
+      document.body.style.cssText = "";
+      window.scrollTo(0, parseInt(scrollY || "0", 10) * -1);
+    };
+  }, []);
+
   return (
     <AddAdressBackground>
       <AddAdresscontainer>

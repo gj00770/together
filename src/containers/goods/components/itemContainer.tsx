@@ -1,39 +1,86 @@
+import axios from "axios";
+import { flatMap } from "lodash";
 import { useRouter } from "next/router";
-import React from "react";
-import { useQuery } from "react-query";
+import React, { useEffect, useState } from "react";
+import { useInfiniteQuery } from "react-query";
 import styled from "styled-components";
 import { Product } from "../../../types/Product";
 import Item from "./item";
-const dummyArr = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+
+function useProductList(
+  category: string[] | string | undefined,
+  search: string[] | string | undefined,
+  status: string[] | string | undefined
+) {
+  console.log(category, search, status);
+
+  const query = useInfiniteQuery(
+    category
+      ? `category${category}`
+      : search
+      ? `search${search}`
+      : `status${status}`,
+    async ({ pageParam = 0 }) => {
+      const { data } = await axios.get<{ item: Product[]; count: number }>(
+        category
+          ? `http://localhost:5000/product/findcategory/${category}`
+          : search
+          ? `http://localhost:5000/product/findsearch/${search}`
+          : `http://localhost:5000/product/findstatus/${status}`,
+
+        {
+          params: { page: pageParam },
+        }
+      );
+      return { data: data, nextPage: pageParam + 1 };
+    },
+    {
+      getNextPageParam: (lastPage) => {
+        return lastPage.nextPage;
+      },
+    }
+  );
+  const data = query.data;
+  console.log(data);
+  console.log(flatMap(data?.pages.map(({ data }) => data)));
+  return {
+    data: flatMap(data?.pages.map(({ data }) => data.item)), // 총개수 flat
+    isLoading: query.isLoading,
+    refetch: query.refetch,
+    isFetching: query.isFetching,
+    fetchNextPage: query.fetchNextPage,
+  };
+}
+
 function ItemContainer() {
   const router = useRouter();
-  const { category } = router.query;
-  const { search } = router.query;
-  const fetchData = async () => {
-    const result = await (
-      await fetch(`http://localhost:5000/product/findcat/${category}`)
-    ).json();
-    return result;
-    console.log(result);
-  };
+  const { category, search, status } = router.query;
+  const [fetching, setFetching] = useState(false);
+  const { data, isLoading, refetch, isFetching, fetchNextPage } =
+    useProductList(category, search, status);
 
-  const fetchData2 = async () => {
-    const result = await (
-      await fetch(`http://localhost:5000/product/findsearch/${search}`)
-    ).json();
-    return result;
-    console.log(result);
-  };
-
-  const { isLoading, isError, data, error } = useQuery(
-    category ? `${category}bys` : `search${search}`,
-    category ? fetchData : fetchData2
-  );
+  useEffect(() => {
+    const handleScroll = () => {
+      const scrollHeight = document.documentElement.scrollHeight;
+      const scrollTop = document.documentElement.scrollTop;
+      const clientHeight = document.documentElement.clientHeight;
+      console.log(scrollTop + clientHeight, scrollHeight);
+      if (scrollTop + clientHeight + 1 >= scrollHeight && fetching === false) {
+        // 페이지 끝에 도달하면 추가 데이터를 받아온다
+        fetchNextPage();
+      }
+    };
+    // scroll event listener 등록
+    window.addEventListener("scroll", handleScroll);
+    return () => {
+      // scroll event listener 해제
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
   if (isLoading) {
     return <div>....loading</div>;
   }
-  console.log(category);
-  console.log(search);
+  console.log(data);
   return (
     <ItemContainerContainer>
       {data.length > 0 ? (
@@ -61,6 +108,9 @@ const ItemContainerContainer = styled.div`
   }
   @media screen and (max-width: 800px) {
     grid-template-columns: 1fr 1fr;
+  }
+  @media screen and (max-width: 600px) {
+    grid-template-columns: 1fr;
   }
 `;
 const ImageNotFound = styled.img`

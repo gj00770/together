@@ -3,15 +3,16 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import { formatComma } from "../../../utils/formatComma";
 import { Product } from "../../../types/Product";
-
-function Item(props: { data: Product }, key: number) {
+import Cart from "../../../svgs/cart-shopping-solid.svg";
+import { createCartItem } from "../../../remotes/cartItem";
+function Item(props: { data: Product }) {
   const [border, setBorder] = useState("0.5px solid #D3D3D3");
   const [opacity, setOpacity] = useState("0.5px solid #D3D3D3");
   const [backgroundColor, setBackgroundColor] = useState("none");
   const [mouseOver, setMoseOver] = useState(false);
   const router = useRouter();
   const onMouseEvent = () => {
-    console.log("his");
+    ("his");
     setMoseOver(true);
     // setBackgroundColor("rgba(0, 0, 0, 0.5)");
   };
@@ -20,7 +21,10 @@ function Item(props: { data: Product }, key: number) {
     setMoseOver(false);
     // setBackgroundColor("rgba(0, 0, 0, 0.5)");
   };
-
+  const addCartItem = (e: React.SyntheticEvent<EventTarget>) => {
+    e.stopPropagation();
+    createCartItem(props.data.id, 1);
+  };
   return (
     <ItemContainer
       onMouseEnter={onMouseEvent}
@@ -32,31 +36,20 @@ function Item(props: { data: Product }, key: number) {
       }}
       onClick={() => router.push(`/product/?id=${props.data.id}`)}
     >
-      <Image src={`${props.data.itemImg}`} />
+      <ImageCartContainer>
+        <Image src={`${props.data.itemImg}`} />
+        <CartContainer onClick={addCartItem}>
+          <Cart fill="white" width="28px" />
+        </CartContainer>
+      </ImageCartContainer>
       <Name>{props.data.productName}</Name>
-      <Price>{props.data.price}</Price>
-
-      {mouseOver ? (
-        <MouseOverContainer>
-          <div></div>
-          <div>
-            <Date>{props.data.end_date}</Date>
-          </div>
-          <CartHeartContainer>
-            <CartContainer>
-              <Cart src={`mockImage/shopping-cart.png`} />
-            </CartContainer>
-            <Heart src={`mockImage/heart.png`} />
-          </CartHeartContainer>
-        </MouseOverContainer>
-      ) : null}
+      <Price>{formatComma(props.data.price)}원</Price>
     </ItemContainer>
   );
 }
 const ItemContainer = styled.div`
-  width: 260px;
-  height: 434px;
-  //background-color: rgba(0, 0, 0, 0.5);
+  width: 338px;
+  //background-color: rgba(8, 7, 7, 0.5);
   cursor: pointer;
   display: flex;
   flex-direction: column;
@@ -65,30 +58,35 @@ const ItemContainer = styled.div`
   /* opacity: 0.3;
   background-color: grey; */
   z-index: 7;
+  margin-bottom: 50px;
 `;
-
+const ImageCartContainer = styled.div`
+  //width: 260px;
+  position: relative;
+`;
 const Image = styled.img`
   //width: 260px;
-  width: 260px;
-  height: 320px;
-  border-radius: 10px;
+  width: 338px;
+  height: 445px;
   z-index: 2;
+  // border: 1px solid #d3d3d3;
 `;
 const Name = styled.div`
   margin-top: 10px;
   width: 260px;
-  margin-left: auto;
   margin-right: auto;
   word-break: break-word;
   text-align: left;
+  font-size: 20px;
 `;
 const Price = styled.div`
   margin-top: 5px;
   width: 260px;
-  margin-left: auto;
   margin-right: auto;
   text-align: left;
-  font-size: 25px;
+  font-size: 18px;
+  font-family: NotosansBold;
+  color: #4aa8d8;
 `;
 const Date = styled.div`
   width: 260px;
@@ -127,25 +125,24 @@ const CartHeartContainer = styled.div`
   justify-content: space-between;
   //width: 260px;
 `;
-const Cart = styled.img`
-  //width: 260px;
-  width: 60%;
-  height: 60%;
-`;
-const CartContainer = styled.div`
-  //width: 260px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
-  height: 100%;
-  border-radius: 100%;
-  background-color: #4aa8d8;
-`;
+
 const Heart = styled.img`
   //width: 260px;
 
   width: 30%;
   height: 90%;
+`;
+const CartContainer = styled.div`
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 50px;
+  height: 50px;
+  border-radius: 100%;
+  background-color: #4aa8d8;
+  opacity: 0.7;
+  bottom: 10px;
+  left: 10px;
 `;
 export default Item;

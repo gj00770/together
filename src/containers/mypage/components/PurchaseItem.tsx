@@ -1,22 +1,23 @@
-import React, { useState } from "react";
+import React from "react";
 import styled from "styled-components";
-
-function OrderItem(props: any) {
-  //const queryClient = useQueryClient();
-
-  const [count, setCount] = useState<number>(props.data.count);
-
+import { PurchaseItem } from "../../../types/PurchaseItem";
+import Product from "../../product";
+import Xbutton from "../../../svgs/x-solid.svg";
+interface Props {
+  product: PurchaseItem;
+}
+function PurchaseItemList(props: Props) {
   return (
-    <OrderItemContainer>
+    <MyCartItemContainer>
       <FirstContainer>
-        <Image src={props.data.product.itemImg} />
-        <ItemName>{props.data.product.productName}</ItemName>
+        <Image src={props.product.product.itemImg} />
+        <ItemName>{props.product.product.productName}</ItemName>
       </FirstContainer>
       <SecondContainer>
-        <ArrowContainer>{props.data.count}개</ArrowContainer>
-        <ItemPrice>{props.data.product.price}</ItemPrice>
+        <ArrowContainer>{props.product.count}개</ArrowContainer>
+        <ItemPrice>{props.product.product.price}</ItemPrice>
       </SecondContainer>
-    </OrderItemContainer>
+    </MyCartItemContainer>
   );
 }
 
@@ -48,7 +49,7 @@ const SecondContainer = styled.div`
   }
 `;
 
-const OrderItemContainer = styled.div`
+const MyCartItemContainer = styled.div`
   position: relative;
   width: 80vw;
   max-width: 720px;
@@ -153,5 +154,4 @@ const ArrowNumber = styled.button`
     width: 20px;
   }
 `;
-
-export default OrderItem;
+export default PurchaseItemList;

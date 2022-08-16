@@ -4,16 +4,14 @@ import router from "next/router";
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 
-async function naverLogin(accessToken: string) {
-  console.log(accessToken);
+async function naverLogin(accessToken: string | null) {
   const token = await axios.post("http://localhost:5000/user/naver-login", {
     accessToken: accessToken,
   });
 
   localStorage.setItem("accessToken", token.data);
 }
-async function kakaoLogin(accessToken: string) {
-  console.log(accessToken);
+async function kakaoLogin(accessToken: string | null) {
   const token = await axios.post("http://localhost:5000/user/kakao-login", {
     accessToken: accessToken,
   });
@@ -37,14 +35,6 @@ function Auth() {
 
   useEffect(() => {
     //setClientState("zkzkdh");
-    console.log("4544", window.location.href);
-    console.log(localStorage.getItem("accessToken"));
-    console.log(
-      "access",
-      new URLSearchParams(window.location.href.split("#")[1]).get(
-        "access_token"
-      )
-    );
 
     if (window.location.href.includes("access_token")) {
       const accessToken =
@@ -52,8 +42,7 @@ function Auth() {
         new URLSearchParams(window.location.href.split("#")[1]).get(
           "access_token"
         );
-      console.log("5555555", window.location.href);
-      console.log("5555555", accessToken);
+
       window.localStorage.setItem(
         "token",
         window.location.href.split("=")[1].split("&")[0] ?? "none"
@@ -66,14 +55,14 @@ function Auth() {
       const accessToken =
         //  "null" ||
         new URLSearchParams(window.location.href.split("?")[1]).get("code");
-      console.log("232323", accessToken);
       window.localStorage.setItem(
         "token",
         window.location.href.split("=")[1].split("&")[0] ?? "none"
       );
 
       kakaoLogin(accessToken);
-      //   router.push("/");
+
+      router.push("/");
     }
   }, []);
   return <MainContainer>로딩중입니다~~~</MainContainer>;

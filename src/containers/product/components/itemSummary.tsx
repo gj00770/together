@@ -1,11 +1,14 @@
 import React, { useState } from "react";
 import styled from "styled-components";
+import { createCartItem } from "../../../remotes/cartItem";
+import { Product } from "../../../types/Product";
 import { formatComma } from "../../../utils/formatComma";
 import { useSlashDate } from "../../../utils/useSlashDate";
-function ItemSummary(props: any) {
+interface Props {
+  data: Product;
+}
+function ItemSummary(props: Props) {
   const [itemQauntity, setItemQuantity] = useState(1);
-  const [backgroundcart, setBackgroundcart] = useState("white");
-  const [backgroundpurchase, setBackgroundpurchase] = useState("white");
   const upClick = () => {
     setItemQuantity(itemQauntity + 1);
   };
@@ -14,6 +17,9 @@ function ItemSummary(props: any) {
     if (itemQauntity > 1) {
       setItemQuantity(itemQauntity - 1);
     }
+  };
+  const addCartItem = () => {
+    createCartItem(props.data.id, itemQauntity);
   };
   return (
     <ItemSummaryContainer>
@@ -33,20 +39,7 @@ function ItemSummary(props: any) {
             </Arrow>
           </ArrowContainer>
         </BuyQuantityContainer>
-        <CartBtn
-          style={{ backgroundColor: backgroundcart }}
-          onMouseEnter={() => setBackgroundcart("#4aa8d8")}
-          onMouseLeave={() => setBackgroundcart("white")}
-        >
-          장바구니
-        </CartBtn>
-        <PurchaseBtn
-          style={{ backgroundColor: backgroundpurchase }}
-          onMouseEnter={() => setBackgroundpurchase("#4aa8d8")}
-          onMouseLeave={() => setBackgroundpurchase("white")}
-        >
-          구매
-        </PurchaseBtn>
+        <PurchaseBtn onClick={addCartItem}>장바구니담기</PurchaseBtn>
       </FlexContainer>
     </ItemSummaryContainer>
   );
@@ -99,24 +92,12 @@ const ArrowContainer = styled.div`
   font-size: 24px;
   border: 1px solid #d3d3d3; ;
 `;
-const CartBtn = styled.button`
-  cursor: pointer;
-  border: 2px solid #4aa8d8;
-  color: black;
-  background-color: #fafafa;
-  font-family: NotoSansBold;
-  width: 44%;
-  font-size: 22px;
-  padding-bottom: 3px;
-  @media screen and (max-width: 700px) {
-    border: 1px solid #4aa8d8;
-  }
-`;
+
 const PurchaseBtn = styled.button`
   cursor: pointer;
-  background-color: #fafafa;
+  background-color: #4aa8d8;
   border: 2px solid #4aa8d8;
-  color: black;
+  color: white;
   font-family: NotoSansBold;
   width: 44%;
   font-size: 20px;
@@ -129,11 +110,8 @@ const DueDate = styled.div`
   font-size: 35px;
   font-family: NotoSansBold;
 `;
-const AcquiredPeople = styled.div`
-  font-size: 24px;
-`;
+
 const FlexContainer = styled.div`
   display: flex;
-  justify-content: space-between;
 `;
 export default ItemSummary;

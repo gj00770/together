@@ -6,6 +6,13 @@ import { ReplyType } from "../../../types/Reply";
 interface Props {
   data: ReplyType;
 }
+function formatData(params: Date) {
+  const string = params.toString();
+  let array = string.split("");
+  array.splice(10);
+  const returnString = array.join("");
+  return returnString;
+}
 function Reply(props: Props) {
   const [overFlowY, setOverFlowY] = useState("hidden");
   const [showButton, setShowButton] = useState(false);
@@ -17,8 +24,8 @@ function Reply(props: Props) {
       <IconImage src="mockImage/icon.jpeg" />
       <ReplySummary>
         <UserNameDateContianer>
-          <UserName>아무개</UserName>
-          <Date>2022/12/31</Date>
+          <UserName>{props.data.user.nickname}</UserName>
+          <Date>{formatData(props.data.time)}</Date>
         </UserNameDateContianer>
         <ReplyText>{props.data.content}</ReplyText>
       </ReplySummary>

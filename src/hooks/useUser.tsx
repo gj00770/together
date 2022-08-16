@@ -16,10 +16,11 @@ export function useUser() {
           }
         );
         return data;
-      } catch {
+      } catch (err) {
         // setUserImage(data.profile_image);
         //setNickName(data.nickname);
         // await new Promise((resolve) => setTimeout(resolve, 5000));
+        console.log(err);
         return null;
       }
     },

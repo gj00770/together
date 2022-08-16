@@ -70,10 +70,8 @@ export const Carosel = React.forwardRef<CaroselRef, Props>(function Carosel(
   const startAnimation = () => {};
 
   const next = () => {
-    console.log(count);
     const max = getMaxSlideCount();
     if (props.infinity === false) {
-      console.log(count);
       if (count == max) {
         setCount(0);
         api.start({
@@ -89,10 +87,8 @@ export const Carosel = React.forwardRef<CaroselRef, Props>(function Carosel(
         //setPosition(position + 100);
       }
     } else {
-      // console.log(count);
       if (count === children.length - 1) {
         // 마지막요소 10 11 12 13 14 마지막요소
-        console.log("hi");
         setCount(5); // counter 복기하고
         api.start({
           transform: `translateX(${4 * -100}%)`,
@@ -108,7 +104,6 @@ export const Carosel = React.forwardRef<CaroselRef, Props>(function Carosel(
         //   config: { duration: 100 },
         // });
       } else {
-        console.log(count);
         setCount(count + 1);
         api.start({
           transform: `translateX(${(count + 1) * -100}%)`,
@@ -120,7 +115,6 @@ export const Carosel = React.forwardRef<CaroselRef, Props>(function Carosel(
 
   const prev = () => {
     const max = getMaxSlideCount();
-    console.log("[rev");
     if (props.infinity === false) {
       if (count == 0) {
         setCount(max);
@@ -136,11 +130,8 @@ export const Carosel = React.forwardRef<CaroselRef, Props>(function Carosel(
         });
       }
     } else {
-      console.log(left);
-      console.log(children.length / 3);
       if (count === 0) {
         //  setInfinityLength(InfinityLength - 5);
-        console.log("hi");
         setCount(4); // counter 복기하고
         api.start({
           transform: `translateX(${5 * -100}%)`,
@@ -154,8 +145,6 @@ export const Carosel = React.forwardRef<CaroselRef, Props>(function Carosel(
       } else {
         const next = count - 1;
         setCount(next);
-        console.log(count);
-        console.log("hi");
         api.start({
           transform: `translateX(${next * -100}%)`,
           config: { duration: 300 },

@@ -1,22 +1,21 @@
 import Link from "next/link";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 //import useClientValue from "../hooks/useClientValue";
 import { useUser } from "../hooks/useUser";
-import LoginModal from "../modal/loginModal";
+import LoginModal, { useLoginModal } from "../modal/loginModal";
 import MenueList from "../modal/menueList";
 import MypageLogout from "../modal/MypageLogout";
 import DownArrow from "../svgs/caret-down-solid.svg";
 import HamburgerIcon from "../svgs/bars-solid.svg";
-import ComboBox from "./comboBox";
+import ComboBox from "./ComboBox";
+import { useRouter } from "next/router";
+import CartItemAlarm from "../modal/cartItemAlarm";
 //import userPersistence from "../hook/usePersistentContext";
 function Header() {
   //  const username = useClientValue("username", "");
-  //console.log("auth...", username);
   const { data: user, refetch: refetch } = useUser();
-  console.log(user);
-
-  const [isOpenModal, setIsOpenModal] = useState(false);
+  const router = useRouter();
   const [mouseOver, setMoseOver] = useState(false);
   const [mouseOverUser, setMoseOverUser] = useState(false);
   const onMouseHandler = () => {
@@ -26,19 +25,24 @@ function Header() {
   const outMouseHandler = () => {
     setMoseOver(false);
   };
-  const onClose = () => {
-    setIsOpenModal(!isOpenModal);
-  };
+
   const onMouseUserHandler = () => {
     setMoseOverUser(true);
   };
   const outMouseUserHandler = () => {
     setMoseOverUser(false);
   };
-
+  useEffect(() => {
+    setTimeout(() => {
+      refetch();
+    }, 500);
+    console.log("hi");
+  }, [user]);
+  const openLoginModal = useLoginModal();
   return (
     <HeaderContainer>
-      {isOpenModal ? <LoginModal onClose={onClose} /> : null}
+      {/* {isOpenModal ? <LoginModal onClose={onClose} /> : null} */}
+
       <SmallLine>
         {" "}
         {user ? (
@@ -53,21 +57,26 @@ function Header() {
             {mouseOverUser ? <MypageLogout refetch={refetch} /> : null}
           </Name>
         ) : (
-          <Login onClick={() => setIsOpenModal(true)}>로그인 </Login>
+          <Login onClick={() => openLoginModal()}>로그인 </Login>
         )}
       </SmallLine>
       <FirstHeader>
-        <Link href="/">
-          <LogoContainer>
-            <Logo>TOGETHER</Logo>
-            <KoreanLogo>투게더</KoreanLogo>
-          </LogoContainer>
-        </Link>
+        <LogoComboContainer>
+          <Link href="/">
+            <LogoContainer>
+              <Logo>TOGETHER</Logo>
+              <KoreanLogo>투게더</KoreanLogo>
+            </LogoContainer>
+          </Link>
 
-        <ComboBox />
-        <HamburgerContaienr>
-          <Cart src={`mockImage/shopping-cart.png`} />
-        </HamburgerContaienr>
+          <ComboBox />
+        </LogoComboContainer>
+        <Link href="/cartItem">
+          <div style={{ position: "relative" }}>
+            <Cart src={`mockImage/shopping-cart.png`} />
+            {/* <CartItemAlarm /> */}
+          </div>
+        </Link>
       </FirstHeader>
       <SecondHeader>
         {" "}
@@ -75,14 +84,21 @@ function Header() {
           onMouseEnter={onMouseHandler}
           onMouseLeave={outMouseHandler}
         >
-          <HamburgerIcon width="28" />
+          <HamburgerIcon width="18" />
           <Category>카테고리</Category>
           {mouseOver ? <MenueList /> : null}
         </MenueContainer>
         <CategoryContainer>
-          <Option>신상품</Option>
-          <Option>베스트</Option>
-          <Option>특가</Option>
+          <Option onClick={() => router.push(`/goods/?status=newItem`)}>
+            신상품
+          </Option>
+          <Option onClick={() => router.push(`/goods/?status=best`)}>
+            베스트
+          </Option>
+          <Option onClick={() => router.push(`/goods/?status=bestDeal`)}>
+            {" "}
+            특가
+          </Option>
         </CategoryContainer>
         <HamburgerContaienr></HamburgerContaienr>
       </SecondHeader>
@@ -91,9 +107,13 @@ function Header() {
 }
 const FirstHeader = styled.div`
   display: flex;
-  max-width: 1100px;
+  max-width: 1050px;
   width: 90vw;
   justify-content: space-between;
+  align-items: center;
+`;
+const LogoComboContainer = styled.div`
+  display: flex;
 `;
 const CategoryContainer = styled.div`
   font-family: NotoSans;
@@ -105,10 +125,11 @@ const CategoryContainer = styled.div`
   }
 `;
 const Option = styled.div`
+  cursor: pointer;
   font-family: NotoSans;
-  font-size: 22px;
+  font-size: 16px;
   width: 150px;
-  text-align: center;
+  text-align: left;
   @media screen and (max-width: 800px) {
     width: 70px;
   }
@@ -116,16 +137,19 @@ const Option = styled.div`
 const Category = styled.div`
   margin-left: 15px;
   font-family: NotoSans;
-  font-size: 22px;
+  font-size: 16px;
 `;
 const SecondHeader = styled.div`
   margin-top: 10px;
   margin-bottom: 20px;
   display: flex;
-  max-width: 1100px;
+  max-width: 1050px;
   width: 90vw;
   justify-content: space-between;
   align-items: center;
+  @media screen and (max-width: 800px) {
+    margin-bottom: 8px;
+  }
 `;
 
 const MenueContainer = styled.div`
@@ -137,13 +161,14 @@ const MenueContainer = styled.div`
 `;
 const LogoContainer = styled.div`
   display: flex;
+  cursor: pointer;
 `;
 const SmallLine = styled.div`
+  margin-top: 10px;
   max-width: 1100px;
   width: 90vw;
   display: flex;
   justify-content: flex-end;
-  margin-bottom: 12px;
 
   @media screen and (max-width: 800px) {
     display: none;
@@ -162,6 +187,9 @@ const HeaderContainer = styled.div`
   justify-content: center;
   align-items: center;
   // justify-content: space-between;
+  @media screen and (max-width: 800px) {
+    height: 110px;
+  }
 `;
 const Logo = styled.div`
   font-size: 39px;
@@ -173,6 +201,10 @@ const KoreanLogo = styled.div`
   font-size: 32px;
   color: #4aa8d8;
   font-family: NotoSans;
+  margin-right: 60px;
+  @media screen and (max-width: 800px) {
+    margin-right: 0px;
+  }
 `;
 const HamburgerContaienr = styled.div``;
 const Arrow = styled.div`
@@ -182,7 +214,8 @@ const Arrow = styled.div`
 const Login = styled.div``;
 
 const Cart = styled.img`
-  width: 40px;
+  width: 28px;
+  cursor: pointer;
 `;
 const Name = styled.div`
   cursor: pointer;

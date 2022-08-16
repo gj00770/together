@@ -2,20 +2,15 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import React, { useState } from "react";
 import styled from "styled-components";
-import MenueItem from "../components/menuItem";
+import MenueItem from "../components/MenuItem";
 interface Props {
   refetch: () => void;
 }
 function MypageLogout(props: Props) {
-  const [mouseOver, setMoseOver] = useState(false);
-  const onMouseHandler = () => {
-    console.log("his");
-    setMoseOver(true);
-  };
+  const [mouseOver, setMoseOver] = useState<string>();
+
   const router = useRouter();
-  const outMouseHandler = () => {
-    setMoseOver(false);
-  };
+
   const logOut = () => {
     localStorage.removeItem("accessToken");
     props.refetch();
@@ -25,11 +20,11 @@ function MypageLogout(props: Props) {
     <MypageLogoutContainer>
       <Link href="/mypage">
         <Menue
-          onMouseEnter={onMouseHandler}
-          onMouseLeave={outMouseHandler}
+          onMouseEnter={() => setMoseOver("mypage")}
+          onMouseLeave={() => setMoseOver(undefined)}
           style={{
-            backgroundColor: mouseOver ? "#d3d3d3" : "white",
-            color: mouseOver ? "#4aa8d8" : "grey",
+            backgroundColor: mouseOver === "mypage" ? "#d3d3d3" : "white",
+            color: mouseOver === "mypage" ? "#4aa8d8" : "grey",
           }}
         >
           마이페이지
@@ -38,11 +33,11 @@ function MypageLogout(props: Props) {
 
       <Menue
         onClick={logOut}
-        onMouseEnter={onMouseHandler}
-        onMouseLeave={outMouseHandler}
+        onMouseEnter={() => setMoseOver("logout")}
+        onMouseLeave={() => setMoseOver(undefined)}
         style={{
-          backgroundColor: mouseOver ? "#d3d3d3" : "white",
-          color: mouseOver ? "#4aa8d8" : "grey",
+          backgroundColor: mouseOver === "logout" ? "#d3d3d3" : "white",
+          color: mouseOver === "logout" ? "#4aa8d8" : "grey",
         }}
       >
         로그아웃
@@ -61,7 +56,7 @@ const MypageLogoutContainer = styled.div`
   border: 1px solid black;
 `;
 const Menue = styled.div`
-  margin-left: 10px;
+  text-align: center;
 `;
 
 export default MypageLogout;

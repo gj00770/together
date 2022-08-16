@@ -12,9 +12,7 @@ import UserIcon from "../svgs/user-solid.svg";
 //import userPersistence from "../hook/usePersistentContext";
 function Header() {
   //  const username = useClientValue("username", "");
-  //console.log("auth...", username);
   const { data: user, refetch: refetch } = useUser();
-  console.log(user);
 
   const [isOpenModal, setIsOpenModal] = useState(false);
   const [mouseOver, setMoseOver] = useState(false);
@@ -39,7 +37,7 @@ function Header() {
   return (
     <div>
       <HeaderContainer>
-        <Link href="category">
+        <Link href="/category">
           <a>
             <HamburgerIcon width="28" style={{ cursor: "pointer" }} />
           </a>
@@ -74,7 +72,6 @@ const HeaderContainer = styled.div`
   background-color: white;
   height: 80px;
   line-height: 40px;
-
   justify-content: space-around;
   align-items: center;
   @media screen and (min-width: 800px) {

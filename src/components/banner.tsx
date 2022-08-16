@@ -1,13 +1,7 @@
-import React, { useState } from "react";
+import React from "react";
 import styled from "styled-components";
-import Link from "next/link";
-import useClientValue from "../hooks/useClientValue";
 //import userPersistence from "../hook/usePersistentContext";
-function Banner({ login }: any) {
-  const username = useClientValue("username", "");
-  console.log("auth...", username);
-  console.log(login);
-  const [isLogin, setIsLogin] = useState(true);
+function Banner() {
   //const [asddd] = userPersistence("true");
   return (
     <BannerContainer>

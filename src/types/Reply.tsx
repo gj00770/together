@@ -1,10 +1,12 @@
 //import { User } from "./User";
 
+import { User } from "./User";
+
 export interface ReplyType {
   id: number;
   content: string;
   time: Date;
-  user: [];
+  user: User[];
 }
 //   @PrimaryGeneratedColumn()
 //   id: number;

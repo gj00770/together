@@ -1,10 +1,11 @@
 import DaumPostcode from "react-daum-postcode";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import axios from "axios";
 import { AddressEntity } from "../types/Address";
 import { useUser } from "../hooks/useUser";
 import Pencil from "../svgs/pen-solid.svg";
+import CloseButton from "../svgs/x-solid.svg";
 interface Props {
   onClose: () => void;
   address: AddressEntity | undefined;
@@ -13,10 +14,7 @@ interface Props {
 }
 function AddressDetailModal(props: Props) {
   const user = useUser();
-  // const colseHandler = (data: any) => {
-  //   console.log(data);
-  //   setCurAddr(data.address);
-  // };
+
   const [name, setName] = useState<string>();
   const [adressDetaile, setAdressDetaile] = useState<string>();
   const [request, setRequest] = useState<string>();
@@ -30,7 +28,6 @@ function AddressDetailModal(props: Props) {
   const HandleRequest = (e: React.ChangeEvent<HTMLInputElement>) => {
     setRequest(e.target.value);
   };
-  console.log(props.curAddr);
   const saveAddress = async () => {
     const accessToken = localStorage.getItem("accessToken");
     await axios.put(
@@ -49,10 +46,29 @@ function AddressDetailModal(props: Props) {
     await props.onClose();
     await user.refetch();
   };
+
+  useEffect(() => {
+    document.body.style.cssText = `
+    position: fixed;
+    top: -${0}px;
+    overflow-y: scroll;`;
+    // width: 100%;`;
+    return () => {
+      const scrollY = document.body.style.top;
+      document.body.style.cssText = "";
+      window.scrollTo(0, parseInt(scrollY || "0", 10) * -1);
+    };
+  }, []);
+
   return (
     <AddressDetaileBackground>
       <AddressDetailecontainer>
-        <CloseButton onClick={props.onClose}>x</CloseButton>
+        <CloseButton
+          onClick={props.onClose}
+          width="18px"
+          style={{ position: "absolute", top: "10px", right: "10px" }}
+          fill="#7777777"
+        />
         <InfoContainer>
           <PencilContainer>
             <TitleName>배송지수정</TitleName>
@@ -87,7 +103,6 @@ function AddressDetailModal(props: Props) {
   );
 }
 const AddressDetaileBackground = styled.div`
-  border: 1px solid black;
   top: 0;
   left: 0;
   position: absolute;
@@ -99,11 +114,7 @@ const AddressDetaileBackground = styled.div`
   align-items: center;
   flex-direction: column;
 `;
-const CloseButton = styled.div`
-  margin-left: auto;
-  cursor: pointer;
-  font-size: 40px;
-`;
+
 const InfoContainer = styled.div`
   display: flex;
   flex-direction: column;
@@ -111,6 +122,7 @@ const InfoContainer = styled.div`
   justify-content: center;
 `;
 const AddressDetailecontainer = styled.div`
+  position: relative;
   /* margin : 20px 20px 20px auto;
     width: 120px;
    
@@ -122,6 +134,7 @@ const AddressDetailecontainer = styled.div`
   width: 600px;
   background-color: white;
   height: 700px;
+
   @media screen and (max-width: 800px) {
     width: 100vw;
     height: 100vh;

@@ -6,7 +6,7 @@ import { formatComma } from "../../../utils/formatComma";
 import { useSlashDate } from "../../../utils/useSlashDate";
 
 function LoadingSliderItem() {
-  //console.log("2342342", useSlashDate(img.img.end_date), img.img.end_date);
+  //("2342342", useSlashDate(img.img.end_date), img.img.end_date);
   return (
     <LoadingSliderItemContainer>
       <Image />

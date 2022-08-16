@@ -7,7 +7,6 @@ interface propsType {
 function MenueItem(props: propsType) {
   const [mouseOver, setMoseOver] = useState(false);
   const onMouseHandler = () => {
-    console.log("his");
     setMoseOver(true);
   };
   const router = useRouter();
@@ -20,7 +19,7 @@ function MenueItem(props: propsType) {
       onMouseEnter={onMouseHandler}
       onMouseLeave={outMouseHandler}
       style={{
-        backgroundColor: mouseOver ? "#d3d3d3" : "white",
+        backgroundColor: mouseOver ? "#fafafa" : "white",
         color: mouseOver ? "#4aa8d8" : "grey",
       }}
     >

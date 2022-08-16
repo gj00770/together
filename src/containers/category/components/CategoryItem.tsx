@@ -7,7 +7,6 @@ interface propsType {
 function CategoryItem(props: propsType) {
   const [mouseOver, setMoseOver] = useState(false);
   const onMouseHandler = () => {
-    console.log("his");
     setMoseOver(true);
   };
   const router = useRouter();

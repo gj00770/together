@@ -8,36 +8,17 @@ import styled from "styled-components";
 import { PortalConsumer } from "../../contexts/PortalProvider";
 import ProductCarosel from "./components/productCarosel";
 import ItemContainer from "../goods/components/itemContainer";
-import InfinityCarosel from "../../components/infinityCarosel";
+import InfinityCarosel from "../../components/InfinityCarosel";
+import { useModal } from "../../contexts/ModalProvider";
 
 const Home: NextPage = () => {
   // fetch("http://localhost:5000/user").then(function (res) {
-  //   console.log(res.json());
+  //   (res.json());
   // });
   const wrapperRef = useRef(null);
   const el2 = useRef(null);
   const [isOpen, setOpen] = useState(false);
-
-  // const handleClickOutside = (event: any) => {
-  //   if (wrapperRef.current) {
-  //     if (wrapperRef && !wrapperRef.current.contains(event.target)) {
-  //       setOpen(false);
-  //     } else {
-  //       setOpen(true);
-  //     }
-  //   }
-  // };
-
-  // const handleOpenModal = (e: any) => {
-  //   setOpen(true);
-  //   console.log(isOpen);
-  // };
-  // useEffect(() => {
-  //   window.addEventListener("click", handleClickOutside);
-  //   return () => {
-  //     window.removeEventListener("click", handleClickOutside);
-  //   };
-  // });
+  console.log(useModal());
   return (
     <MainContainer>
       <InfinityCarosel />
@@ -47,13 +28,13 @@ const Home: NextPage = () => {
         </PortalConsumer>
       </div>
 
-      <ProductCarosel category="화장품" />
-      <ProductCarosel category="의류" />
+      <ProductCarosel category={"화장품"} />
+      <ProductCarosel category={"의류"} />
 
       <Banner src={`mockImage/banner/1.webp`} />
 
-      <ProductCarosel category="가전" />
-      <ProductCarosel category="식품" />
+      <ProductCarosel category={"가전"} />
+      <ProductCarosel category={"식품"} />
 
       <Banner src={`mockImage/banner/1.webp`} />
       {/* <ItemContainer /> */}
@@ -78,7 +59,6 @@ const Banner = styled.img`
   //width: 260px;
   width: 90vw;
   max-width: 1120px;
-  border-radius: 10px;
   z-index: 2;
   margin-bottom: 40px;
 `;

@@ -103,7 +103,6 @@ export function version4(array: PurchaseItem[]) {
       const date = new Date(purchaseItem.time).getDate();
       const month = new Date(purchaseItem.time).getMonth();
       const year = new Date(purchaseItem.time).getFullYear();
-      console.log(date, month, year);
       return `${year}-${month}-${date}`;
     }
   );

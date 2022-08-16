@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-import MenueItem from "../components/menuItem";
+import MenueItem from "../components/MenuItem";
 const CATEGORY = ["가전", "식품", "화장품", "의류", "스포츠레저", "홈인테리어"];
 function MenueList() {
   return (
@@ -21,7 +21,7 @@ const MenueListContainer = styled.div`
   display: flex;
   flex-direction: column;
   font-size: 32px;
-  border: 1px solid black;
+  border: 1px solid rgb(242, 242, 242);
 `;
 
 export default MenueList;

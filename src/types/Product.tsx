@@ -5,4 +5,5 @@ export interface Product {
   end_date: number;
   itemImg: string;
   itemInfo: string;
+  status: string;
 }
