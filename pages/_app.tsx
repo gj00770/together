@@ -5,7 +5,7 @@ import { QueryClient, QueryClientProvider } from "react-query";
 import Footer from "../src/components/Footer";
 import { ModalProvider } from "../src/contexts/ModalProvider";
 import { PortalProvider } from "../src/contexts/PortalProvider";
-import Header from "../src/components/Header";
+import Header from "../src/components/header";
 import "../styles/globals.css";
 //  localStorage.setItem("accessToken", "");
 // window.getRedirectResult
