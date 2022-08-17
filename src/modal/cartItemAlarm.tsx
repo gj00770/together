@@ -1,5 +1,5 @@
 import DaumPostcode from "react-daum-postcode";
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import styled from "styled-components";
 import { loadGetInitialProps } from "next/dist/shared/lib/utils";
 interface Props {
