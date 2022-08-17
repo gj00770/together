@@ -61,7 +61,7 @@ const CloseButton = styled.div`
   cursor: pointer;
 `;
 export default CartItemAlarm;
-export function useLoginModal() {
-  const { open, close } = CartItemAlarm();
-  return useCallback(() => open(<CartItemAlarm />), [open, close]);
-}
+// export function useLoginModal() {
+//   const { open, close } = CartItemAlarm();
+//   return useCallback(() => open(<CartItemAlarm />), [open, close]);
+// }
