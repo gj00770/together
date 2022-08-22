@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import styled from "styled-components";
 const arr = [1, 2, 3, 4, 5];
 const dummyNumArrColor = ["pink", "green", "pink", "green", "yellow"];
-import Carosel2, { CaroselRef } from "./Carosel";
+import Carosel2, { CaroselRef } from "./carosel";
 interface Props {
   number: number;
 }

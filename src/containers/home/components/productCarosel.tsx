@@ -4,7 +4,7 @@ import { QueryClient, QueryClientProvider, useQuery } from "react-query";
 import styled from "styled-components";
 import LoadingSliderItem from "./LoadingSlideritem";
 //import { useProduct } from "../hook/useProduct";
-import Carosel, { CaroselRef } from "../../../components/Carosel";
+import Carosel, { CaroselRef } from "../../../components/carosel";
 //   1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20,
 // ];
 const NUM = ["1", "2", "3", "4", "5", "6"];
