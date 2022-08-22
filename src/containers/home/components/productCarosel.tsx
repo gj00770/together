@@ -8,13 +8,21 @@ import Item from "../../../components/sliderItem";
 import axios from "axios";
 import { Product } from "../../../types/Product";
 const NUM = ["1", "2", "3", "4", "5", "6"];
-interface CategoryList {
+// type CategoryList {
+//   [화장품]: string;
+//   의류: string;
+//   가전: string;
+//   식품: string;
+//}
+
+type ObjType = {
+  [index: string]: string;
   화장품: string;
   의류: string;
   가전: string;
   식품: string;
-}
-const CategorySummary: CategoryList = {
+};
+const CategorySummary: ObjType = {
   화장품: "내 피부 관리를 위한 아이템",
   의류: "이런옷 어때요?",
   가전: "집안의 핫 아이템",
