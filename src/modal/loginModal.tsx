@@ -15,17 +15,9 @@ import { useModal } from "../contexts/ModalProvider";
 
 //if (typeof window !== "undefined") {
 //here `window` is available
-let naver: {
-  LoginWithNaverId: new (arg0: {
-    clientId: string | undefined;
-    callbackUrl: string | undefined;
-    isPopup: boolean; // popup 형식으로 띄울것인지 설정
-    loginButton: { color: string; type: number; height: string };
-  }) => any;
-};
 if (typeof window !== "undefined") {
   // Client-side-only code
-  naver = window as any;
+  const { naver } = window as any;
 }
 interface Props {
   onClose: () => void;
