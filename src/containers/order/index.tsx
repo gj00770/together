@@ -18,7 +18,9 @@ function Order() {
   const user = useUser();
   const router = useRouter();
   const data2 = router.query.product;
-  const data = JSON.parse(typeof data2 === "string" ? data2 : "{}");
+  const data = data2
+    ? JSON.parse(typeof data2 === "string" ? data2 : "{}")
+    : [];
   //console.log(currentPost);
   //const [data, setData] = useState(JSON.parse(router.query.product));
   // const data: any = router.query.product ? router.query.product : null;
