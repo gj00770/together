@@ -1,9 +1,5 @@
-import Link from "next/link";
-import { Router, useRouter } from "next/router";
-import React, { useState } from "react";
+import React from "react";
 import styled from "styled-components";
-import { formatComma } from "../../../utils/formatComma";
-import { useSlashDate } from "../../../utils/useSlashDate";
 
 function LoadingSliderItem() {
   //("2342342", useSlashDate(img.img.end_date), img.img.end_date);
