@@ -5,6 +5,7 @@ import { useUser } from "../../hooks/useUser";
 import AddressListContainer from "../../modal/AddressListContainer";
 import { createPurchaseItem } from "../../remotes/purchasedItem/createPurchaseItem";
 import { AddressEntity } from "../../types/Address";
+import { cartItem } from "../../types/CartItem";
 import TotalPrice from "../mypage/components/TotalPrice";
 import Address from "./components/Address";
 import OrderContainer from "./components/OrderContainer";
@@ -15,10 +16,19 @@ function Order() {
     typeof window !== "undefined" ? localStorage.getItem("accessToken") : null;
   const [addressSelect, setAddressSelect] = useState(false);
   const user = useUser();
-  // console.log(query.object);
   const router = useRouter();
-  const [data, setData] = useState(JSON.parse(router.query.product));
+  const data2 = router.query.product;
+  const data = JSON.parse(typeof data2 === "string" ? data2 : "{}");
+  //console.log(currentPost);
+  //const [data, setData] = useState(JSON.parse(router.query.product));
+  // const data: any = router.query.product ? router.query.product : null;
+  // const [data, setData] = useState(
+  //   JSON.parse(
+  //     typeof router === "string" && router.query ? router.query.product : "{}"
+  //   )
+  // );
   console.log(data);
+  console.log(router.query.product);
   //console.log(JSON.parse(router.query.product));
   const onClick = () => {
     let purcahsedItem = [];

@@ -15,9 +15,17 @@ import { useModal } from "../contexts/ModalProvider";
 
 //if (typeof window !== "undefined") {
 //here `window` is available
+let naver: {
+  LoginWithNaverId: new (arg0: {
+    clientId: string | undefined;
+    callbackUrl: string | undefined;
+    isPopup: boolean; // popup 형식으로 띄울것인지 설정
+    loginButton: { color: string; type: number; height: string };
+  }) => any;
+};
 if (typeof window !== "undefined") {
   // Client-side-only code
-  const { naver } = window as any;
+  naver = window as any;
 }
 interface Props {
   onClose: () => void;
@@ -25,12 +33,14 @@ interface Props {
 function LoginModal({ onClose }: Props) {
   //}
   const initializeNaverLogin = () => {
-    const naverLogin = new naver.LoginWithNaverId({
-      clientId: process.env.NEXT_PUBLIC_NAVER_ID,
-      callbackUrl: process.env.NEXT_PUBLIC_REDIRECT_URL,
-      isPopup: false, // popup 형식으로 띄울것인지 설정
-      loginButton: { color: "green", type: 1, height: "36" }, //버튼의 스타일, 타입, 크기를 지정
-    });
+    const naverLogin = naver
+      ? new naver.LoginWithNaverId({
+          clientId: process.env.NEXT_PUBLIC_NAVER_ID,
+          callbackUrl: process.env.NEXT_PUBLIC_REDIRECT_URL,
+          isPopup: false, // popup 형식으로 띄울것인지 설정
+          loginButton: { color: "green", type: 1, height: "36" }, //버튼의 스타일, 타입, 크기를 지정
+        })
+      : null;
     naverLogin.init();
   };
   const [current, setCurrent] = useState("");

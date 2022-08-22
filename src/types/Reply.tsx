@@ -6,7 +6,7 @@ export interface ReplyType {
   id: number;
   content: string;
   time: Date;
-  user: User[];
+  user: User;
 }
 //   @PrimaryGeneratedColumn()
 //   id: number;
