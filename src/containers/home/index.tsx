@@ -1,7 +1,7 @@
 import type { NextPage } from "next";
 import React, { useRef, useState } from "react";
 import styled from "styled-components";
-import InfinityCarosel from "../../components/infinityCarosel";
+import InfinityCarosel from "../../components/InfinityCarosel";
 import { useModal } from "../../contexts/ModalProvider";
 //import ComboBox from '../src/components/combobox'
 import { PortalConsumer } from "../../contexts/PortalProvider";
