@@ -8,8 +8,6 @@ import { PortalProvider } from "../src/contexts/PortalProvider";
 import Header from "../src/components/Header";
 import "../styles/globals.css";
 import Script from "next/script";
-//  localStorage.setItem("accessToken", "");
-// window.getRedirectResult
 
 function MyApp({ Component, pageProps }: AppProps) {
   //
