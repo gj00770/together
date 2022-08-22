@@ -12,7 +12,7 @@ function Order(props: Props) {
     <div>
       <OrderContainer>
         <OrderName>주문</OrderName>
-        {props.data.map((ele: any) => (
+        {props.data?.map((ele: any) => (
           <OrderItem data={ele} key={ele.id} />
         ))}
       </OrderContainer>
