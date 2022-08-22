@@ -1,15 +1,11 @@
 import type { NextPage } from "next";
-import Head from "next/head";
-import Image from "next/image";
-import styles from "../styles/Home.module.css";
-import React, { useState, useRef, useEffect } from "react";
+import React, { useRef, useState } from "react";
 import styled from "styled-components";
+import InfinityCarosel from "../../components/infinityCarosel";
+import { useModal } from "../../contexts/ModalProvider";
 //import ComboBox from '../src/components/combobox'
 import { PortalConsumer } from "../../contexts/PortalProvider";
 import ProductCarosel from "./components/productCarosel";
-import ItemContainer from "../goods/components/itemContainer";
-import InfinityCarosel from "../../components/InfinityCarosel";
-import { useModal } from "../../contexts/ModalProvider";
 
 const Home: NextPage = () => {
   // fetch("http://localhost:5000/user").then(function (res) {
