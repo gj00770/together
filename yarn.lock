@@ -4392,9 +4392,9 @@
   "version" "3.0.3"
 
 "konva@^3.2.3", "konva@>=2.6":
-  "integrity" "sha512-vZ7f4Y1LMMOkvfFCGoHt0CoanKdpv81gZC4Q4pnIBO6vHEBx+1KBdH6NR5ORd+HOkGwkRXTVPbFokrYkBSWo1g=="
-  "resolved" "https://registry.npmjs.org/konva/-/konva-8.3.9.tgz"
-  "version" "8.3.9"
+  "integrity" "sha512-Lra+Sb9dFwsCtkWoFvtcmVFbzAZCqSS/we3iTxDogBl3DTTjieY0e/1crqvs/EZCNR5uV2Kfvkn7t2547cD1SQ=="
+  "resolved" "https://registry.npmjs.org/konva/-/konva-3.4.1.tgz"
+  "version" "3.4.1"
 
 "language-subtag-registry@~0.3.2":
   "integrity" "sha512-L0IqwlIXjilBVVYKFT37X9Ih11Um5NEl9cbJIuU/SwP/zEEAbBPOnEeeuxVMf45ydWQRDQN3Nqc96OgbH1K+Pg=="
