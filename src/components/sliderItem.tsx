@@ -1,14 +1,10 @@
-import axios from "axios";
-import Link from "next/link";
-import { Router, useRouter } from "next/router";
+import { useRouter } from "next/router";
 import React, { useState } from "react";
-import { useQuery } from "react-query";
 import styled from "styled-components";
 import { createCartItem } from "../remotes/cartItem";
+import Cart from "../svgs/cart-shopping-solid.svg";
 import { Product } from "../types/Product";
 import { formatComma } from "../utils/formatComma";
-import { useSlashDate } from "../utils/useSlashDate";
-import Cart from "../svgs/cart-shopping-solid.svg";
 interface Props {
   data: Product;
 }

@@ -3,10 +3,10 @@ import React, { useState, useEffect, useRef } from "react";
 import { QueryClient, QueryClientProvider, useQuery } from "react-query";
 import styled from "styled-components";
 import LoadingSliderItem from "./LoadingSlideritem";
-//import { useProduct } from "../hook/useProduct";
 import Carosel, { CaroselRef } from "../../../components/carosel";
-//   1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20,
-// ];
+import Item from "../../../components/sliderItem";
+import axios from "axios";
+import { Product } from "../../../types/Product";
 const NUM = ["1", "2", "3", "4", "5", "6"];
 interface CategoryList {
   화장품: string;
@@ -20,9 +20,6 @@ const CategorySummary: CategoryList = {
   가전: "집안의 핫 아이템",
   식품: "식탁위 단골 재료",
 };
-import Item from "../../../components/SliderItem";
-import axios from "axios";
-import { Product } from "../../../types/Product";
 
 interface Carosel {
   category: string;
