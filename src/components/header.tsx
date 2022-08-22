@@ -8,7 +8,7 @@ import MenueList from "../modal/menueList";
 import MypageLogout from "../modal/MypageLogout";
 import DownArrow from "../svgs/caret-down-solid.svg";
 import HamburgerIcon from "../svgs/bars-solid.svg";
-import ComboBox from "./comboBox";
+import ComboBox from "./ComboBox";
 import { useRouter } from "next/router";
 import CartItemAlarm from "../modal/cartItemAlarm";
 //import userPersistence from "../hook/usePersistentContext";
