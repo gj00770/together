@@ -8,7 +8,7 @@ import DaumAdrr from "../../../modal/daumAdrr";
 import { deleteAddress } from "../../../remotes/address/deleteAddress";
 import { updateUserDefaultAdress } from "../../../remotes/user";
 import { AddressEntity } from "../../../types/Address";
-import AddressSummary from "./addressSummary";
+import AddressSummary from "./AddressSummary";
 
 function AdressList() {
   const user = useUser();
