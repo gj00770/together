@@ -2,7 +2,6 @@ import React from "react";
 import styled from "styled-components";
 
 function LoadingSliderItem() {
-  //("2342342", useSlashDate(img.img.end_date), img.img.end_date);
   return (
     <LoadingSliderItemContainer>
       <Image />
