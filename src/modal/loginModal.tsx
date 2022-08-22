@@ -25,14 +25,14 @@ interface Props {
 function LoginModal({ onClose }: Props) {
   //}
   const initializeNaverLogin = () => {
-    const naverLogin = naver
-      ? new naver.LoginWithNaverId({
-          clientId: process.env.NEXT_PUBLIC_NAVER_ID,
-          callbackUrl: process.env.NEXT_PUBLIC_REDIRECT_URL,
-          isPopup: false, // popup 형식으로 띄울것인지 설정
-          loginButton: { color: "green", type: 1, height: "36" }, //버튼의 스타일, 타입, 크기를 지정
-        })
-      : null;
+    const { naver } = window as any;
+    const naverLogin = new naver.LoginWithNaverId({
+      clientId: process.env.NEXT_PUBLIC_NAVER_ID,
+      callbackUrl: process.env.NEXT_PUBLIC_REDIRECT_URL,
+      isPopup: false, // popup 형식으로 띄울것인지 설정
+      loginButton: { color: "green", type: 1, height: "36" }, //버튼의 스타일, 타입, 크기를 지정
+    });
+
     naverLogin.init();
   };
   const [current, setCurrent] = useState("");
