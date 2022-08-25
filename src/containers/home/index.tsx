@@ -1,5 +1,5 @@
 import type { NextPage } from "next";
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import InfinityCarosel from "../../components/InfinityCarosel";
 import { useModal } from "../../contexts/ModalProvider";
@@ -14,15 +14,10 @@ const Home: NextPage = () => {
   const wrapperRef = useRef(null);
   const el2 = useRef(null);
   const [isOpen, setOpen] = useState(false);
-  console.log(useModal());
+
   return (
     <MainContainer>
       <InfinityCarosel />
-      <div>
-        <PortalConsumer>
-          <div>sdsdsdsdsdsds</div>
-        </PortalConsumer>
-      </div>
 
       <ProductCarosel category={"화장품"} />
       <ProductCarosel category={"의류"} />

@@ -23,7 +23,7 @@ interface Props {
   onClose: () => void;
 }
 function LoginModal({ onClose }: Props) {
-  //}
+  //}gg
   const initializeNaverLogin = () => {
     const { naver } = window as any;
     const naverLogin = new naver.LoginWithNaverId({

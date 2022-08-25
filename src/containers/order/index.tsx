@@ -1,3 +1,4 @@
+import axios, { Axios } from "axios";
 import { useRouter } from "next/router";
 import React, { useState } from "react";
 import styled from "styled-components";
@@ -5,7 +6,7 @@ import { useUser } from "../../hooks/useUser";
 import AddressListContainer from "../../modal/AddressListContainer";
 import { createPurchaseItem } from "../../remotes/purchasedItem/createPurchaseItem";
 import { AddressEntity } from "../../types/Address";
-import { cartItem } from "../../types/CartItem";
+import { CartItemEntity } from "../../types/CartItem";
 import TotalPrice from "../mypage/components/TotalPrice";
 import Address from "./components/Address";
 import OrderContainer from "./components/OrderContainer";
@@ -21,7 +22,6 @@ function Order() {
   const data = data2
     ? JSON.parse(typeof data2 === "string" ? data2 : "{}")
     : [];
-  //console.log(currentPost);
   //const [data, setData] = useState(JSON.parse(router.query.product));
   // const data: any = router.query.product ? router.query.product : null;
   // const [data, setData] = useState(
@@ -30,14 +30,26 @@ function Order() {
   //   )
   // );
   console.log(data);
-  console.log(router.query.product);
-  //console.log(JSON.parse(router.query.product));
   const onClick = () => {
     let purcahsedItem = [];
+    let purcahsedItemId = [];
     for (let i = 0; i < data.length; i++) {
       purcahsedItem.push({ id: data[i].product.id, count: data[i].count });
+      purcahsedItemId.push(data[i].id);
     }
     createPurchaseItem(purcahsedItem);
+    const accessToken = localStorage.getItem("accessToken");
+
+    axios.delete("http://localhost:5000/product/cartItem", {
+      data: {
+        purcahsedItemId: purcahsedItemId,
+      },
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    });
+
+    router.push("/");
   };
   return (
     <div>

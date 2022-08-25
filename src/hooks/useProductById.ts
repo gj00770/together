@@ -9,9 +9,7 @@ export function useProductById(id: any) {
       `http://localhost:5000/product/find/${id}`,
       {}
     );
-    // setUserImage(data.profile_image);
-    //setNickName(data.nickname);
-    // await new Promise((resolve) => setTimeout(resolve, 5000));
+
     return data;
   };
   const query = useQuery(`Product${id}`, getProductWithAxios);

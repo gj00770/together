@@ -1,6 +1,11 @@
 import { useRouter } from "next/router";
 import React, { useState } from "react";
 import styled from "styled-components";
+import {
+  useCartItemAlarm,
+  useCartItemAlarmClose,
+} from "../modal/cartItemAlarm";
+import { useLoginModal } from "../modal/loginModal";
 import { createCartItem } from "../remotes/cartItem";
 import Cart from "../svgs/cart-shopping-solid.svg";
 import { Product } from "../types/Product";
@@ -22,9 +27,21 @@ function SliderItem(props: Props) {
     setBorder("none");
     setMoseOver(false);
   };
+  const openModal = useCartItemAlarm(props.data);
+  const coloseModal = useCartItemAlarmClose();
+  const openLoginModal = useLoginModal();
   const addCartItem = (e: React.FormEvent<HTMLDivElement>) => {
     e.stopPropagation();
+    const token = localStorage.getItem("accessToken");
     createCartItem(props.data.id, 1);
+    if (token) {
+      openModal();
+      setTimeout(() => {
+        coloseModal();
+      }, 3000);
+    } else {
+      openLoginModal();
+    }
   };
   return (
     <SliderItemContainer
@@ -97,8 +114,8 @@ const CartContainer = styled.div`
   border-radius: 100%;
   background-color: #4aa8d8;
   opacity: 0.7;
-  bottom: 5px;
-  left: 5px;
+  bottom: 10px;
+  right: 10px;
 `;
 
 const Image = styled.img`

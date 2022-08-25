@@ -1,5 +1,10 @@
 import React, { useState } from "react";
 import styled from "styled-components";
+import {
+  useCartItemAlarm,
+  useCartItemAlarmClose,
+} from "../../../modal/cartItemAlarm";
+import { useLoginModal } from "../../../modal/loginModal";
 import { createCartItem } from "../../../remotes/cartItem";
 import { Product } from "../../../types/Product";
 import { formatComma } from "../../../utils/formatComma";
@@ -8,6 +13,9 @@ interface Props {
   data: Product;
 }
 function ItemSummary(props: Props) {
+  const openModal = useCartItemAlarm(props.data);
+  const coloseModal = useCartItemAlarmClose();
+  const openLoginModal = useLoginModal();
   const [itemQauntity, setItemQuantity] = useState(1);
   const upClick = () => {
     setItemQuantity(itemQauntity + 1);
@@ -20,6 +28,17 @@ function ItemSummary(props: Props) {
   };
   const addCartItem = () => {
     createCartItem(props.data.id, itemQauntity);
+
+    const token = localStorage.getItem("accessToken");
+    createCartItem(props.data.id, 1);
+    if (token) {
+      openModal();
+      setTimeout(() => {
+        coloseModal();
+      }, 3000);
+    } else {
+      openLoginModal();
+    }
   };
   return (
     <ItemSummaryContainer>

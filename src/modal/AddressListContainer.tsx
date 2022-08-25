@@ -35,13 +35,11 @@ function AddressListContainer(props: Props) {
     );
   }
   const onComplete = (data: any) => {
-    console.log(data);
     setCurAddr(data.address);
     setOpenPostcode(false);
     props.refetch();
   };
   const onCompleteAdd = (data: any) => {
-    console.log(data);
     setCurAddr(data.address);
     setOpenPostcode(false);
     setActive(false);

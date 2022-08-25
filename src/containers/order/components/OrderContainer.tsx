@@ -1,10 +1,10 @@
 import { useRouter } from "next/router";
 import React from "react";
 import styled from "styled-components";
-import { cartItem } from "../../../types/CartItem";
+import { CartItemEntity } from "../../../types/CartItem";
 import OrderItem from "./../components/OrderItem";
 interface Props {
-  data: cartItem[];
+  data: CartItemEntity[];
 }
 
 function Order(props: Props) {

@@ -24,7 +24,6 @@ function PurchaseItemList(props: Props) {
 const FirstContainer = styled.div`
   display: flex;
   align-items: center;
-  margin-bottom: 12px;
 
   @media screen and (max-width: 800px) {
     width: 240px;

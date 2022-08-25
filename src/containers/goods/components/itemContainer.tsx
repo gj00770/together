@@ -12,8 +12,6 @@ function useProductList(
   search: string[] | string | undefined,
   status: string[] | string | undefined
 ) {
-  console.log(category, search, status);
-
   const query = useInfiniteQuery(
     category
       ? `category${category}`
@@ -41,8 +39,6 @@ function useProductList(
     }
   );
   const data = query.data;
-  console.log(data);
-  console.log(flatMap(data?.pages.map(({ data }) => data)));
   return {
     data: flatMap(data?.pages.map(({ data }) => data.item)), // 총개수 flat
     isLoading: query.isLoading,
@@ -64,7 +60,6 @@ function ItemContainer() {
       const scrollHeight = document.documentElement.scrollHeight;
       const scrollTop = document.documentElement.scrollTop;
       const clientHeight = document.documentElement.clientHeight;
-      console.log(scrollTop + clientHeight, scrollHeight);
       if (scrollTop + clientHeight + 1 >= scrollHeight && fetching === false) {
         // 페이지 끝에 도달하면 추가 데이터를 받아온다
         fetchNextPage();
@@ -80,7 +75,6 @@ function ItemContainer() {
   if (isLoading) {
     return <div>....loading</div>;
   }
-  console.log(data);
   return (
     <ItemContainerContainer>
       {data.length > 0 ? (

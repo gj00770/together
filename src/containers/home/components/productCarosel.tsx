@@ -8,12 +8,6 @@ import Item from "../../../components/SliderItem";
 import axios from "axios";
 import { Product } from "../../../types/Product";
 const NUM = ["1", "2", "3", "4", "5", "6"];
-// type CategoryList {
-//   [화장품]: string;
-//   의류: string;
-//   가전: string;
-//   식품: string;
-//}
 
 type ObjType = {
   [index: string]: string;
@@ -88,10 +82,6 @@ const ArrowProductContainer = styled.div`
   display: flex;
   justify-content: center;
   @media screen and (min-width: 600px) {
-    //height: 39.166667vw;
-    //  column-gap: 4%;
-    // height: 400px;
-    // border: 1px solid black;
   }
   @media screen and (max-width: 600px) {
   }
@@ -110,13 +100,6 @@ const Name = styled.div`
   @media screen and (max-width: 600px) {
     font-size: 22px;
   }
-`;
-const ViewMore = styled.div`
-  cursor: pointer;
-  font-family: NotoSansBold;
-  margin-top: auto;
-  font-size: 24px;
-  margin-right: 20px;
 `;
 
 const ArrowRight = styled.div`

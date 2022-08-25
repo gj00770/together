@@ -30,7 +30,6 @@ function Auth() {
   const [islogin, setIsLogin] = useState(true);
   const login = () => {
     setIsLogin(!islogin);
-    console.log(login);
   };
 
   useEffect(() => {
@@ -51,7 +50,6 @@ function Auth() {
       router.push("/");
       naverLogin(accessToken).then(doSome);
     } else if (window.location.href.includes("code")) {
-      console.log("hjere");
       const accessToken =
         //  "null" ||
         new URLSearchParams(window.location.href.split("?")[1]).get("code");
