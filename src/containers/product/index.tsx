@@ -10,7 +10,7 @@ import { useProductById } from "../../hooks/useProductById";
 function Product() {
   const router = useRouter();
   const { id } = router.query;
-  const product = useProductById(id);
+  const product = useProductById(Number(id));
   const [curTab, setCurTab] = useState(TabId.ITEM_INFO);
   const CONTENT_BY_TAB = {
     [TabId.ITEM_INFO]: <Summary data={product.data} />,
