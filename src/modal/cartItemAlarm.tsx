@@ -3,11 +3,11 @@ import React, { useCallback, useEffect, useState } from "react";
 import styled from "styled-components";
 import { loadGetInitialProps } from "next/dist/shared/lib/utils";
 import { useModal } from "../contexts/ModalProvider";
+import { Product } from "../types/Product";
 interface Props {
-  onComplete: (data: any) => void;
-  closePostHandler: () => void;
+  data: Product;
 }
-function CartItemAlarm(props: any) {
+function CartItemAlarm(props: Props) {
   const [isScroll, setIsScroll] = useState(false);
   useEffect(() => {
     // scroll event listener 등록

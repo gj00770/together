@@ -1,9 +1,9 @@
-import DaumPostcode from "react-daum-postcode";
+import DaumPostcode, { Address } from "react-daum-postcode";
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { loadGetInitialProps } from "next/dist/shared/lib/utils";
 interface Props {
-  onComplete: (data: any) => void;
+  onComplete: (data: Address) => void;
   closePostHandler: () => void;
 }
 function DaumAdr(props: Props) {

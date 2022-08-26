@@ -8,7 +8,7 @@ import { PortalConsumer } from "../../contexts/PortalProvider";
 import ProductCarosel from "./components/productCarosel";
 
 const Home: NextPage = () => {
-  // fetch("http://localhost:5000/user").then(function (res) {
+  // fetch("http://13.209.132.48/user").then(function (res) {
   //   (res.json());
   // });
   const wrapperRef = useRef(null);

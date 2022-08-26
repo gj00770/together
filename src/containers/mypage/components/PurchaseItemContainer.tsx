@@ -13,7 +13,7 @@ function usePurchaseItem() {
     "purchaseItem",
     async ({ pageParam = 0 }) => {
       const { data } = await axios.get<{ item: PurchaseItem[]; count: number }>(
-        `http://localhost:5000/purchase`,
+        `http://13.209.132.48/purchase`,
         {
           params: { page: pageParam },
           headers: { Authorization: `Bearer ${token}` },

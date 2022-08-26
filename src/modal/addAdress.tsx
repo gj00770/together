@@ -10,9 +10,6 @@ interface Address {
   refetch: () => void;
 }
 function AddAdress(props: Address) {
-  // const colseHandler = (data: any) => {
-  //   setCurAddr(data.address);
-  // };
   const [name, setName] = useState<string>();
   const [adressDetaile, setAdressDetaile] = useState<string>();
   const [request, setRequest] = useState<string>();
@@ -30,7 +27,7 @@ function AddAdress(props: Address) {
   const updateUser = async () => {
     const accessToken = localStorage.getItem("accessToken");
     const { data } = await axios.post(
-      "http://localhost:5000/user/my/address",
+      "http://13.209.132.48/user/my/address",
       {
         name: name,
         adress: props.cityName,

@@ -21,7 +21,7 @@ function useCartItem() {
   const token =
     typeof window !== "undefined" ? localStorage.getItem("accessToken") : null;
   const getCartItemWithAxios = async () => {
-    const { data } = await axios.get(`http://localhost:5000/cartItem`, {
+    const { data } = await axios.get(`http://13.209.132.48/cartItem`, {
       headers: { Authorization: `Bearer ${token}` },
     });
     return data;

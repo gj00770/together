@@ -1,12 +1,12 @@
 import axios from "axios";
 import { useQuery } from "react-query";
 
-export function useProductById(id: any) {
+export function useProductById(id: number) {
   // customHook naming must start with "use"
   const getProductWithAxios = async () => {
     const test = localStorage.getItem("accessToken");
     const { data } = await axios.get(
-      `http://localhost:5000/product/find/${id}`,
+      `http://13.209.132.48/product/find/${id}`,
       {}
     );
 

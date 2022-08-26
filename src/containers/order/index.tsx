@@ -22,13 +22,7 @@ function Order() {
   const data = data2
     ? JSON.parse(typeof data2 === "string" ? data2 : "{}")
     : [];
-  //const [data, setData] = useState(JSON.parse(router.query.product));
-  // const data: any = router.query.product ? router.query.product : null;
-  // const [data, setData] = useState(
-  //   JSON.parse(
-  //     typeof router === "string" && router.query ? router.query.product : "{}"
-  //   )
-  // );
+
   console.log(data);
   const onClick = () => {
     let purcahsedItem = [];
@@ -40,7 +34,7 @@ function Order() {
     createPurchaseItem(purcahsedItem);
     const accessToken = localStorage.getItem("accessToken");
 
-    axios.delete("http://localhost:5000/product/cartItem", {
+    axios.delete("http://13.209.132.48/product/cartItem", {
       data: {
         purcahsedItemId: purcahsedItemId,
       },

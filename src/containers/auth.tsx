@@ -5,14 +5,14 @@ import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 
 async function naverLogin(accessToken: string | null) {
-  const token = await axios.post("http://localhost:5000/user/naver-login", {
+  const token = await axios.post("http://13.209.132.48/user/naver-login", {
     accessToken: accessToken,
   });
 
   localStorage.setItem("accessToken", token.data);
 }
 async function kakaoLogin(accessToken: string | null) {
-  const token = await axios.post("http://localhost:5000/user/kakao-login", {
+  const token = await axios.post("http://13.209.132.48/user/kakao-login", {
     accessToken: accessToken,
   });
 
@@ -21,7 +21,7 @@ async function kakaoLogin(accessToken: string | null) {
 function doSome() {
   const test = localStorage.getItem("accessToken");
   axios.post(
-    "http://localhost:5000/user/test",
+    "http://13.209.132.48/user/test",
     {},
     { headers: { Authorization: `Bearer ${test}` } }
   );

@@ -30,7 +30,7 @@ function useProductList(category: string) {
   const caroselRef = useRef<CaroselRef>(null);
   const fetchData = async () => {
     const { data } = await axios.get(
-      `http://localhost:5000/product/findcarosel/${category}`,
+      `http://13.209.132.48/product/findcarosel/${category}`,
       {}
     );
     return data;

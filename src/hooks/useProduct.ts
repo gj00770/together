@@ -6,7 +6,7 @@ export function useProductByCategory(category: string) {
   const getProductWithAxios = async () => {
     const test = localStorage.getItem("accessToken");
     const { data } = await axios.get(
-      `http://localhost:5000/product/${category}`,
+      `http://13.209.132.48/product/${category}`,
       {}
     );
     return data;

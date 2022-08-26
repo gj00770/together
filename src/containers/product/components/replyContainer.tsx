@@ -17,7 +17,7 @@ function useReply(id: number) {
     `reply${id}`,
     async ({ pageParam = 0 }) => {
       const { data } = await axios.get<{ item: ReplyType; count: number }>(
-        `http://localhost:5000/product/${id}/reply`,
+        `http://13.209.132.48/product/${id}/reply`,
         {
           params: { page: pageParam },
         }

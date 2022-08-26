@@ -21,10 +21,10 @@ function useProductList(
     async ({ pageParam = 0 }) => {
       const { data } = await axios.get<{ item: Product[]; count: number }>(
         category
-          ? `http://localhost:5000/product/findcategory/${category}`
+          ? `http://13.209.132.48/product/findcategory/${category}`
           : search
-          ? `http://localhost:5000/product/findsearch/${search}`
-          : `http://localhost:5000/product/findstatus/${status}`,
+          ? `http://13.209.132.48/product/findsearch/${search}`
+          : `http://13.209.132.48/product/findstatus/${status}`,
 
         {
           params: { page: pageParam },
