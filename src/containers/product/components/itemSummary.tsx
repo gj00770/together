@@ -30,7 +30,6 @@ function ItemSummary(props: Props) {
     createCartItem(props.data.id, itemQauntity);
 
     const token = localStorage.getItem("accessToken");
-    createCartItem(props.data.id, 1);
     if (token) {
       openModal();
       setTimeout(() => {
