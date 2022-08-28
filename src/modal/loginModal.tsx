@@ -1,5 +1,5 @@
 import axios from "axios";
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import CloseButton from "../svgs/x-solid.svg";
 import {
@@ -23,28 +23,27 @@ interface Props {
   onClose: () => void;
 }
 function LoginModal({ onClose }: Props) {
-  //}gg
+  const naverRef = useRef<any>(null);
+
   const initializeNaverLogin = () => {
     const { naver } = window as any;
     const naverLogin = new naver.LoginWithNaverId({
       clientId: process.env.NEXT_PUBLIC_NAVER_ID,
       callbackUrl: process.env.NEXT_PUBLIC_REDIRECT_URL,
       isPopup: false, // popup 형식으로 띄울것인지 설정
-      loginButton: { color: "green", type: 1, height: "36" }, //버튼의 스타일, 타입, 크기를 지정
+      loginButton: { color: "white", type: 1, height: "36" }, //버튼의 스타일, 타입, 크기를 지정
     });
 
     naverLogin.init();
   };
-  const [current, setCurrent] = useState("");
-  //const setClientState = useSetClientState("username");
 
-  const handleClick = () => {
-    setCurrent("카카오");
-    // setClientState("zkzkdh");
-  };
-  //const KAKAO_AUTH_URL = `https://kauth.kakao.com/oauth/authorize?client_id=${process.env.NEXT_PUBLIC_KAKAO_ID}&redirect_uri=${location.href}&response_type=code`;
   const KAKAO_AUTH_URL = `https://kauth.kakao.com/oauth/authorize?client_id=${process.env.NEXT_PUBLIC_KAKAO_ID}&redirect_uri=${process.env.NEXT_PUBLIC_REDIRECT_URL}&response_type=code`;
-
+  const handleClick = () => {
+    if (naverRef.current == null) {
+      throw new Error("slider elements does not rendered");
+    }
+    naverRef.current.children[0].click();
+  };
   useEffect(() => {
     initializeNaverLogin();
     document.body.style.cssText = `
@@ -89,17 +88,12 @@ function LoginModal({ onClose }: Props) {
 
           <AuthName>카카오로로그인</AuthName>
         </AuthContianer>
-
-        <AuthContianerNaver>
-          <LogoNaver>
-            <div id="naverIdLogin" />
-          </LogoNaver>
+        <div ref={naverRef} id="naverIdLogin" style={{ display: "none" }} />
+        <AuthContianerNaver onClick={handleClick}>
+          <Logo src="mockImage/btnG_icon_square.png" />
           <AuthName>네이버로로그인</AuthName>
         </AuthContianerNaver>
-        <Footer>
-          정마세요! 여러분의 지원 활동은 SNS에 노출되지 않습니다. 포트폴리오용
-          입니다.
-        </Footer>
+        <Footer>로그인하셔서 together의 상품을 만나보세요!</Footer>
       </LoginContainer>
     </LoginModalRoot>
   );
@@ -209,6 +203,7 @@ const AuthContianerNaver = styled.div`
 const Logo = styled.img`
   width: 40px;
   height: 40px;
+  border-radius: 40px;
   position: absolute;
   left: 10px;
 `;

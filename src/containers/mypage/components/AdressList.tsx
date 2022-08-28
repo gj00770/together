@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { Address } from "react-daum-postcode";
 import styled from "styled-components";
 import LoadingSpinner from "../../../components/loading/LoadingSpinner";
 import { useUser } from "../../../hooks/useUser";
@@ -20,12 +21,12 @@ function AdressList() {
   const [selectedAddressId, setSelectedAddressId] = useState<number>();
   const [currentId, setCurrentId] = useState<number | undefined>();
   //user.data?.default_address
-  const onComplete = (data: any) => {
+  const onComplete = (data: Address) => {
     setCurAddr(data.address);
     setOpenPostcode(false);
     user.refetch();
   };
-  const onCompleteAdd = (data: any) => {
+  const onCompleteAdd = (data: Address) => {
     setCurAddr(data.address);
     setOpenPostcode(false);
     setAddAddress(true);

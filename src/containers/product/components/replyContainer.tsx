@@ -154,6 +154,7 @@ const InputHolder = styled.div`
 const IconImage = styled.img`
   border-radius: 100%;
   height: 70px;
+  width: 70px;
   margin-left: 15px;
   margin-right: 15px;
 `;

@@ -7,9 +7,6 @@ interface Props {
   closePostHandler: () => void;
 }
 function DaumAdr(props: Props) {
-  // const colseHandler = (data: any) => {
-  //   setCurAddr(data.address);
-  // };
   useEffect(() => {
     document.body.style.cssText = `
     position: fixed;

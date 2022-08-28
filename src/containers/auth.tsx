@@ -58,7 +58,7 @@ function Auth() {
         window.location.href.split("=")[1].split("&")[0] ?? "none"
       );
 
-      kakaoLogin(accessToken);
+      kakaoLogin(accessToken).then(doSome);
 
       router.push("/");
     }

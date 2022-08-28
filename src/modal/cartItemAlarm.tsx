@@ -130,7 +130,7 @@ const Modal = styled.div`
 `;
 
 export default CartItemAlarm;
-export function useCartItemAlarm(data: any) {
+export function useCartItemAlarm(data: Product) {
   const { open, close } = useModal();
   return useCallback(() => open(<CartItemAlarm data={data} />), [open, close]);
 }
