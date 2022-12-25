@@ -5,6 +5,11 @@ import { formatComma } from "../../../utils/formatComma";
 import { Product } from "../../../types/Product";
 import Cart from "../../../svgs/cart-shopping-solid.svg";
 import { createCartItem } from "../../../remotes/cartItem";
+import {
+  useCartItemAlarm,
+  useCartItemAlarmClose,
+} from "../../../modal/cartItemAlarm";
+import { useLoginModal } from "../../../modal/loginModal";
 function Item(props: { data: Product }) {
   const [border, setBorder] = useState("0.5px solid #D3D3D3");
   const [opacity, setOpacity] = useState("0.5px solid #D3D3D3");
@@ -12,7 +17,6 @@ function Item(props: { data: Product }) {
   const [mouseOver, setMoseOver] = useState(false);
   const router = useRouter();
   const onMouseEvent = () => {
-    ("his");
     setMoseOver(true);
     // setBackgroundColor("rgba(0, 0, 0, 0.5)");
   };
@@ -21,10 +25,23 @@ function Item(props: { data: Product }) {
     setMoseOver(false);
     // setBackgroundColor("rgba(0, 0, 0, 0.5)");
   };
+  const openModal = useCartItemAlarm(props.data);
+  const coloseModal = useCartItemAlarmClose();
+  const openLoginModal = useLoginModal();
   const addCartItem = (e: React.SyntheticEvent<EventTarget>) => {
     e.stopPropagation();
     createCartItem(props.data.id, 1);
+    const token = localStorage.getItem("accessToken");
+    if (token) {
+      openModal();
+      setTimeout(() => {
+        coloseModal();
+      }, 3000);
+    } else {
+      openLoginModal();
+    }
   };
+
   return (
     <ItemContainer
       onMouseEnter={onMouseEvent}
@@ -39,6 +56,7 @@ function Item(props: { data: Product }) {
       <ImageCartContainer>
         <Image src={`${props.data.itemImg}`} />
         <CartContainer onClick={addCartItem}>
+          {/* <CartContainer onClick={() => openModal()}> */}
           <Cart fill="white" width="28px" />
         </CartContainer>
       </ImageCartContainer>
@@ -49,27 +67,21 @@ function Item(props: { data: Product }) {
 }
 const ItemContainer = styled.div`
   width: 338px;
-  //background-color: rgba(8, 7, 7, 0.5);
   cursor: pointer;
   display: flex;
   flex-direction: column;
   align-items: center;
-  //box-shadow: 4px 8px 8px 4px  #D3D3D3;
-  /* opacity: 0.3;
-  background-color: grey; */
+
   z-index: 7;
   margin-bottom: 50px;
 `;
 const ImageCartContainer = styled.div`
-  //width: 260px;
   position: relative;
 `;
 const Image = styled.img`
-  //width: 260px;
   width: 338px;
   height: 445px;
   z-index: 2;
-  // border: 1px solid #d3d3d3;
 `;
 const Name = styled.div`
   margin-top: 10px;
@@ -143,6 +155,6 @@ const CartContainer = styled.div`
   background-color: #4aa8d8;
   opacity: 0.7;
   bottom: 10px;
-  left: 10px;
+  right: 10px;
 `;
 export default Item;

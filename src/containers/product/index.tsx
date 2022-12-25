@@ -6,11 +6,12 @@ import ReplyContainer from "./components/replyContainer";
 import SellerInfo from "./components/sellerInfo";
 import Summary from "./components/Summary";
 import { useProductById } from "../../hooks/useProductById";
+import LoadingReply from "./components/loadingReply";
 
 function Product() {
   const router = useRouter();
   const { id } = router.query;
-  const product = useProductById(id);
+  const product = useProductById(Number(id));
   const [curTab, setCurTab] = useState(TabId.ITEM_INFO);
   const CONTENT_BY_TAB = {
     [TabId.ITEM_INFO]: <Summary data={product.data} />,
@@ -18,7 +19,7 @@ function Product() {
     [TabId.ASK]: <SellerInfo />,
   };
   if (product.isLoading) {
-    return <div>...loading</div>;
+    return <LoadingReply />;
   }
   return (
     <ProductContainer>
@@ -53,12 +54,6 @@ const LABEL_BY_TAB = {
   [TabId.ASK]: "문의사항",
 };
 
-//const TABS = [{ id: TabId.ITEM_INFO, label: "삼품정보" }, { id: TabId.REPLY, label: "댓글" }, { id: TabId.ASK, label: "문의사항" }]
-
-//      키와value 로 이루어집 map 객체를 뜻한다
-// const ProductGap = styled.div`
-//   margin-bottom: 100px;
-// `;
 const SummaryTab = styled.div`
   display: flex;
   width: 800px;
@@ -88,6 +83,7 @@ const ProductContainer = styled.div`
   margin-left: auto;
   margin-top: 5px;
   background-color: white;
+  padding-bottom: 300px;
   @media screen and (max-width: 700px) {
     width: 100%;
   }

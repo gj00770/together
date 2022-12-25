@@ -3,13 +3,13 @@ import React from "react";
 import styled from "styled-components";
 import LocationMark from "../../../svgs/location-dot-solid.svg";
 import { AddressEntity } from "../../../types/Address";
-import { cartItem } from "../../../types/CartItem";
+import { CartItemEntity } from "../../../types/CartItem";
 import { formatComma } from "../../../utils/formatComma";
 interface Props {
   onClick: () => void;
   defaultAddress: AddressEntity | undefined;
   itemSum: number;
-  product: cartItem[] | undefined;
+  product: CartItemEntity[] | undefined;
 }
 function SideBar(props: Props) {
   const router = useRouter();
@@ -35,11 +35,14 @@ function SideBar(props: Props) {
         </FirstPriceContainer>
         <SecondPriceContainer>
           {" "}
-          <Price>배송가격</Price> <Price>3,300원</Price>
+          <Price>배송가격</Price>{" "}
+          <Price>{props.product?.length ? "3,300원 " : "0원"}</Price>
         </SecondPriceContainer>
         <ThirdPriceContainer>
           <Price>결제예정 금액</Price>
-          <TotalPrice>{formatComma(props.itemSum + 3300)}원</TotalPrice>
+          <TotalPrice>
+            {props.product?.length ? formatComma(props.itemSum + 3300) : 0}원
+          </TotalPrice>
         </ThirdPriceContainer>
       </TotalPriceContainer>
       {/* <Link href="/order"> */}
@@ -52,17 +55,25 @@ function SideBar(props: Props) {
         }}
       > */}
       <PurchaseButton
-        onClick={() => {
-          router.push({
-            pathname: "order",
-            query: {
-              product: JSON.stringify(props.product),
-            },
-          });
+        onClick={
+          props.product?.length
+            ? () => {
+                router.push({
+                  pathname: "order",
+                  query: {
+                    product: JSON.stringify(props.product),
+                  },
+                });
+              }
+            : () => {}
+        }
+        style={{
+          backgroundColor: props.product?.length ? "#4aa8d8" : "#DDDDDD",
+          cursor: props.product?.length ? "pointer" : "default",
         }}
       >
         {" "}
-        구매하기
+        {props.product?.length ? "구매하기" : "상품을 담아주세요"}
       </PurchaseButton>
       {/* </Link> */}
     </SideBarContainer>
@@ -151,7 +162,6 @@ const TotalPriceContainer = styled.div`
 `;
 const PurchaseButton = styled.div`
   cursor: pointer;
-  background-color: #4aa8d8;
   color: white;
   height: 50px;
   line-height: 42px;

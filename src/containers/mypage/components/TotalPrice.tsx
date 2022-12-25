@@ -1,10 +1,10 @@
 import React from "react";
 import styled from "styled-components";
-import { cartItem } from "../../../types/CartItem";
+import { CartItemEntity } from "../../../types/CartItem";
 import { sumCartItemPrice } from "../../../utils/sumCartItemPrice";
 import { formatComma } from "../../../utils/formatComma";
 interface Props {
-  data: cartItem[];
+  data: CartItemEntity[];
 }
 function TotalPrice(props: Props) {
   return (

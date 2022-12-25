@@ -31,7 +31,7 @@ function AddressDetailModal(props: Props) {
   const saveAddress = async () => {
     const accessToken = localStorage.getItem("accessToken");
     await axios.put(
-      `http://localhost:5000/user/my/address/${props.address?.id}`,
+      `http://13.209.132.48/user/my/address/${props.address?.id}`,
 
       {
         adress: props.curAddr ? props.curAddr : props.address?.adress,

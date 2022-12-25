@@ -1,10 +1,11 @@
 import { useRouter } from "next/router";
 import React from "react";
 import styled from "styled-components";
-import { cartItem } from "../../../types/CartItem";
+import { CartItemEntity } from "../../../types/CartItem";
+import { OrderItemEntity } from "../../../types/OderItem";
 import OrderItem from "./../components/OrderItem";
 interface Props {
-  data: cartItem[];
+  data: CartItemEntity[];
 }
 
 function Order(props: Props) {
@@ -12,9 +13,11 @@ function Order(props: Props) {
     <div>
       <OrderContainer>
         <OrderName>주문</OrderName>
-        {props.data.map((ele: any) => (
-          <OrderItem data={ele} key={ele.id} />
-        ))}
+        {props.data
+          ? props.data.map((ele: CartItemEntity) => (
+              <OrderItem data={ele} key={ele.id} />
+            ))
+          : null}
       </OrderContainer>
     </div>
   );

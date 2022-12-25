@@ -1,22 +1,26 @@
 import Link from "next/link";
+import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 //import useClientValue from "../hooks/useClientValue";
 import { useUser } from "../hooks/useUser";
-import LoginModal, { useLoginModal } from "../modal/loginModal";
+import CartItemAlarm, {
+  useCartItemAlarm,
+  useCartItemAlarmClose,
+} from "../modal/cartItemAlarm";
+import { useLoginModal } from "../modal/loginModal";
 import MenueList from "../modal/menueList";
 import MypageLogout from "../modal/MypageLogout";
-import DownArrow from "../svgs/caret-down-solid.svg";
 import HamburgerIcon from "../svgs/bars-solid.svg";
+import DownArrow from "../svgs/caret-down-solid.svg";
 import ComboBox from "./ComboBox";
-import { useRouter } from "next/router";
-import CartItemAlarm from "../modal/cartItemAlarm";
-//import userPersistence from "../hook/usePersistentContext";
+import ComboBoxScroll from "./ComboBoxScroll";
+
 function Header() {
-  //  const username = useClientValue("username", "");
   const { data: user, refetch: refetch } = useUser();
   const router = useRouter();
   const [mouseOver, setMoseOver] = useState(false);
+  const [isScroll, setIsScroll] = useState(false);
   const [mouseOverUser, setMoseOverUser] = useState(false);
   const onMouseHandler = () => {
     setMoseOver(true);
@@ -32,16 +36,72 @@ function Header() {
   const outMouseUserHandler = () => {
     setMoseOverUser(false);
   };
+  // useEffect(() => {
+  //   setTimeout(() => {
+  //     refetch();
+  //   }, 500);
+  // }, [user]);
+
   useEffect(() => {
+    // scroll event listener 등록
     setTimeout(() => {
       refetch();
     }, 500);
-    console.log("hi");
+    const handleScroll = () => {
+      const scrollTop = document.documentElement.scrollTop;
+      if (scrollTop > 104) {
+        setIsScroll(true);
+      } else {
+        setIsScroll(false);
+      }
+    };
+    window.addEventListener("scroll", handleScroll);
+    return () => {
+      // scroll event listener 해제
+      window.removeEventListener("scroll", handleScroll);
+    };
   }, [user]);
   const openLoginModal = useLoginModal();
+
   return (
     <HeaderContainer>
       {/* {isOpenModal ? <LoginModal onClose={onClose} /> : null} */}
+
+      {isScroll ? (
+        <ScrollHeader>
+          {" "}
+          <SecondHeader>
+            <MenueContainer
+              onMouseEnter={onMouseHandler}
+              onMouseLeave={outMouseHandler}
+            >
+              <HamburgerIcon width="18" />
+              <Category>카테고리</Category>
+              {mouseOver ? <MenueList /> : null}
+            </MenueContainer>
+            <CategoryContainer>
+              <Option onClick={() => router.push(`/goods/?status=newItem`)}>
+                신상품
+              </Option>
+              <Option onClick={() => router.push(`/goods/?status=best`)}>
+                베스트
+              </Option>
+              <Option onClick={() => router.push(`/goods/?status=bestDeal`)}>
+                {" "}
+                특가
+              </Option>
+            </CategoryContainer>
+            <ComboBoxScroll />
+            {user ? (
+              <Link href="/cartItem">
+                <CartScroll src={`mockImage/shopping-cart.png`} />
+              </Link>
+            ) : (
+              <Login onClick={() => openLoginModal()}>로그인 </Login>
+            )}
+          </SecondHeader>
+        </ScrollHeader>
+      ) : null}
 
       <SmallLine>
         {" "}
@@ -56,9 +116,7 @@ function Header() {
             </Arrow>
             {mouseOverUser ? <MypageLogout refetch={refetch} /> : null}
           </Name>
-        ) : (
-          <Login onClick={() => openLoginModal()}>로그인 </Login>
-        )}
+        ) : null}
       </SmallLine>
       <FirstHeader>
         <LogoComboContainer>
@@ -71,12 +129,18 @@ function Header() {
 
           <ComboBox />
         </LogoComboContainer>
-        <Link href="/cartItem">
-          <div style={{ position: "relative" }}>
-            <Cart src={`mockImage/shopping-cart.png`} />
-            {/* <CartItemAlarm /> */}
-          </div>
-        </Link>
+
+        <div style={{ position: "relative" }}>
+          {user ? (
+            <Link href="/cartItem">
+              <Cart src={`mockImage/shopping-cart.png`} />
+            </Link>
+          ) : (
+            <Login onClick={() => openLoginModal()}>로그인 </Login>
+          )}
+
+          {/* <CartItemAlarm /> */}
+        </div>
       </FirstHeader>
       <SecondHeader>
         {" "}
@@ -129,7 +193,7 @@ const Option = styled.div`
   font-family: NotoSans;
   font-size: 16px;
   width: 150px;
-  text-align: left;
+  text-align: center;
   @media screen and (max-width: 800px) {
     width: 70px;
   }
@@ -140,8 +204,8 @@ const Category = styled.div`
   font-size: 16px;
 `;
 const SecondHeader = styled.div`
-  margin-top: 10px;
-  margin-bottom: 20px;
+  margin-top: 15px;
+  margin-bottom: 15px;
   display: flex;
   max-width: 1050px;
   width: 90vw;
@@ -150,6 +214,17 @@ const SecondHeader = styled.div`
   @media screen and (max-width: 800px) {
     margin-bottom: 8px;
   }
+`;
+const ScrollHeader = styled.div`
+  box-shadow: rgb(0 0 0 / 7%) 0px 3px 4px 0px;
+  background-color: white;
+  z-index: 99;
+  position: fixed;
+  width: 100vw;
+  align-items: center;
+  justify-content: center;
+  display: flex;
+  top: 0px;
 `;
 
 const MenueContainer = styled.div`
@@ -195,6 +270,9 @@ const Logo = styled.div`
   font-size: 39px;
   color: #4aa8d8;
   font-family: InkLipquid;
+  @media screen and (max-width: 800px) {
+    font-size: 24px;
+  }
 `;
 const KoreanLogo = styled.div`
   margin-left: 15px;
@@ -204,6 +282,8 @@ const KoreanLogo = styled.div`
   margin-right: 60px;
   @media screen and (max-width: 800px) {
     margin-right: 0px;
+    font-size: 22px;
+    margin-left: 5px;
   }
 `;
 const HamburgerContaienr = styled.div``;
@@ -211,11 +291,25 @@ const Arrow = styled.div`
   margin-top: 3px;
   margin-left: 12px;
 `;
-const Login = styled.div``;
+const Login = styled.div`
+  cursor: pointer;
+`;
 
 const Cart = styled.img`
   width: 28px;
   cursor: pointer;
+  @media screen and (max-width: 800px) {
+    margin-top: 15px;
+    margin-right: 30px;
+  }
+`;
+
+const CartScroll = styled.img`
+  width: 28px;
+  cursor: pointer;
+  @media screen and (max-width: 800px) {
+    margin-right: 30px;
+  }
 `;
 const Name = styled.div`
   cursor: pointer;

@@ -5,7 +5,7 @@ import styled from "styled-components";
 import { useUser } from "../../hooks/useUser";
 import AddressListContainer from "../../modal/AddressListContainer";
 import { AddressEntity } from "../../types/Address";
-import { cartItem } from "../../types/CartItem";
+import { CartItemEntity } from "../../types/CartItem";
 import { SumPrice } from "../../utils/sumPrice";
 import CartItem from "./components/CartItem";
 import SideBar from "./components/SideBar";
@@ -21,7 +21,7 @@ function useCartItem() {
   const token =
     typeof window !== "undefined" ? localStorage.getItem("accessToken") : null;
   const getCartItemWithAxios = async () => {
-    const { data } = await axios.get(`http://localhost:5000/cartItem`, {
+    const { data } = await axios.get(`http://13.209.132.48/cartItem`, {
       headers: { Authorization: `Bearer ${token}` },
     });
     return data;
@@ -39,7 +39,7 @@ function MyCartItemContainer() {
   const user = useUser();
   const [addressSelect, setAddressSelect] = useState(false);
   const [itemSum, setItemSum] = useState<number>(0);
-  const [product, setProduct] = useState<cartItem[]>();
+  const [product, setProduct] = useState<CartItemEntity[]>();
 
   useEffect(() => {
     if (data) {
@@ -53,22 +53,28 @@ function MyCartItemContainer() {
 
   return (
     <div>
+      <Title>장바구니</Title>
       <MyCartItemContainerContainer>
         <TitleItemContainer>
-          <Title>장바구니</Title>
+          <Line></Line>
 
-          {data.map((ele: cartItem) => (
-            // <CheckBox width="22px" />
-            <CartItem
-              data={ele}
-              key={ele.id}
-              refetch={refetch}
-              setItemSum={(price) => setItemSum(price)}
-              itemSum={itemSum}
-              setProduct={(product) => setProduct(product)}
-              product={product}
-            />
-          ))}
+          {data.length > 0 ? (
+            data.map((ele: CartItemEntity) => (
+              // <CheckBox width="22px" />
+              //onClick={() => router.push(`/product/?id=${props.data.id}`)}
+              <CartItem
+                data={ele}
+                key={ele.id}
+                refetch={refetch}
+                setItemSum={(price) => setItemSum(price)}
+                itemSum={itemSum}
+                setProduct={(product) => setProduct(product)}
+                product={product}
+              />
+            ))
+          ) : (
+            <Nodata>장바구니에 담긴 상품이 없습니다.</Nodata>
+          )}
         </TitleItemContainer>
         <SideBar
           onClick={() => setAddressSelect(true)}
@@ -92,7 +98,6 @@ function MyCartItemContainer() {
   );
 }
 const MyCartItemContainerContainer = styled.div`
-  margin-top: 70px;
   display: flex;
   justify-content: center;
   @media screen and (max-width: 800px) {
@@ -117,9 +122,33 @@ const TitleItemContainer = styled.div`
   @media screen and (max-width: 800px) {
   }
 `;
-
-const Title = styled.div`
+const Nodata = styled.div`
+  padding: 115px 0px;
+  font-size: 16px;
+  line-height: 24px;
+  text-align: center;
+  color: rgb(181, 181, 181);
+`;
+const Line = styled.div`
+  text-align: center;
   font-size: 22px;
   font-family: NotoSans;
+  width: 640px;
+  height: 40px;
+  border-bottom: 1px solid black;
+  @media screen and (max-width: 800px) {
+    width: 90vw;
+  }
+`;
+
+const Title = styled.div`
+  text-align: center;
+  font-size: 28px;
+  font-family: NotoSans;
+  margin: 50px auto 50px auto;
+  @media screen and (max-width: 800px) {
+    margin-top: 30px;
+    width: 90vw;
+  }
 `;
 export default MyCartItemContainer;

@@ -1,7 +1,10 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-
-function OrderItem(props: any) {
+import { CartItemEntity } from "../../../types/CartItem";
+interface Props {
+  data: CartItemEntity;
+}
+function OrderItem(props: Props) {
   //const queryClient = useQueryClient();
 
   const [count, setCount] = useState<number>(props.data.count);

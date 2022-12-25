@@ -6,7 +6,7 @@ interface Item {
   count: number;
 }
 export async function createPurchaseItem(purchaseItem: Item[] | []) {
-  await requester.post(`http://localhost:5000/purchase`, {
+  await requester.post(`http://13.209.132.48/purchase`, {
     purchaseItems: purchaseItem,
   });
 }

@@ -1,5 +1,10 @@
 import React, { useState } from "react";
 import styled from "styled-components";
+import {
+  useCartItemAlarm,
+  useCartItemAlarmClose,
+} from "../../../modal/cartItemAlarm";
+import { useLoginModal } from "../../../modal/loginModal";
 import { createCartItem } from "../../../remotes/cartItem";
 import { Product } from "../../../types/Product";
 import { formatComma } from "../../../utils/formatComma";
@@ -8,6 +13,9 @@ interface Props {
   data: Product;
 }
 function ItemSummary(props: Props) {
+  const openModal = useCartItemAlarm(props.data);
+  const coloseModal = useCartItemAlarmClose();
+  const openLoginModal = useLoginModal();
   const [itemQauntity, setItemQuantity] = useState(1);
   const upClick = () => {
     setItemQuantity(itemQauntity + 1);
@@ -20,6 +28,16 @@ function ItemSummary(props: Props) {
   };
   const addCartItem = () => {
     createCartItem(props.data.id, itemQauntity);
+
+    const token = localStorage.getItem("accessToken");
+    if (token) {
+      openModal();
+      setTimeout(() => {
+        coloseModal();
+      }, 3000);
+    } else {
+      openLoginModal();
+    }
   };
   return (
     <ItemSummaryContainer>
@@ -59,28 +77,33 @@ const ItemSummaryContainer = styled.div`
 const Name = styled.div`
   font-size: 40px;
   font-family: NotoSansBold;
+  @media screen and (max-width: 700px) {
+    font-size: 24px;
+  }
 `;
 const Price = styled.div`
   font-size: 44px;
   font-family: NotoSansBold;
   color: #4aa8d8;
+  @media screen and (max-width: 700px) {
+    font-size: 26px;
+  }
 `;
 const BuyQuantityContainer = styled.div`
   display: flex;
-  width: 10%;
+  width: 60px;
   font-size: 24px;
-  border: 1px solid #d3d3d3; ;
 `;
 const Arrow = styled.div`
-  width: 100%;
-  height: 50%;
+  width: 20px;
+  height: 20px;
   font-size: 14px;
   border-top: 1px solid #d3d3d3;
   text-align: center;
   cursor: pointer;
 `;
 const Amount = styled.div`
-  width: 60%;
+  width: 50px;
   font-size: 14px;
   text-align: center;
   line-height: 38px;
@@ -88,9 +111,8 @@ const Amount = styled.div`
 `;
 
 const ArrowContainer = styled.div`
-  width: 40%;
   font-size: 24px;
-  border: 1px solid #d3d3d3; ;
+  border-bottom: 1px solid #d3d3d3;
 `;
 
 const PurchaseBtn = styled.button`
@@ -104,11 +126,17 @@ const PurchaseBtn = styled.button`
   padding-bottom: 3px;
   @media screen and (max-width: 700px) {
     border: 1px solid #4aa8d8;
+    font-size: 15px;
+    min-width: 160px;
   }
 `;
 const DueDate = styled.div`
   font-size: 35px;
   font-family: NotoSansBold;
+
+  @media screen and (max-width: 700px) {
+    font-size: 28px;
+  }
 `;
 
 const FlexContainer = styled.div`

@@ -1,5 +1,5 @@
 import type { NextPage } from "next";
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import InfinityCarosel from "../../components/InfinityCarosel";
 import { useModal } from "../../contexts/ModalProvider";
@@ -8,21 +8,16 @@ import { PortalConsumer } from "../../contexts/PortalProvider";
 import ProductCarosel from "./components/productCarosel";
 
 const Home: NextPage = () => {
-  // fetch("http://localhost:5000/user").then(function (res) {
+  // fetch("http://13.209.132.48/user").then(function (res) {
   //   (res.json());
   // });
   const wrapperRef = useRef(null);
   const el2 = useRef(null);
   const [isOpen, setOpen] = useState(false);
-  console.log(useModal());
+
   return (
     <MainContainer>
       <InfinityCarosel />
-      <div>
-        <PortalConsumer>
-          <div>sdsdsdsdsdsds</div>
-        </PortalConsumer>
-      </div>
 
       <ProductCarosel category={"화장품"} />
       <ProductCarosel category={"의류"} />

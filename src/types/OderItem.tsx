@@ -1,7 +1,8 @@
 import { Product } from "./Product";
 
-export interface CartItemEntity {
+export interface OrderItemEntity {
   id: number;
   count: number;
   product: Product;
+  price: number;
 }

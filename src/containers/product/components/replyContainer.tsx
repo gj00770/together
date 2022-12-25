@@ -7,13 +7,17 @@ import ReplyComPonent from "./reply";
 import { ReplyType } from "../../../types/Reply";
 import LoadingReply from "./loadingReply";
 import { flatMap } from "lodash";
+import { createReply } from "../../../remotes/reply/createReply";
+import { replaceAt } from "react-query/types/core/utils";
+import { useUser } from "../../../hooks/useUser";
+import { useLoginModal } from "../../../modal/loginModal";
 
 function useReply(id: number) {
   const query = useInfiniteQuery(
     `reply${id}`,
     async ({ pageParam = 0 }) => {
-      const { data } = await axios.get<{ item: ReplyType[]; count: number }>(
-        `http://localhost:5000/product/${id}/reply`,
+      const { data } = await axios.get<{ item: ReplyType; count: number }>(
+        `http://13.209.132.48/product/${id}/reply`,
         {
           params: { page: pageParam },
         }
@@ -27,7 +31,6 @@ function useReply(id: number) {
     }
   );
   const data = query.data;
-  console.log(data);
   return {
     data: flatMap(data?.pages.map(({ data }) => data.item)),
     isLoading: query.isLoading,
@@ -42,28 +45,19 @@ function ReplyContainer() {
   const [reply, setReply] = useState("");
   const router = useRouter();
   const { id } = router.query;
-  const [fetching, setFetching] = useState(false);
+  const [fetching] = useState(false);
   const { data, isLoading, refetch, isFetching, fetchNextPage } = useReply(
     Number(id)
   );
-  console.log(data);
-  const focusEvent = () => {
-    setShowButton(!showButton);
-  };
 
+  const user = useUser();
   const onEnter = async (e: React.KeyboardEvent) => {
-    if (e.key === "Enter") {
-      const token = localStorage.getItem("accessToken");
-      axios.post(
-        `http://localhost:5000/product/${id}/reply`,
-        { content: reply },
-        {
-          headers: { Authorization: `Bearer ${token}` },
-        }
-      );
+    if (e.key === "Enter" && reply.length > 0) {
+      await createReply(Number(id), reply);
       await setShowButton(false);
       await setReply("");
       await refetch();
+      console.log(reply);
     }
   };
 
@@ -73,18 +67,13 @@ function ReplyContainer() {
     setReply(e.target.value);
   };
 
-  const onClick = async () => {
-    const token = localStorage.getItem("accessToken");
-    await axios.post(
-      `http://localhost:5000/product/${id}/reply`,
-      { content: reply },
-      {
-        headers: { Authorization: `Bearer ${token}` },
-      }
-    );
-    await setShowButton(false);
-    await setReply("");
-    await refetch();
+  const clickButton = async () => {
+    if (reply.length > 0) {
+      await createReply(Number(id), reply);
+      await setShowButton(false);
+      await setReply("");
+      await refetch();
+    }
   };
 
   const handleScroll = () => {
@@ -104,28 +93,42 @@ function ReplyContainer() {
       // scroll event listener 해제
       window.removeEventListener("scroll", handleScroll);
     };
-  });
-
+  }, []);
+  const openLoginModal = useLoginModal();
   return (
     <ReplyContainerContainer>
       <ReplyComposeContainer>
-        <IconImage src="mockImage/icon.jpeg" />
-        <div style={{ width: "96%" }}>
+        <IconImage
+          src={
+            user.data
+              ? user.data?.profile_image
+              : "https://togetheruser.s3.ap-northeast-2.amazonaws.com/1660514035930icon.jpeg"
+          }
+        />
+        <InputHolder>
           <Compose
             placeholder="댓글을입력해주세요"
             value={reply}
-            onFocus={focusEvent}
+            onFocus={() => (user.data ? setShowButton(true) : openLoginModal())}
             onChange={onChange}
-            onKeyDown={onEnter}
+            // onKeyDown={onEnter} 2번렌더링오류 처리요망..
           ></Compose>
           <Line />
           {showButton ? (
             <ButtonContainer>
-              <Button onClick={onClick}>확인</Button>
-              <Button onClick={() => refetch()}>취소</Button>
+              <ConfirmButton
+                onClick={clickButton}
+                style={{
+                  color: reply.length > 0 ? "white" : "grey",
+                  backgroundColor: reply.length > 0 ? "#4aa8d8" : "#EFEFEF",
+                }}
+              >
+                확인
+              </ConfirmButton>
+              <Button onClick={() => setShowButton(false)}>취소</Button>
             </ButtonContainer>
           ) : null}
-        </div>
+        </InputHolder>
       </ReplyComposeContainer>
 
       {isLoading
@@ -139,13 +142,24 @@ function ReplyContainer() {
     </ReplyContainerContainer>
   );
 }
+const InputHolder = styled.div`
+  display: flex;
+  flex-direction: column;
+  width: 780px;
+  margin: 5px auto 0 auto;
+  @media screen and (max-width: 700px) {
+    width: 100%;
+  }
+`;
 const IconImage = styled.img`
   border-radius: 100%;
   height: 70px;
+  width: 70px;
   margin-left: 15px;
   margin-right: 15px;
 `;
 const ButtonContainer = styled.div`
+  margin-top: 5px;
   width: 96%;
   display: flex;
   justify-content: flex-end;
@@ -162,15 +176,27 @@ const Button = styled.button`
   margin-bottom: 20px;
   font-weight: bold;
 `;
+const ConfirmButton = styled.button`
+  width: 80px;
+  height: 30px;
+  cursor: pointer;
+  border: none;
+  margin-right: 10px;
+  // color: white;
+  font-size: 20px;
+  margin-bottom: 20px;
+  font-weight: bold;
+`;
 const Line = styled.img`
   width: 96%;
   height: 4px;
   background-color: black;
 `;
-const Compose = styled.textarea`
+const Compose = styled.input`
   :focus {
     outline: none;
   }
+  height: 30px;
   overflow: hidden;
   resize: none;
   width: 100%;

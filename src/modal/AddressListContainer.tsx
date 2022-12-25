@@ -10,6 +10,7 @@ import AddressDetailModal from "./addressDetailModal";
 import DaumAdrr from "../modal/daumAdrr";
 import { User } from "../types/User";
 import { emitKeypressEvents } from "readline";
+import { Address } from "react-daum-postcode";
 
 interface Props {
   onClose: () => void;
@@ -34,14 +35,12 @@ function AddressListContainer(props: Props) {
       </>
     );
   }
-  const onComplete = (data: any) => {
-    console.log(data);
+  const onComplete = (data: Address) => {
     setCurAddr(data.address);
     setOpenPostcode(false);
     props.refetch();
   };
-  const onCompleteAdd = (data: any) => {
-    console.log(data);
+  const onCompleteAdd = (data: Address) => {
     setCurAddr(data.address);
     setOpenPostcode(false);
     setActive(false);

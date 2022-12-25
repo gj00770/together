@@ -7,8 +7,7 @@ import { ModalProvider } from "../src/contexts/ModalProvider";
 import { PortalProvider } from "../src/contexts/PortalProvider";
 import Header from "../src/components/Header";
 import "../styles/globals.css";
-//  localStorage.setItem("accessToken", "");
-// window.getRedirectResult
+import Script from "next/script";
 
 function MyApp({ Component, pageProps }: AppProps) {
   //

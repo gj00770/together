@@ -9,7 +9,7 @@ export function useUser() {
       const test = localStorage.getItem("accessToken");
       try {
         const { data } = await axios.post(
-          "http://localhost:5000/user/test",
+          "http://13.209.132.48/user/test",
           {},
           {
             headers: { Authorization: `Bearer ${test}` },
@@ -20,7 +20,6 @@ export function useUser() {
         // setUserImage(data.profile_image);
         //setNickName(data.nickname);
         // await new Promise((resolve) => setTimeout(resolve, 5000));
-        console.log(err);
         return null;
       }
     },

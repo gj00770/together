@@ -9,15 +9,15 @@ import { updateUserNickName, updateUserProfile } from "../../../remotes/user";
 import Pencile from "../../../svgs/pen-solid.svg";
 function UserInfo() {
   const user = useUser();
-  const [openPostcode, setOpenPostcode] = useState<boolean>(false);
-  const [curAddr, setCurAddr] = useState<string>("서울시 구로구 경인로 343");
   const [userImage, setUserImage] = useState("");
   const [openNickName, setopenNickName] = useState<boolean>(false);
-  const [addAddress, setAddAddress] = useState<boolean>(false);
   const [inputvalue, setInputvalue] = useState<string>("");
 
-  const changeProfileImage = (e: any) => {
+  const changeProfileImage = (e: React.ChangeEvent<HTMLInputElement>) => {
     //s3 로구현
+    if (!e.target.files) {
+      return;
+    }
     setUserImage(URL.createObjectURL(e.target.files[0]));
     updateUserProfile(e.target.files[0]);
   };

@@ -13,7 +13,7 @@ function usePurchaseItem() {
     "purchaseItem",
     async ({ pageParam = 0 }) => {
       const { data } = await axios.get<{ item: PurchaseItem[]; count: number }>(
-        `http://localhost:5000/purchase`,
+        `http://13.209.132.48/purchase`,
         {
           params: { page: pageParam },
           headers: { Authorization: `Bearer ${token}` },
@@ -43,23 +43,23 @@ function PurchaseItemContainer() {
   const { data, isLoading, refetch, isFetching, fetchNextPage, count } =
     usePurchaseItem();
 
-  const handleScroll = () => {
-    const scrollHeight = document.documentElement.scrollHeight;
-    const scrollTop = document.documentElement.scrollTop;
-    const clientHeight = document.documentElement.clientHeight;
-    if (scrollTop + clientHeight + 1 >= scrollHeight && fetching === false) {
-      // 페이지 끝에 도달하면 추가 데이터를 받아온다
-      fetchNextPage();
-    }
-  };
   useEffect(() => {
     // scroll event listener 등록
+    const handleScroll = () => {
+      const scrollHeight = document.documentElement.scrollHeight;
+      const scrollTop = document.documentElement.scrollTop;
+      const clientHeight = document.documentElement.clientHeight;
+      if (scrollTop + clientHeight + 1 >= scrollHeight && fetching === false) {
+        // 페이지 끝에 도달하면 추가 데이터를 받아온다
+        fetchNextPage();
+      }
+    };
     window.addEventListener("scroll", handleScroll);
     return () => {
       // scroll event listener 해제
       window.removeEventListener("scroll", handleScroll);
     };
-  });
+  }, []);
   if (isLoading) {
     return <div>...</div>;
   }

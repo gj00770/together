@@ -23,7 +23,7 @@ function MypageLogout(props: Props) {
           onMouseEnter={() => setMoseOver("mypage")}
           onMouseLeave={() => setMoseOver(undefined)}
           style={{
-            backgroundColor: mouseOver === "mypage" ? "#d3d3d3" : "white",
+            backgroundColor: mouseOver === "mypage" ? "#fafafa" : "white",
             color: mouseOver === "mypage" ? "#4aa8d8" : "grey",
           }}
         >
@@ -36,7 +36,7 @@ function MypageLogout(props: Props) {
         onMouseEnter={() => setMoseOver("logout")}
         onMouseLeave={() => setMoseOver(undefined)}
         style={{
-          backgroundColor: mouseOver === "logout" ? "#d3d3d3" : "white",
+          backgroundColor: mouseOver === "logout" ? "#fafafa" : "white",
           color: mouseOver === "logout" ? "#4aa8d8" : "grey",
         }}
       >

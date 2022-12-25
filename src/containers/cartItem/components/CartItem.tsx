@@ -1,26 +1,25 @@
-import axios from "axios";
+import { useRouter } from "next/router";
 import React, { useState } from "react";
-import { useMutation, useQueryClient } from "react-query";
 import styled from "styled-components";
 import { createCartItem } from "../../../remotes/cartItem/createCartItem";
 import { deleteCartItem } from "../../../remotes/cartItem/deletecartItem";
-import { cartItem } from "../../../types/CartItem";
-import { formatComma } from "../../../utils/formatComma";
-import Xbutton from "../../../svgs/x-solid.svg";
 import CheckBox from "../../../svgs/circle-check-solid.svg";
-import { Product } from "../../../types/Product";
+import Xbutton from "../../../svgs/x-solid.svg";
+import { CartItemEntity } from "../../../types/CartItem";
+import { formatComma } from "../../../utils/formatComma";
 interface Props {
-  data: cartItem;
+  data: CartItemEntity;
   refetch: () => void;
   setItemSum: (price: number) => void;
   itemSum: number;
-  setProduct: (product: cartItem[] | undefined) => void;
-  product: cartItem[] | undefined;
+  setProduct: (product: CartItemEntity[] | undefined) => void;
+  product: CartItemEntity[] | undefined;
 }
 function MyCartItem(props: Props) {
   //const queryClient = useQueryClient();
   const [check, setCheck] = useState(true);
   const [count, setCount] = useState(props.data.count);
+  const router = useRouter();
   const plusOnclick = async () => {
     await createCartItem(props.data.product.id, 1);
     //await props.refetch();
@@ -29,17 +28,7 @@ function MyCartItem(props: Props) {
   };
   const minusOnClick = async () => {
     await createCartItem(props.data.product.id, -1);
-    //  await props.refetch();
 
-    // var value = 3; // 제거 대상
-    // var arr = [1, 2, 3, 4, 5, 3];
-
-    // arr = arr.filter(function (item) {
-    //   return item !== value;
-    // });
-
-    //console.log(arr);
-    // [1, 2, 4, 5]
     setCount(count - 1);
   };
   const onClick = async () => {
@@ -60,7 +49,6 @@ function MyCartItem(props: Props) {
       //edit later
       const arr = props.product;
       arr?.push(props.data);
-      console.log(arr);
       props.setProduct(arr);
       setCheck(true);
     }
@@ -79,10 +67,13 @@ function MyCartItem(props: Props) {
           <CheckBox
             width="22px"
             onClick={ClickCheck}
+            fill="#D3D3D3"
             style={{ marginRight: "10px" }}
           />
         )}
-        <FirstContainer>
+        <FirstContainer
+          onClick={() => router.push(`/product/?id=${props.data.product.id}`)}
+        >
           <Image src={`${props.data.product.itemImg}`} />
           <ItemName>{props.data.product.productName}</ItemName>
         </FirstContainer>
@@ -107,6 +98,7 @@ function MyCartItem(props: Props) {
   );
 }
 const FirstContainer = styled.div`
+  cursor: pointer;
   display: flex;
   align-items: center;
   margin-bottom: 12px;
@@ -193,7 +185,6 @@ const ArrowContainer = styled.div`
   text-align: left;
   height: 28px;
   font-size: 14px;
-  margin-top: 10px;
   display: flex;
   border: 0.2px solid #d3d3d3;
   margin-right: 30px;
